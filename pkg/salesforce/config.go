@@ -24,8 +24,8 @@ import (
 
 // PluginConfig represents a configuration of the GitHub plugin
 type PluginConfig struct {
-	Token              string `json:"token" jsonschema:"title=Personal access token,description=The Salesforce personal access token to use. You can create a token at this page: https://github.com/settings/tokens. The token needs full repo scope."`
-	WebsocketServerURL string `json:"websocketServerURL" jsonschema:"title=WebSocket server URL,description=The URL of the server where the plugin will run, i.e. the public accessible address of this machine."`
+	Token              string `json:"token" jsonschema:"title=Personal access token,description=The Salesforce personal access token to use. You can create a token at this page: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart_oauth.htm"`
+	DomainPrefix       string `json:"domainPrefix" jsonschema:"title=Salesforce Domain Prefix,description=Your Salesforce domain preffix (example: https://myDomainPrefix.my.salesforce.com/services/ )"`
 	SecretsDir         string `json:"secretsDir" jsonschema:"title=Secrets directory,description=The directory where the secrets required by the plugin are stored. Unless the github token is provided by environment variable, it must be stored in a file named github.token in this directory. In addition, when the webhook server uses HTTPs, server.key and server.crt must be in this directory too. (Default: ~/.ghplugin),default=~/.ghplugin"`
 	UseHTTPs           bool   `json:"useHTTPs" jsonschema:"title=Use HTTPS,description=if this parameter is set to true, then the webhook webserver listening at WebsocketServerURL will use HTTPS. In that case, server.key and server.crt must be present in the secrets directory, or the plugin will fail to load. If the parameter is set to false, the webhook webserver will be plain HTTP. Use HTTP only for testing or when the plugin is behind a proxy that handles encryption."`
 	UseAsync           bool   `json:"useAsync" jsonschema:"title=Use async extraction,description=If true then async extraction optimization is enabled. (Default: false),default=false"`
