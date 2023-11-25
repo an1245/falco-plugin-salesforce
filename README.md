@@ -1,7 +1,9 @@
 ** Create a developer account and interface with API **
 - reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart_dev_org.htm
 - create developer account: https://developer.salesforce.com/signup
-- salesforce pub/sub API - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
+- salesforce pub/sub API -
+---- Python code sample - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
+---- Go code sample - https://github.com/developerforce/pub-sub-api/tree/main/go
 
 **Execute SOQL Query**
 - reference - query objects: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_loginhistory.htm
