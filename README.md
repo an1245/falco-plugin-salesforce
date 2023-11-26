@@ -12,7 +12,7 @@
 - SFDC Event Manager: https://sysdig6-dev-ed.develop.lightning.force.com/lightning/setup/EventManager/home
 - Monitoring Event Monitor - https://help.salesforce.com/s/articleView?id=sf.event_monitoring_monitor_events_with_event_manager.htm&type=5
 
-## Execute SOQL Query 
+## API - Execute SOQL Query 
 - SOQL query for Login History:
 - example: curl https://MyDomainName.my.salesforce.com/services/data/v59.0/query/?q=SELECT+name+from+Account -H "Authorization: Bearer token"
 1. SELECT UserId, LoginTime from LoginHistory;
