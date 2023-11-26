@@ -13,6 +13,7 @@
 - SOQL query for Login History:
 1. SELECT UserId, LoginTime from LoginHistory;
 2. SELECT UserId, LoginTime from LoginHistory WHERE LoginTime > 2010-09-20T22:16:30.000Z;
+3. SELECT Application, Browser, EventDate, EventIdentifier, LoginUrl, UserId FROM LoginEvent WHERE EventDate<Yesterday AND Status=’Success’
 
 TODO:
 - Login Failures
