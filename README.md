@@ -20,11 +20,7 @@
 3. SELECT Application, Browser, EventDate, EventIdentifier, LoginUrl, UserId FROM LoginEvent WHERE EventDate<Yesterday AND Status=’Success’
 - reference - query via API : https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
 
-TODO:
+## TODO
 - Login Failures
 - Login IPs
 - Login GEO
-
-
-** Creating Webhooks in Salesforce **
-https://www.youtube.com/watch?v=1X0tugN8-Gs
