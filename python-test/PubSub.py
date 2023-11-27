@@ -81,7 +81,7 @@ class PubSub:
         self.stub = pb2_grpc.PubSubStub(channel)
         self.session_id = None
         self.pb2 = pb2
-        self.topic_name = '/events/LoginEvent'
+        self.topic_name = '/events/LoginEventStream'
         self.apiVersion = '55.0'
 
 
@@ -254,7 +254,7 @@ class PubSub:
 pub1 = PubSub()
 pub1.auth()
 #Code to Subscribe to the channel
-#pub1.subscribe('/data/AccountChangeEvent',None,None,1,process_request)
+pub1.subscribe('/event/LoginEventStream',None,None,1,process_request)
 
 #Code to Publish to the channel
 #mypubtopic = '/event/Bitcoin_Price__e'
