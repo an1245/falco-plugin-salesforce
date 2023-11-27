@@ -81,8 +81,7 @@ class PubSub:
         self.stub = pb2_grpc.PubSubStub(channel)
         self.session_id = None
         self.pb2 = pb2
-        self.topic_name = '/data/AccountChangeEvent'
-
+        self.topic_name = '/events/LoginEvent'
         self.apiVersion = '55.0'
 
 
@@ -258,9 +257,9 @@ pub1.auth()
 #pub1.subscribe('/data/AccountChangeEvent',None,None,1,process_request)
 
 #Code to Publish to the channel
-mypubtopic = '/event/Bitcoin_Price__e'
-schemaid = pub1.get_topic(mypubtopic).schema_id
-schema = pub1.get_schema_json(schemaid)
-pub1.publish(mypubtopic,schema,schemaid)
+#mypubtopic = '/event/Bitcoin_Price__e'
+#schemaid = pub1.get_topic(mypubtopic).schema_id
+#schema = pub1.get_schema_json(schemaid)
+#pub1.publish(mypubtopic,schema,schemaid)
 
 
