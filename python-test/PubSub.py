@@ -72,7 +72,7 @@ class PubSub:
 
     def __init__(self):
         print('inside init')
-        self.url = 'https://login.salesforce.com'
+        self.url = 'https://sysdig6-dev-ed.develop.lightning.force.com'
         self.username = gl.username
         self.password = gl.password
         self.metadata = None
