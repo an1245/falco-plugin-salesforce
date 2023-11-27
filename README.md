@@ -4,6 +4,7 @@
 
 ## Salesforce pub/sub API 
 - Python code sample - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
+- Python demo video - https://www.youtube.com/watch?v=8HmrDN9OUCg
 - Go code sample - https://github.com/developerforce/pub-sub-api/tree/main/go
 
 ## Platform Events 
