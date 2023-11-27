@@ -62,9 +62,37 @@ class PubSub:
         self.session_id = None
         self.pb2 = pb2
         # AH: Update login event
-        sef.topic_name = '/events/'
+        self.topic_name = '/events/'
+        self.apiVersion = '56.0'
 
-      def subscribe
+    def auth(self):
+        url_suffix = '/services/Soap/ur/' + self.apiVersion + '/'
+        headers = ('content-type': 'text/xml', 'SOAPAction': 'Login'}
+        xml = "<soapenv: Envelope xmlns:sooampenv='http://schemas.xmlsoap.org/soap/envelope/' " + \
+              "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + \
+              "xmlns:urn='urn:partner.soap.sforce.com'><soapenv:Body>" + \
+              "<urn:login><urn:username><![CDATA[" + self.username + \
+              "]]></urn:username><urn:password><![CDATA[" + self.password + \
+              "]]></urn:password></urn:login></soapenv.Body></soapenv:Envelope>"
+        res = requests.post(self.url + url_suffic, data=xml, headers=headers)
+        res_xml = et.fromstring(res.content.decode('utf-8')[0][0][0]
+
+        try:
+            url_parts = urlparse(res_xml[3].text)
+            self.url =  "{}://{}".format(url_parts.schema, url_parts.netloc)
+            self.session_id = res_xml[4].text
+        except:
+            print("An exceptionn occurred. Check the response XML below:",
+        
+    def subscribe
+
+    def publish(self, topic_name, schema, schema_id):
+        return self.stub.Publish(self.pb2.PublishRequest(
+            topic_name=topic_name, events=self.generate_producer_events(schema, schema_id)), metadata=self.metadata)
+
+pub1 = PubSub()
+pub1.auth()
+    
 
   
                 
