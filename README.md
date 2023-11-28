@@ -2,6 +2,7 @@
 - reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart_dev_org.htm
 - create developer account: https://developer.salesforce.com/signup
 - create connected app with oAuth - https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5
+- oAuth Endpoints - https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_endpoints.htm&type=5
 
 ## Salesforce pub/sub API 
 - Python code sample - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
