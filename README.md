@@ -13,6 +13,7 @@
 - Platform events - login - https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/sforce_api_objects_loginevent.htm
 - SFDC Event Manager: https://sysdig6-dev-ed.develop.lightning.force.com/lightning/setup/EventManager/home
 - Monitoring Event Monitor - https://help.salesforce.com/s/articleView?id=sf.event_monitoring_monitor_events_with_event_manager.htm&type=5
+- Need to set the event manager (Login Event) and set it to streaming https://sysdig6-dev-ed.develop.lightning.force.com/lightning/setup/EventManager/home
 
 ## API - Execute SOQL Query 
 - SOQL query for Login History:
