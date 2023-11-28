@@ -3,6 +3,7 @@
 - create developer account: https://developer.salesforce.com/signup
 - create connected app with oAuth - https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5
 - oAuth Endpoints - https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_endpoints.htm&type=5
+- Enable username/password flow - https://help.salesforce.com/s/articleView?id=release-notes.rn_security_username-password_flow_blocked_by_default.htm&release=244&type=5
 
 ## Salesforce pub/sub API 
 - Python code sample - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
