@@ -12,6 +12,7 @@
 - Python demo video - https://www.youtube.com/watch?v=8HmrDN9OUCg
 - Go code sample - https://github.com/developerforce/pub-sub-api/tree/main/go
 - Creating Pub/Sub topics - https://www.googlecloudcommunity.com/gc/Integration-Services/salesforce-to-gcp-real-time-Events/m-p/597003#M288
+- AVRO decoding to struct - https://github.com/linkedin/goavro/blob/master/examples/nested/main.go
 
 ## Platform Events 
 - reference - query objects: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_loginhistory.htm
