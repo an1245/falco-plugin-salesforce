@@ -24,17 +24,13 @@ import (
 
 // PluginConfig represents a configuration of the GitHub plugin
 type PluginConfig struct {
-	Token              string `json:"token" jsonschema:"title=Personal access token,description=The Salesforce personal access token to use. You can create a token at this page: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart_oauth.htm"`
-	DomainPrefix       string `json:"domainPrefix" jsonschema:"title=Salesforce Domain Prefix,description=Your Salesforce domain preffix (example: https://myDomainPrefix.my.salesforce.com/services/ )"`
-	SecretsDir         string `json:"secretsDir" jsonschema:"title=Secrets directory,description=The directory where the secrets required by the plugin are stored. Unless the github token is provided by environment variable, it must be stored in a file named github.token in this directory. In addition, when the webhook server uses HTTPs, server.key and server.crt must be in this directory too. (Default: ~/.ghplugin),default=~/.ghplugin"`
-	UseHTTPs           bool   `json:"useHTTPs" jsonschema:"title=Use HTTPS,description=if this parameter is set to true, then the webhook webserver listening at WebsocketServerURL will use HTTPS. In that case, server.key and server.crt must be present in the secrets directory, or the plugin will fail to load. If the parameter is set to false, the webhook webserver will be plain HTTP. Use HTTP only for testing or when the plugin is behind a proxy that handles encryption."`
-	UseAsync           bool   `json:"useAsync" jsonschema:"title=Use async extraction,description=If true then async extraction optimization is enabled. (Default: false),default=false"`
+	SFDCClientId           string `json:"sfdcclientid" jsonschema:"title=Salesforce Connect App Client Id"`
+	SFDCClientSecret       string `json:"sfdcclientsecret" jsonschema:"title=Salesforce Connect App Client Secret"`
+	SFDCLoginURL 	       string `json:"sfdcloginurl" jsonschema:"title=Salesforce Login URL (i.e. MyDomainName.my.salesforce.com) - refer: https://help.salesforce.com/s/articleView?id=sf.domain_name_hostnames.htm&type=5"`
 }
 
 // Reset sets the configuration to its default values
 func (p *PluginConfig) Reset() {
-	homeDir, _ := os.UserHomeDir()
-	p.SecretsDir = filepath.Join(homeDir, ".ghplugin")
-	p.UseHTTPs = true
-	p.UseAsync = false
+
+	
 }
