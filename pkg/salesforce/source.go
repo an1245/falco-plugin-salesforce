@@ -31,27 +31,12 @@ import (
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient/"
 )
 
 
 func (p *Plugin) initInstance(oCtx *PluginInstance) error {
-	oCtx.whSrv = nil
-
-	// Exract the user parameters
-	var terr error
-	oCtx.ghOauth.token, terr = GetGithubToken(p.config.SecretsDir)
-	if terr != nil {
-		return terr
-	}
-
-	// Create the token-authenticated http client that we will use to talk to github through
-	// its API
-	oCtx.ghOauth.ctx = context.Background()
-	oCtx.ghOauth.ts = oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: oCtx.ghOauth.token},
-	)
-	oCtx.ghOauth.tc = oauth2.NewClient(oCtx.ghOauth.ctx, oCtx.ghOauth.ts)
-	oCtx.ghClient = github.NewClient(oCtx.ghOauth.tc)
+	oCtx.grpcChannel = nil
 
 	return nil
 }
@@ -98,133 +83,19 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	if err != nil {
 		return nil, err
 	}
-	oCtx.whSecret, _ = password.Generate(32, 5, 5, false, false)
+	
+	oCtx.grpcChannel = make(chan []byte, 128)
 
-	var selected_repos []string
-
-	// if l is used as second argument, list all repositories for the authenticated user
-	if params == "*" {
-		// Fetch the list of the user's repos
-		repos, gerr := listRepos(oCtx)
-		if gerr != nil {
-			return nil, gerr
-		}
-		if len(repos) == 0 {
-			return nil, fmt.Errorf("the given token cannot access any repository on github")
-		}
-
-		for _, repo := range repos {
-			rname := strings.Trim(repo.fullName, "\"")
-			if repo.perm_Admin && !repo.archived {
-				selected_repos = append(selected_repos, rname)
-			}
-		}
-	} else {
-		pa := strings.Split(params, ",")
-		for _, rawRepo := range pa {
-			// clean up the string in case the use put spaces among them
-			repo := strings.Trim(rawRepo, " ")
-			repo = strings.Trim(repo, "\t")
-			selected_repos = append(selected_repos, repo)
-		}
-	}
-
-	// Compile the regular expressions used to find secrests in commits
-	err = compileRegexes(oCtx)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Compile the regular expressions used to find miners in github actions
-	err = compileMinerRegexes(oCtx)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Create the channel that we'll use to collect the messages from the webserver
-	oCtx.whSrvChan = make(chan []byte, 128)
-
-	// Launch the webhook web server
-	go server(p, oCtx)
-
-	// Install the webhook in all of the selected repositories
-	oCtx.whURL = p.config.WebsocketServerURL
-
-	for _, repoName := range selected_repos {
-		log.Printf("Installing webhook in github repo %s\n", repoName)
-		rnComps := strings.Split(repoName, "/")
-		if len(rnComps) != 2 {
-			return nil, fmt.Errorf("[%s] invalid repository name %s. Expected format: owner/name, e.g. falcosecurity/falco", PluginName, repoName)
-		}
-
-		loginName := rnComps[0] // *repo.Owner.Login
-		repoName := rnComps[1]  // *repo.Name
-
-		hooks, _, gerr := oCtx.ghClient.Repositories.ListHooks(oCtx.ghOauth.ctx, loginName, repoName, nil)
-		if gerr != nil {
-			return nil, gerr
-		}
-
-		for _, hook := range hooks {
-			if hook.Config["url"] == oCtx.whURL {
-				// Hook already installed for this repo. Delete it and start clean.
-				_, gerr := oCtx.ghClient.Repositories.DeleteHook(oCtx.ghOauth.ctx, loginName, repoName, hook.GetID())
-				if gerr != nil {
-					return nil, gerr
-				}
-
-				break
-			}
-		}
-
-		hname := "web" // Note: this needs to be "web" or Github will throw an error
-		active := true
-
-		hookInfo := github.Hook{
-			Name:   &hname,
-			URL:    &oCtx.whURL,
-			Events: []string{"*"},
-			Active: &active,
-			Config: map[string]interface{}{
-				"content_type": "form",
-				"secret":       oCtx.whSecret,
-				"insecure_ssl": 0,
-				"url":          oCtx.whURL}}
-
-		hook, _, gerr := oCtx.ghClient.Repositories.CreateHook(oCtx.ghOauth.ctx, loginName, repoName, &hookInfo)
-		_ = hook
-		if gerr != nil {
-			return nil, gerr
-		}
-
-		// Remember this webhook so we can delete it on close
-		nh := githubHookInfo{
-			owner: loginName,
-			repo:  repoName,
-			id:    hook.GetID(),
-		}
-
-		oCtx.installedHooks = append(oCtx.installedHooks, nh)
-	}
+	// Launch the GRPC client
+	go gprcClient(p, oCtx)
 
 	return oCtx, nil
 }
 
 // Closing the event stream and deinitialize the open plugin instance.
 func (o *PluginInstance) Close() {
-	// Shut down the webhook webserver
-	if o.whSrv != nil {
-		err := o.whSrv.Shutdown(context.Background())
-		if err != nil {
-			log.Printf("github webhook shutdown failed: %s", err)
-		}
-	}
-
-	// Remove all the webhhoks that we installed in open()
-	for _, hook := range o.installedHooks {
-		log.Printf("deleting webhook from %s/%s\n", hook.owner, hook.repo)
-		o.ghClient.Repositories.DeleteHook(o.ghOauth.ctx, hook.owner, hook.repo, hook.id)
-	}
+	// Shut down the GRPC Client
+	
 }
 
 // Produce and return a new batch of events.
@@ -240,7 +111,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	var data []byte
 	afterCh := time.After(1 * time.Second)
 	select {
-	case data = <-o.whSrvChan:
+	case data = <-o.grpcChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
