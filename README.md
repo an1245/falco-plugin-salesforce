@@ -29,6 +29,9 @@
 3. SELECT Application, Browser, EventDate, EventIdentifier, LoginUrl, UserId FROM LoginEvent WHERE EventDate<Yesterday AND Status=’Success’
 - reference - query via API : https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
 
+## Go Routines
+- multithreading - https://medium.com/@brenomachadodomonte/multithreading-with-go-routines-in-golang-7e8fcd33be81
+
 ## TODO
 - Login Failures
 - Login IPs
