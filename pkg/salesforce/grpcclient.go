@@ -9,9 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/an1245/salesforce-pubsub/go/common"
-	"github.com/an1245/salesforce-pubsub/go/oauth"
-	"github.com/an1245/salesforce-pubsub/go/proto"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/"
 	"github.com/linkedin/goavro/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
