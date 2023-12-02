@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient/"
 )
 
 const (
