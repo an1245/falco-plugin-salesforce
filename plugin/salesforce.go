@@ -21,12 +21,12 @@ import (
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/extractor"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
-	"github.com/falcosecurity/plugins/plugins/salesforce/pkg/salesforce"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce"
 )
 
 func init() {
 	plugins.SetFactory(func() plugins.Plugin {
-		p := &github.Plugin{}
+		p := &salesforce.Plugin{}
 		source.Register(p)
 		extractor.Register(p)
 		return p
