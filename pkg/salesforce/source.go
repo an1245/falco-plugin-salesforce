@@ -53,7 +53,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.grpcChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
-	go createGRPCClient(p, oCtx)
+	go grpcclient.createGRPCClient(p, oCtx)
 
 	return oCtx, nil
 }
