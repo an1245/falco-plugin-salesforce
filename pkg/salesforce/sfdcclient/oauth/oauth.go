@@ -8,8 +8,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/grpcclient"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 )
 
