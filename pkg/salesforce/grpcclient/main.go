@@ -3,6 +3,8 @@ package grpcclient
 import (
 	"log"
   	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 )
 
 func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
