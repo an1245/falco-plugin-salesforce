@@ -80,30 +80,6 @@ func getMatchField(jdata *fastjson.Value, matchField string, fType string) (bool
 	return true, res
 }
 
-func getMinerTypes(jdata *fastjson.Value) (bool, string) {
-	res := ""
-
-	mlist := jdata.GetArray("workflow_miner_detections", "matches")
-	if mlist == nil {
-		return false, ""
-	}
-
-	tlist := map[string]bool{}
-
-	for _, cinfo := range mlist {
-		tlist[string(cinfo.Get("type").GetStringBytes())] = true
-	}
-	for t, _ := range tlist {
-		res += fmt.Sprintf("%s", t)
-		res += ","
-	}
-	if res[len(res)-1] == ',' {
-		res = res[0 : len(res)-1]
-	}
-
-	return true, res
-}
-
 func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	var res string
 
@@ -203,8 +179,6 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		} else {
 			res = "true"
 		}
-	case "github.workflow.miners.type":
-		return getMinerTypes(jdata)
 	case "github.workflow.filename":
 		res = string(jdata.Get("workflow", "path").GetStringBytes())
 	default:
