@@ -24,8 +24,7 @@ import (
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
-	"grpcclient"
-	"oauth"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
 )
 
 
