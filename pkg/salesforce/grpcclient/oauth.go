@@ -9,6 +9,8 @@ import (
 	"strings"
 
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient/"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 )
 
 const (
@@ -30,7 +32,7 @@ type UserInfoResponse struct {
 	OrganizationID string `json:"organization_id"`
 }
 
-func Login() (*LoginResponse, error) {
+func Login(p *Plugin) (*LoginResponse, error) {
 	body := url.Values{}
 	body.Set("grant_type", common.GrantType)
 	body.Set("client_id", common.ClientId)
