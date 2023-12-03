@@ -36,13 +36,18 @@ import (
 
 
 func (p *Plugin) initInstance(oCtx *PluginInstance) error {
-	oCtx.grpcChannel = nil
 
+	// think of plugin_init as initializing the plugin software
+	
+	oCtx.grpcChannel = nil
 	return nil
 }
 
 // Open an event stream and return an open plugin instance.
 func (p *Plugin) Open(params string) (source.Instance, error) {
+	
+	// think of plugin_open as configuring the software to return events
+	
 	// Allocate the context struct for this open instance
 	oCtx := &PluginInstance{}
 	err := p.initInstance(oCtx)
