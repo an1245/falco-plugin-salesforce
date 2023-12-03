@@ -57,98 +57,50 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	var res string
 
 	switch field {
-	case "github.type":
-		res = string(jdata.GetStringBytes("webhook_type"))
-	case "github.action":
-		res = string(jdata.GetStringBytes("action"))
-	case "github.user":
-		res = string(jdata.Get("sender", "login").GetStringBytes())
-	case "github.repo":
-		res = string(jdata.Get("repository", "html_url").GetStringBytes())
-	case "github.org":
-		res = string(jdata.Get("organization", "login").GetStringBytes())
-	case "github.owner":
-		res = string(jdata.Get("repository", "owner", "login").GetStringBytes())
-	case "github.repo.public":
-		isPrivate := jdata.Get("repository", "private").GetBool()
-		if isPrivate {
-			res = "false"
-		} else {
-			res = "true"
-		}
-	case "github.collaborator.name":
-		res = string(jdata.Get("member", "login").GetStringBytes())
-	case "github.collaborator.role":
-		res = string(jdata.Get("changes", "permission", "to").GetStringBytes())
-	case "github.webhook.id":
-		res = fmt.Sprintf("%v", jdata.GetUint64("hook", "id"))
-	case "github.webhook.type":
-		res = string(jdata.Get("hook", "type").GetStringBytes())
-	case "github.commit.modified":
-		clist := jdata.GetArray("commits")
-		if clist == nil {
-			break
-		}
-		for _, commit := range clist {
-			mlist := commit.GetArray("modified")
-			for _, fname := range mlist {
-				res += string(fname.GetStringBytes())
-				res += ","
-			}
-			if res[len(res)-1] == ',' {
-				res = res[0 : len(res)-1]
-			}
-		}
-	case "github.diff.has_secrets":
-		flist := jdata.GetArray("files")
-		if flist == nil {
-			break
-		}
-
-		res = "false"
-
-		for _, file := range flist {
-			mlist := file.GetArray("matches")
-			if len(mlist) > 0 {
-				res = "true"
-				break
-			}
-		}
-	
-	case "github.diff.committed_secrets.links":
-		repo := string(jdata.Get("repository", "html_url").GetStringBytes())
-		flist := jdata.GetArray("files")
-		if flist == nil {
-			break
-		}
-
-		for _, file := range flist {
-			mlist := file.GetArray("matches")
-			for _, cinfo := range mlist {
-				res += fmt.Sprintf("%v/blob/%v/%v/#L%v",
-					repo,
-					string(jdata.Get("head_commit", "id").GetStringBytes()),
-					string(file.Get("name").GetStringBytes()),
-					cinfo.GetUint64("line"))
-				res += ","
-			}
-			if res[len(res)-1] == ',' {
-				res = res[0 : len(res)-1]
-			}
-		}
-	case "github.workflow.has_miners":
-		wi := jdata.GetArray("workflow_miner_detections", "matches")
-		if wi == nil {
-			return false, ""
-		}
-
-		if len(wi) == 0 {
-			res = "false"
-		} else {
-			res = "true"
-		}
-	case "github.workflow.filename":
-		res = string(jdata.Get("workflow", "path").GetStringBytes())
+	case "salesforce.application":
+		res = string(jdata.GetStringBytes("Application"))
+	case "salesforce.browser":
+		res = string(jdata.GetStringBytes("Browser"))
+	case "salesforce.city":
+		res = string(jdata.GetStringBytes("City"))
+	case "salesforce.country":
+		res = string(jdata.GetStringBytes("Country"))
+	case "salesforce.countryIso":
+		res = string(jdata.GetStringBytes("CountryIso"))
+	case "salesforce.eventdate":
+		res = float64(jdata.GetFloat64("EventDate"))
+	case "salesforce.httpmethod":
+		res = string(jdata.GetStringBytes("HttpMethod"))
+	case "salesforce.loginGeoId":
+		res = string(jdata.GetStringBytes("LoginGeoId"))
+	case "salesforce.loginLatitude":
+		res = float64(jdata.GetFloat64("LoginLatitude"))
+	case "salesforce.loginLongitude":
+		res = float64(jdata.GetFloat64("LoginLongitude"))
+	case "salesforce.loginType":
+		res = string(jdata.GetStringBytes("LoginType"))
+	case "salesforce.loginURL":
+		res = string(jdata.GetStringBytes("LoginUrl"))
+	case "salesforce.platform":
+		res = string(jdata.GetStringBytes("Platform"))
+	case "salesforce.postalCode":
+		res = string(jdata.GetStringBytes("PostalCode"))
+	case "salesforce.sessionlevel":
+		res = string(jdata.GetStringBytes("SessionLevel"))
+	case "salesforce.sourceip":
+		res = string(jdata.GetStringBytes("SourceIp"))
+	case "salesforce.status":
+		res = string(jdata.GetStringBytes("Status"))
+	case "salesforce.subdivision":
+		res = string(jdata.GetStringBytes("Subdivision"))
+	case "salesforce.tlsprotocol":
+		res = string(jdata.GetStringBytes("TlsProtocol"))
+	case "salesforce.userId":
+		res = string(jdata.GetStringBytes("UserId"))
+	case "salesforce.userType":
+		res = string(jdata.GetStringBytes("UserType"))
+	case "salesforce.username":
+		res = string(jdata.GetStringBytes("Username"))
 	default:
 		return false, ""
 	}
