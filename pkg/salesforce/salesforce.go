@@ -90,7 +90,7 @@ func (p *Plugin) Init(cfg string) error {
 	// guarantees that the config is always well-formed json.
 	p.config.Reset()
 	json.Unmarshal([]byte(cfg), &p.config)
-	fmt.Print("config: ", str)
+	fmt.Print("config: ", cfg)
 
 	return nil
 }
