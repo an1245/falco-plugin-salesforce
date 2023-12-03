@@ -44,7 +44,7 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.postalCode", Display: "Login Postal Code", Desc: "What postal code did the user log in from?"},
 		{Type: "string", Name: "salesforce.sessionlevel", Display: "Session Level", Desc: "What level was this session? (Standard etc.)"},
 		{Type: "string", Name: "salesforce.sourceip", Display: "Source IP", Desc: "What was the source IP that the user logged in from?"},
-		{Type: "string", Name: "salesforce.status", Display: "Login Status", Desc: "What was the status of the login? (success etc.)"},
+		{Type: "string", Name: "salesforce.loginstatus", Display: "Login Status", Desc: "What was the status of the login? (success etc.)"},
 		{Type: "string", Name: "salesforce.subdivision", Display: "Login Subdivision", Desc: "What subdivision did the user log in from?"},
 		{Type: "string", Name: "salesforce.tlsprotocol", Display: "TLS Protocol", Desc: "What TLS protocol was the user using?"},
 		{Type: "string", Name: "salesforce.userId", Display: "User ID", Desc: "What was the users ID?"},
@@ -89,8 +89,8 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("SessionLevel"))
 	case "salesforce.sourceip":
 		res = string(jdata.GetStringBytes("SourceIp"))
-	case "salesforce.status":
-		res = string(jdata.GetStringBytes("Status"))
+	case "salesforce.loginstatus":
+		res = string(jdata.GetStringBytes("LoginStatus"))
 	case "salesforce.subdivision":
 		res = string(jdata.GetStringBytes("Subdivision"))
 	case "salesforce.tlsprotocol":
