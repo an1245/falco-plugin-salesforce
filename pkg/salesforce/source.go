@@ -113,7 +113,7 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		log.Fatalf("could not create gRPC client: %v", err)
 	}
 	defer client.Close()
-	log.Printf("type of: %T ", client)
+	
 	log.Printf("Populating auth token...")
 	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
