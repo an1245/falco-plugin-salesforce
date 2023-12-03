@@ -18,6 +18,7 @@ limitations under the License.
 package salesforce
 
 import (
+	"github.com/alecthomas/jsonschema"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
@@ -26,7 +27,7 @@ import (
 
 const (
 	PluginID           uint32 = 8
-	PluginName                = "salesforce"
+	PluginName                = "Salesforce"
 	PluginDescription         = "Reads events from Salesforce using GRPC Connection"
 	PluginContact             = "github.com/falcosecurity/plugins"
 	PluginVersion             = "0.1.0"
@@ -35,7 +36,7 @@ const (
 )
 
 
-// Plugin represent the GithHub plugin
+// Plugin represent the Salesforce plugin
 type Plugin struct {
 	plugins.BasePlugin
 	config      PluginConfig
