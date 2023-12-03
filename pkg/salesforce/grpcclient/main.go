@@ -5,7 +5,7 @@ import (
   "github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
 )
 
-func createGRPCClient() {
+func createGRPCClient(p *Plugin, oCtx *PluginInstance) {
 	if common.ReplayPreset == proto.ReplayPreset_CUSTOM && common.ReplayId == nil {
 		log.Fatalf("the replayId variable must be populated when the replayPreset variable is set to CUSTOM")
 	} else if common.ReplayPreset != proto.ReplayPreset_CUSTOM && common.ReplayId != nil {
