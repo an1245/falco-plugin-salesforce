@@ -192,7 +192,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         }
 
 			oCtx.grpcChannel <- LoginEventJSON
-}
+		}
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
                         // batch size then proactively request more events to stay ahead of the processor
@@ -217,7 +217,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 requestedEvents += fetchRequest.NumRequested
                         }
                 }
-        }
+        
 }
 
 // Unexported helper function to retrieve the cached codec from the PubSubClient's schema cache. If the schema ID is not found in the cache
