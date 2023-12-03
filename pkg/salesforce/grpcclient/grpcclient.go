@@ -8,9 +8,10 @@ import (
         "log"
         "encoding/json"
 
-        "github.com/developerforce/pub-sub-api/go/common"
-        "github.com/developerforce/pub-sub-api/go/oauth"
-        "github.com/developerforce/pub-sub-api/go/proto"
+        "github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient/"
+        
         "github.com/linkedin/goavro/v2"
         "google.golang.org/grpc"
         "google.golang.org/grpc/credentials"
@@ -44,8 +45,8 @@ func (c *PubSubClient) Close() {
 
 // Makes a call to the OAuth server to fetch credentials. Credentials are stored as part of the PubSubClient object so that they can be
 // referenced later in other methods
-func (c *PubSubClient) Authenticate() error {
-        resp, err := oauth.Login()
+func (c *PubSubClient) Authenticate(p *Plugin) error {
+        resp, err := oauth.Login(p)
         if err != nil {
                 return err
         }
