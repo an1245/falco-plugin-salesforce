@@ -24,6 +24,7 @@ import (
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
+	"fmt"
 )
 
 const (
@@ -89,7 +90,7 @@ func (p *Plugin) Init(cfg string) error {
 	// guarantees that the config is always well-formed json.
 	p.config.Reset()
 	json.Unmarshal([]byte(cfg), &p.config)
-	log.Printf("config: ", str)
+	fmt.Print("config: ", str)
 
 	return nil
 }
