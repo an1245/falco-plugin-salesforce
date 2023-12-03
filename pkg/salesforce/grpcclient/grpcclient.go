@@ -341,7 +341,7 @@ type LoginEvent struct {
         SessionKey string
         SessionLevel string
         SourceIp string
-        Status string
+        LoginStatus string
         Subdivision string
         TlsProtocol string
         UserId string
@@ -562,7 +562,7 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                 case "Status":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
-                                        ind.Status = b.(string)
+                                        ind.LoginStatus = b.(string)
                                 }
                         }
                 case "Subdivision":
