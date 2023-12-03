@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math"
 	"time"
+	"log"
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
@@ -114,14 +115,14 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 	defer client.Close()
 
 	log.Printf("Populating auth token...")
-	err = client.Authenticate()
+	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
 		log.Fatalf("could not authenticate: %v", err)
 	}
 
 	log.Printf("Populating user info...")
-	err = client.FetchUserInfo(p)
+	err = client.FetchUserInfo(p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
 		log.Fatalf("could not fetch user info: %v", err)
