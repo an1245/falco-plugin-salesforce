@@ -35,13 +35,13 @@ type UserInfoResponse struct {
 func Login(p *Plugin) (*LoginResponse, error) {
 	body := url.Values{}
 	body.Set("grant_type", common.GrantType)
-	body.Set("client_id", common.ClientId)
-	body.Set("client_secret", common.ClientSecret)
+	body.Set("client_id", p.config.SFDCClientId)
+	body.Set("client_secret", p.config.SFDCClientSecret)
 
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
-	print(common.OAuthEndpoint + loginEndpoint + "?" + body.Encode())
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, common.OAuthEndpoint+loginEndpoint, strings.NewReader(body.Encode()))
+	print(p.config.SFDCLoginURL + loginEndpoint + "?" + body.Encode())
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.config.SFDCLoginURL + loginEndpoint, strings.NewReader(body.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -68,11 +68,11 @@ func Login(p *Plugin) (*LoginResponse, error) {
 	return &loginResponse, nil
 }
 
-func UserInfo(accessToken string) (*UserInfoResponse, error) {
+func UserInfo(accessToken string, p *Plugin) (*UserInfoResponse, error) {
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, common.OAuthEndpoint+userInfoEndpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, p.config.SFDCLoginURL+userInfoEndpoint, nil)
 	if err != nil {
 		return nil, err
 	}
