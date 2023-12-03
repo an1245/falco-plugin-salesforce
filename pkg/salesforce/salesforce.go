@@ -40,6 +40,9 @@ const (
 type Plugin struct {
 	plugins.BasePlugin
 	config      PluginConfig
+	jparser     fastjson.Parser
+	jdata       *fastjson.Value
+	jdataEvtnum uint64 // The event number jdata refers to. Used to know when we can skip the unmarshaling.
 }
 
 // PluginInstance represents an opened instance of the plugin,
