@@ -28,56 +28,29 @@ import (
 // Return the fields supported for extraction.
 func (p *Plugin) Fields() []sdk.FieldEntry {
 	return []sdk.FieldEntry{
-		{Type: "string", Name: "github.type", Display: "Message Type", Desc: "Message type, e.g. 'star' or 'repository'."},
-		{Type: "string", Name: "github.action", Display: "Action Type", Desc: "The github event action. This field typically qualifies the github.type field. For example, a message of type 'star' can have action 'created' or 'deleted'."},
-		{Type: "string", Name: "github.user", Display: "User", Desc: "Name of the user that triggered the event."},
-		{Type: "string", Name: "github.repo", Display: "Repository", Desc: "Name of the git repository where the event occurred. Github Webhook payloads contain the repository property when the event occurs from activity in a repository."},
-		{Type: "string", Name: "github.org", Display: "Organization", Desc: "Name of the organization the git repository belongs to."},
-		{Type: "string", Name: "github.owner", Display: "Owner", Desc: "Name of the repository's owner."},
-		{Type: "string", Name: "github.repo.public", Display: "Public", Desc: "'true' if the repository affected by the action is public. 'false' otherwise."},
-		{Type: "string", Name: "github.collaborator.name", Display: "Collaborator Name", Desc: "The member name for message that add or remove users."},
-		{Type: "string", Name: "github.collaborator.role", Display: "Collaborator Role", Desc: "The member name for message that add or remove users."},
-		{Type: "string", Name: "github.webhook.id", Display: "Webhook ID", Desc: "When a new webhook has been created, the webhook id."},
-		{Type: "string", Name: "github.webhook.type", Display: "Webhook Type", Desc: "When a new webhook has been created, the webhook type, e.g. 'repository'."},
-		{Type: "string", Name: "github.commit.modified", Display: "Modified Files", Desc: "Comma separated list of files that have been modified."},
-		{Type: "string", Name: "github.diff.has_secrets", Display: "Contains Secrets", Desc: "For push messages, 'true' if the diff of one of the commits contains a secret."},
-		{Type: "string", Name: "github.diff.committed_secrets.desc", Display: "Secret Descriptions", Desc: "For push messages, if one of the commits includes one or more secrets (AWS keys, github tokens...), this field contains the description of each of the committed secrets, as a comma separated list."},
-		{Type: "string", Name: "github.diff.committed_secrets.files", Display: "Secret Files", Desc: "For push messages, if one of the commits includes one or more secrets (AWS keys, github tokens...), this field contains the names of the files in which each of the secrets was committed, as a comma separated list."},
-		{Type: "string", Name: "github.diff.committed_secrets.lines", Display: "Secret Lines", Desc: "For push messages, if one of the commits includes one or more secrets (AWS keys, github tokens...), this field contains the file line positions of the committed secrets, as a comma separated list."},
-		{Type: "string", Name: "github.diff.committed_secrets.links", Display: "Secret Links", Desc: "For push messages, if one of the commits includes one or more secrets (AWS keys, github tokens...), this field contains the github source code link for each of the committed secrets, as a comma separated list."},
-		{Type: "string", Name: "github.workflow.has_miners", Display: "Workflow Has Miner", Desc: "For workflow_run messages, 'true' if the a miner has been detected in the workflow definition file."},
-		{Type: "string", Name: "github.workflow.miners.type", Display: "Workflow Miner Type", Desc: "For workflow_run messages, if one or more miners is detected in the workflow definition file, this field contains the type of each of the detected miner, as a comma separated list (e.g. xmrig, stratum)."},
-		{Type: "string", Name: "github.workflow.filename", Display: "Workflow File", Desc: "For workflow_run messages, the name of the workflow definition file."},
+		{Type: "string", Name: "salesforce.application", Display: "Login Application", Desc: "How the user has logged in (browser, api etc.)"},
+		{Type: "string", Name: "salesforce.browser", Display: "Browser Type", Desc: "What browser did the user log in with?"},
+		{Type: "string", Name: "salesforce.city", Display: "City", Desc: "Which city did the user log in from?"},
+		{Type: "string", Name: "salesforce.country", Display: "Country", Desc: "Which country did the user log in from?"},
+		{Type: "string", Name: "salesforce.countryIso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
+		{Type: "int64",  Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
+		{Type: "string", Name: "salesforce.httpmethod", Display: "HTTP Method", Desc: "What HTTP Method was the user using when event was generated?"},
+		{Type: "string", Name: "salesforce.loginGeoId", Display: "Login Geo ID", Desc: "What Geo ID did the user log in from?"},
+		{Type: "float64", Name: "salesforce.loginLatitude", Display: "Login Latitude", Desc: "What Latitude did the user log in from?"},
+		{Type: "float64", Name: "salesforce.loginLongitude", Display: "Login Longitude", Desc: "What Longitude did the user log in from?"},
+		{Type: "string", Name: "salesforce.loginType", Display: "Login Type", Desc: "What type of login was this? (i.e. Application)"},
+		{Type: "string", Name: "salesforce.loginURL", Display: "Login URL", Desc: "What login URL did was the user using?"},
+		{Type: "string", Name: "salesforce.platform", Display: "Login Platform", Desc: "What platform was the user using when they logged in? (i.e. Windows 10)"},
+		{Type: "string", Name: "salesforce.postalCode", Display: "Login Postal Code", Desc: "What postal code did the user log in from?"},
+		{Type: "string", Name: "salesforce.sessionlevel", Display: "Session Level", Desc: "What level was this session? (Standard etc.)"},
+		{Type: "string", Name: "salesforce.sourceip", Display: "Source IP", Desc: "What was the source IP that the user logged in from?"},
+		{Type: "string", Name: "salesforce.status", Display: "Login Status", Desc: "What was the status of the login? (success etc.)"},
+		{Type: "string", Name: "salesforce.subdivision", Display: "Login Subdivision", Desc: "What subdivision did the user log in from?"},
+		{Type: "string", Name: "salesforce.tlsprotocol", Display: "TLS Protocol", Desc: "What TLS protocol was the user using?"},
+		{Type: "string", Name: "salesforce.userId", Display: "User ID", Desc: "What was the users ID?"},
+		{Type: "string", Name: "salesforce.userType", Display: "User Type", Desc: "What type of user was this? (i.e. Standard)"},
+		{Type: "string", Name: "salesforce.username", Display: "Username", Desc: "What was the users username?"},
 	}
-}
-
-func getMatchField(jdata *fastjson.Value, matchField string, fType string) (bool, string) {
-	res := ""
-
-	flist := jdata.GetArray("files")
-	if flist == nil {
-		return false, ""
-	}
-
-	for _, file := range flist {
-		mlist := file.GetArray("matches")
-		for _, cinfo := range mlist {
-			if fType == "string" {
-				res += string(cinfo.Get(matchField).GetStringBytes())
-			} else if fType == "uint64" {
-				res += fmt.Sprintf("%v", cinfo.GetUint64(matchField))
-			} else if fType == "file" {
-				res += string(file.Get("name").GetStringBytes())
-			}
-
-			res += ","
-		}
-		if res[len(res)-1] == ',' {
-			res = res[0 : len(res)-1]
-		}
-	}
-
-	return true, res
 }
 
 func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
@@ -141,12 +114,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 				break
 			}
 		}
-	case "github.diff.committed_secrets.desc":
-		return getMatchField(jdata, "desc", "string")
-	case "github.diff.committed_secrets.files":
-		return getMatchField(jdata, "", "file")
-	case "github.diff.committed_secrets.lines":
-		return getMatchField(jdata, "line", "uint64")
+	
 	case "github.diff.committed_secrets.links":
 		repo := string(jdata.Get("repository", "html_url").GetStringBytes())
 		flist := jdata.GetArray("files")
