@@ -67,15 +67,15 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.countryIso":
 		res = string(jdata.GetStringBytes("CountryIso"))
 	case "salesforce.eventdate":
-		res = float64(jdata.GetFloat64("EventDate"))
+		//res = float64(jdata.GetFloat64("EventDate"))
 	case "salesforce.httpmethod":
 		res = string(jdata.GetStringBytes("HttpMethod"))
 	case "salesforce.loginGeoId":
 		res = string(jdata.GetStringBytes("LoginGeoId"))
 	case "salesforce.loginLatitude":
-		res = float64(jdata.GetFloat64("LoginLatitude"))
+		//res = float64(jdata.GetFloat64("LoginLatitude"))
 	case "salesforce.loginLongitude":
-		res = float64(jdata.GetFloat64("LoginLongitude"))
+		//res = float64(jdata.GetFloat64("LoginLongitude"))
 	case "salesforce.loginType":
 		res = string(jdata.GetStringBytes("LoginType"))
 	case "salesforce.loginURL":
