@@ -5,6 +5,7 @@ import (
   	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
+	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 )
 
@@ -64,7 +65,7 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx,grpcchannel)
 		if err != nil {
 			log.Printf("error occurred while subscribing to topic: %v", err)
 		}
