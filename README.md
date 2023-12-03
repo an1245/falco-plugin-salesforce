@@ -31,6 +31,7 @@
 
 ## Go Routines
 - multithreading - https://medium.com/@brenomachadodomonte/multithreading-with-go-routines-in-golang-7e8fcd33be81
+- concurrency chnnels https://medium.com/goturkiye/concurrency-in-go-channels-and-waitgroups-25dd43064d1
 
 ## TODO
 - Login Failures
