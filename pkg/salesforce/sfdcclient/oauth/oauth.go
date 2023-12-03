@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
