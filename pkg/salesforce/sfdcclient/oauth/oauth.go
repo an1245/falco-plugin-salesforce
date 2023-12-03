@@ -69,7 +69,7 @@ func Login(clientid string, clientsecret string, sfdcloginurl string) (*LoginRes
 	return &loginResponse, nil
 }
 
-func UserInfo(accessToken string, p *Plugin) (*UserInfoResponse, error) {
+func UserInfo(accessToken string, sfdcloginurl string) (*UserInfoResponse, error) {
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
 
