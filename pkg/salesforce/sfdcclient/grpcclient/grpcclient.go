@@ -559,6 +559,12 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                          ind.SessionLevel = b.(string)
                                 }
                         }
+		case "SourceIp":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.SourceIp = b.(string)
+                                }
+                        }
                 case "Status":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
