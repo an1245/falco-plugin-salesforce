@@ -18,13 +18,8 @@ limitations under the License.
 package salesforce
 
 import (
-	"bufio"
-	"context"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 	"time"
