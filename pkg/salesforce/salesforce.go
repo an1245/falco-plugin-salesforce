@@ -18,7 +18,9 @@ limitations under the License.
 package salesforce
 
 import (
+	"encoding/json"
 	"github.com/alecthomas/jsonschema"
+	"github.com/valyala/fastjson"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
