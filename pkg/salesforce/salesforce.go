@@ -28,7 +28,7 @@ import (
 
 const (
 	PluginID           uint32 = 999
-	PluginName                = "Salesforce"
+	PluginName                = "salesforce"
 	PluginDescription         = "Reads events from Salesforce using GRPC Connection"
 	PluginContact             = "github.com/falcosecurity/plugins"
 	PluginVersion             = "0.1.0"
