@@ -6,6 +6,7 @@ import (
         "fmt"
         "io"
         "log"
+        "encoding/json"
 
         "github.com/developerforce/pub-sub-api/go/common"
         "github.com/developerforce/pub-sub-api/go/oauth"
