@@ -12,6 +12,7 @@ import (
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/oauth"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
         
         "github.com/linkedin/goavro/v2"
         "google.golang.org/grpc"
@@ -60,7 +61,7 @@ func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdclo
 
 // Makes a call to the OAuth server to fetch user info. User info is stored as part of the PubSubClient object so that it can be referenced
 // later in other methods
-func (c *PubSubClient) FetchUserInfo(sfdcloginurl) error {
+func (c *PubSubClient) FetchUserInfo(sfdcloginurl string) error {
         resp, err := oauth.UserInfo(c.accessToken, sfdcloginurl )
         if err != nil {
                 return err
