@@ -18,7 +18,6 @@ limitations under the License.
 package salesforce
 
 import (
-	"fmt"
 	"io/ioutil"
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
