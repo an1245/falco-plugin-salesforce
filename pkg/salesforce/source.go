@@ -107,7 +107,7 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		log.Fatalf("the replayId variable must not be populated when the replayPreset variable is set to EARLIEST or LATEST")
 	}
 
-	log.Printf("debug", p.config.debug)
+	log.Printf("debug %t", p.config.debug)
 	if (p.config.debug == true){
 		log.Printf("Creating gRPC client...")
 	}
