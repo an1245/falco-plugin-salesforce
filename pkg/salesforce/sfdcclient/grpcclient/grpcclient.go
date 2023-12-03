@@ -47,7 +47,7 @@ func (c *PubSubClient) Close() {
 // Makes a call to the OAuth server to fetch credentials. Credentials are stored as part of the PubSubClient object so that they can be
 // referenced later in other methods
 func (c *PubSubClient) Authenticate(p *Plugin) error {
-        resp, err := oauth.Login(p)
+        resp, err := oauth.Login(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL )
         if err != nil {
                 return err
         }
