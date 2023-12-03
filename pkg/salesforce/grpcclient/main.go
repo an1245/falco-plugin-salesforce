@@ -2,7 +2,7 @@ package grpcclient
 
 import (
 	"log"
-  "github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
+  	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
 )
 
 func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
