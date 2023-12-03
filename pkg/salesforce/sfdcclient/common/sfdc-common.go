@@ -3,7 +3,7 @@ package common
 import (
 	"time"
 
-	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/grpcclient"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
 )
 
 var (
