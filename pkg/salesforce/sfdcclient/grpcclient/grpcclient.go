@@ -46,8 +46,8 @@ func (c *PubSubClient) Close() {
 
 // Makes a call to the OAuth server to fetch credentials. Credentials are stored as part of the PubSubClient object so that they can be
 // referenced later in other methods
-func (c *PubSubClient) Authenticate(p *Plugin) error {
-        resp, err := oauth.Login(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL )
+func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdcloginurl string) error {
+        resp, err := oauth.Login(clientid, clientsecret,sfdcloginurl )
         if err != nil {
                 return err
         }
@@ -60,8 +60,8 @@ func (c *PubSubClient) Authenticate(p *Plugin) error {
 
 // Makes a call to the OAuth server to fetch user info. User info is stored as part of the PubSubClient object so that it can be referenced
 // later in other methods
-func (c *PubSubClient) FetchUserInfo(p *Plugin) error {
-        resp, err := oauth.UserInfo(c.accessToken, p.config.SFDCLoginURL )
+func (c *PubSubClient) FetchUserInfo(sfdcloginurl) error {
+        resp, err := oauth.UserInfo(c.accessToken, sfdcloginurl )
         if err != nil {
                 return err
         }
@@ -191,7 +191,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 log.Fatal(err)
                         }
 
-			oCtx.grpcChannel <- LoginEventJSON
+			.grpcChannel <- LoginEventJSON
 		}
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
