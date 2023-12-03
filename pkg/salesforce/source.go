@@ -20,8 +20,6 @@ package salesforce
 import (
 	"fmt"
 	"math"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
