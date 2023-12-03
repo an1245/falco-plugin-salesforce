@@ -17,10 +17,6 @@ limitations under the License.
 
 package salesforce
 
-import (
-	"os"
-	"path/filepath"
-)
 
 // PluginConfig represents a configuration of the GitHub plugin
 type PluginConfig struct {
