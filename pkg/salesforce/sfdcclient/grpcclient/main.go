@@ -2,7 +2,8 @@ package grpcclient
 
 import (
 	"log"
-  	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/grpcclient"
+  	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 )
