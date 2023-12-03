@@ -59,8 +59,8 @@ func (c *PubSubClient) Authenticate(p *Plugin) error {
 
 // Makes a call to the OAuth server to fetch user info. User info is stored as part of the PubSubClient object so that it can be referenced
 // later in other methods
-func (c *PubSubClient) FetchUserInfo() error {
-        resp, err := oauth.UserInfo(c.accessToken)
+func (c *PubSubClient) FetchUserInfo(p *Plugin) error {
+        resp, err := oauth.UserInfo(c.accessToken, p)
         if err != nil {
                 return err
         }
