@@ -156,7 +156,7 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx,grpcchannel)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx.grpcChannel)
 		if err != nil {
 			log.Printf("error occurred while subscribing to topic: %v", err)
 		}
