@@ -29,7 +29,7 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 	}
 
 	log.Printf("Populating user info...")
-	err = client.FetchUserInfo()
+	err = client.FetchUserInfo(p)
 	if err != nil {
 		client.Close()
 		log.Fatalf("could not fetch user info: %v", err)
