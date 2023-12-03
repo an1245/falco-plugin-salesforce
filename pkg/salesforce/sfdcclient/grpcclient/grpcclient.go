@@ -190,7 +190,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 log.Fatal(err)
                         }
 
-			grpcChannel <- LoginEventJSON
+			grpcchannel <- LoginEventJSON
 		}
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
