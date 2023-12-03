@@ -1,7 +1,8 @@
 - rule: Successful Login
   desc: User logged on successfully
   condition: salesforce.loginstatus=Success
-  output: User %salesforce.username logged on successfully (source IP %salesforce.sourceIP, city %salesforce.city, country %salesforce.country, browser %salesforce.browser)
+  output: >
+    User %salesforce.username logged on successfully (source IP=%salesforce.sourceIP, city=%salesforce.city, country=%salesforce.country, browser=%salesforce.browser)
   priority: DEBUG
   source: salesforce
   tags: [salesforce]
