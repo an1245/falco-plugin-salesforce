@@ -7,7 +7,7 @@
   source: salesforce
   tags: [salesforce]
 
-  - rule: Failed Login
+- rule: Failed Login
   desc: User logged on successfully
   condition: salesforce.loginstatus!=Success
   output: >
