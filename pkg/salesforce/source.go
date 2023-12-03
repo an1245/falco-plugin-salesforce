@@ -41,40 +41,6 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 	return nil
 }
 
-func (p *Plugin) OpenParams() ([]sdk.OpenParam, error) {
-	oCtx := &PluginInstance{}
-	err := p.initInstance(oCtx)
-	if err != nil {
-		return nil, err
-	}
-
-	// if l is used as second argument, list all repositories for the authenticated user
-	repos, gerr := listRepos(oCtx)
-	if gerr != nil {
-		return nil, gerr
-	}
-	if len(repos) == 0 {
-		return nil, fmt.Errorf("the given token cannot access any repository on github")
-	}
-
-	var res []sdk.OpenParam
-	for _, repo := range repos {
-		if repo.perm_Admin && !repo.archived {
-			res = append(res, sdk.OpenParam{
-				Value: repo.fullName,
-				Desc:  "",
-			})
-		}
-	}
-
-	res = append(res, sdk.OpenParam{
-		Value: "*",
-		Desc:  "Attaches to every repository accessible with the given token",
-	})
-
-	return res, nil
-}
-
 // Open an event stream and return an open plugin instance.
 func (p *Plugin) Open(params string) (source.Instance, error) {
 	// Allocate the context struct for this open instance
@@ -117,18 +83,13 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		return 0, sdk.ErrTimeout
 	}
 
-	// If the buffer starts with an 'E', it means it contains an error
-	if data[0] == 'E' {
-		return 0, fmt.Errorf("%s", (data[2:]))
-	}
-
 	// Write data inside the event
 	written, err := writer.Write(data)
 	if err != nil {
 		return 0, err
 	}
 	if written < len(data) {
-		return 0, fmt.Errorf("github message too long: %d, max %d supported", len(data), written)
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
 	}
 
 	// Let the engine timestamp this event. It would probably be better to
@@ -138,37 +99,3 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	return 1, nil
 }
 
-// Provide a string representation for an event.
-func (p *Plugin) String(evt sdk.EventReader) (string, error) {
-	var line string
-	var err error
-
-	data, err := ioutil.ReadAll(evt.Reader())
-	if err != nil {
-		return "", err
-	}
-
-	p.jdata, err = p.jparser.ParseBytes(data)
-	if err != nil {
-		return "", fmt.Errorf("<invalid JSON: %s>" + err.Error())
-	}
-
-	line = "github "
-	line += string(p.jdata.GetStringBytes("webhook_type"))
-	user := p.jdata.Get("sender", "login").GetStringBytes()
-	if user != nil {
-		line += (" user:" + string(user))
-	}
-
-	repo := p.jdata.Get("repository", "html_url").GetStringBytes()
-	if repo != nil {
-		line += (" repo:" + string(repo))
-	}
-
-	action := p.jdata.Get("action").GetStringBytes()
-	if action != nil {
-		line += (" action:" + string(action))
-	}
-
-	return line, nil
-}
