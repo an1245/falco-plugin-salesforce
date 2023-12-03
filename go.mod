@@ -13,4 +13,5 @@ require (
 	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a // indirect
 	golang.org/x/text v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
+	github.com/alecthomas/jsonschema
 )
