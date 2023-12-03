@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
-	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
@@ -34,16 +33,16 @@ type UserInfoResponse struct {
 	OrganizationID string `json:"organization_id"`
 }
 
-func Login(p *Plugin) (*LoginResponse, error) {
+func Login(clientid string, clientsecret string, sfdcloginurl string) (*LoginResponse, error) {
 	body := url.Values{}
 	body.Set("grant_type", common.GrantType)
-	body.Set("client_id", p.config.SFDCClientId)
-	body.Set("client_secret", p.config.SFDCClientSecret)
+	body.Set("client_id", clientid)
+	body.Set("client_secret", clientsecret)
 
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
-	print(p.config.SFDCLoginURL + loginEndpoint + "?" + body.Encode())
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.config.SFDCLoginURL + loginEndpoint, strings.NewReader(body.Encode()))
+	print(sfdcloginurl + loginEndpoint + "?" + body.Encode())
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, sfdcloginurl + loginEndpoint, strings.NewReader(body.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +73,7 @@ func UserInfo(accessToken string, p *Plugin) (*UserInfoResponse, error) {
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, p.config.SFDCLoginURL+userInfoEndpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, sfdcloginurl+userInfoEndpoint, nil)
 	if err != nil {
 		return nil, err
 	}
