@@ -180,10 +180,14 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         log.Printf("event body: %+v\n", body)
                         log.Printf("event body: %+v\n", body["Application"])
-                        testApp := body["Application"]
-                        log.Printf("test: %v+v\n",testApp)
                         LoginEventIns := StringMapToLoginEvent(parsed.(map[string]interface{}))
                         log.Printf("City: %s", LoginEventIns.City)
+                        
+                        LoginEventJSON, err := json.Marshal(LoginEventIns)
+                        if err != nil {
+                                log.Fatal(err)
+                        }
+
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
                         // batch size then proactively request more events to stay ahead of the processor
