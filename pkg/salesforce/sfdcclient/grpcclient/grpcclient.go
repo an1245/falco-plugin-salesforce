@@ -181,9 +181,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         curReplayId = event.GetReplayId()
 
                         log.Printf("event body: %+v\n", body)
-                        log.Printf("event body: %+v\n", body["Application"])
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType)
-                        log.Printf("City: %s", SFDCEventIns.City)
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
