@@ -55,7 +55,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 		return nil, err
 	}
 
-	log.Printf("Debug logging is: %v", p.config.Debug)
+	log.Printf("Salesforce Plugin: Debug logging is enabled?: %v", p.config.Debug)
 	
 	oCtx.loginChannel = make(chan []byte, 128)
 	oCtx.logoutChannel = make(chan []byte, 128)
