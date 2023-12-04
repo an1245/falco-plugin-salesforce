@@ -36,6 +36,8 @@ type PubSubClient struct {
         pubSubClient proto.PubSubClient
 
         schemaCache map[string]*goavro.Codec
+
+	Debug bool
 }
 
 // Closes the underlying connection to the gRPC server
