@@ -27,6 +27,7 @@ import (
 // Return the fields supported for extraction.
 func (p *Plugin) Fields() []sdk.FieldEntry {
 	return []sdk.FieldEntry{
+		{Type: "string", Name: "salesforce.eventtype", Display: "Event Type", Desc: "What type of SFDC event was this?"},
 		{Type: "string", Name: "salesforce.application", Display: "Login Application", Desc: "How the user has logged in (browser, api etc.)"},
 		{Type: "string", Name: "salesforce.browser", Display: "Browser Type", Desc: "What browser did the user log in with?"},
 		{Type: "string", Name: "salesforce.city", Display: "City", Desc: "Which city did the user log in from?"},
@@ -56,6 +57,8 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	var res string
 
 	switch field {
+	case "salesforce.eventtype":
+		res = string(jdata.GetStringBytes("EventType"))
 	case "salesforce.application":
 		res = string(jdata.GetStringBytes("Application"))
 	case "salesforce.browser":
