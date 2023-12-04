@@ -136,7 +136,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client grpcclient.PubSubClient, LoginTopic string){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, LoginTopic string){
 
 	log.Printf("Making GetTopic request...")
 	topic, err := client.GetTopic(LoginTopic)
