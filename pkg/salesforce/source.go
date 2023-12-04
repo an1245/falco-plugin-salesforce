@@ -203,13 +203,13 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (grpcclient.Pub
 func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client grpcclient.PubSubClient){
 
 	log.Printf("Making GetTopic request...")
-	topic, err := client.GetTopic()
+	topic, err := client.GetTopic(common.LoginTopic)
 	if err != nil {
 		client.Close()
 		log.Fatalf("could not fetch topic: %v", err)
 	}
 
-	if !topic.GetCanSubscribe() {
+	if !topic.GetCanSubscribe(common.LoginTopic) {
 		client.Close()
 		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", common.TopicName)
 	}
