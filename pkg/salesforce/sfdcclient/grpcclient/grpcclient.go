@@ -295,11 +295,11 @@ func printTrailer(trailer metadata.MD) {
 	                return
 	        }
 	
-	        log.Printf("GRPC returned trailers - beginning..")
+	        log.Printf("Salesforce Plugin: GRPC returned trailers - beginning..")
 	        for key, val := range trailer {
 	                log.Printf("[trailer] = %s, [value] = %s", key, val)
 	        }
-	        log.Printf("GRPC returned trailers - end..")
+	        log.Printf("Salesforce Plugin: GRPC returned trailers - end..")
        
 }
 
