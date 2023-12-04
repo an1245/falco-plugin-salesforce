@@ -236,8 +236,9 @@ func (c *PubSubClient) fetchCodec(schemaId string) (*goavro.Codec, error) {
         if err != nil {
                 return nil, err
         }
-
-        log.Printf("Salesforce Plugin: Creating codec from uncached schema...")
+	if (c.Debug == true) {
+       	 	log.Printf("Salesforce Plugin: Creating codec from uncached schema...")
+	}
         codec, err = goavro.NewCodec(schema.GetSchemaJson())
         if err != nil {
                 return nil, err
