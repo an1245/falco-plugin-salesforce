@@ -117,7 +117,7 @@ func (c *PubSubClient) GetSchema(schemaId string) (*proto.SchemaInfo, error) {
 // fetch data from the topic. This method will continuously consume messages unless an error occurs; if an error does occur then this method will
 // return the last successfully consumed ReplayId as well as the error message. If no messages were successfully consumed then this method will return
 // the same ReplayId that it originally received as a parameter
-func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, grpcchannel chan []byte, topicName string, eventName string) ([]byte, error) {
+func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, grpcchannel chan []byte, topicName string, eventType string) ([]byte, error) {
         ctx, cancelFn := context.WithCancel(c.getAuthContext())
         defer cancelFn()
 
@@ -182,7 +182,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         log.Printf("event body: %+v\n", body)
                         log.Printf("event body: %+v\n", body["Application"])
-                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}))
+                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType)
                         log.Printf("City: %s", SFDCEventIns.City)
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
@@ -350,10 +350,10 @@ type SFDCEvent struct {
         Username string
 }
 
-func StringMapToSFDCEvent(data map[string]interface{}) *SFDCEvent {
+func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEvent {
 
         ind := &SFDCEvent{}
-        ind.EventType = "Login"
+        ind.EventType = eventType
         for k, v := range data {
                 switch k {
                 case "ApiType":
