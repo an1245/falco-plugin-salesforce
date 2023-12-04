@@ -22,6 +22,7 @@ import (
 	"math"
 	"time"
 	"log"
+	"strconv"
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
