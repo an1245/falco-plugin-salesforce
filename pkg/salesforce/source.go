@@ -79,32 +79,32 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	writer := evt.Writer()
 
 	// Receive the event from the webserver channel with a 1 sec timeout
-	var data []byte
-	var data2 []byte
+	var logindata []byte
+	var logoutdata []byte
 	afterCh := time.After(1 * time.Second)
 	select {
-	case data = <-o.grpcChannel:
-	case data2 = <-o.logoutChannel:
+	case logindata = <-o.grpcChannel:
+	case logoutdata = <-o.logoutChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
 	}
 
 	// Write data inside the event
-	written, err := writer.Write(data)
+	written, err := writer.Write(logindata)
 	if err != nil {
 		return 0, err
 	}
-	if written < len(data) {
-		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
+	if written < len(logindata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logindata), written)
 	}
 
-	written, err = writer.Write(data2)
+	written, err = writer.Write(logoutdata)
 	if err != nil {
 		return 0, err
 	}
-	if written < len(data2) {
-		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data2), written)
+	if written < len(logoutdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logoutdata), written)
 	}
 
 	// Let the engine timestamp this event. It would probably be better to
