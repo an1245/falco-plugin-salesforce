@@ -183,7 +183,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 			if (c.Debug == true) {
                         	log.Printf("Salesforce Plugin: event body: %+v\n", body)
 			}
-                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType)
+                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
@@ -230,7 +230,7 @@ func (c *PubSubClient) fetchCodec(schemaId string) (*goavro.Codec, error) {
         }
 
         if (c.Debug == true) {
-		log.Printf("Making GetSchema request for uncached schema...")
+		log.Printf("Salesforce Plugin: Making GetSchema request for uncached schema...")
 	}
         schema, err := c.GetSchema(schemaId)
         if err != nil {
@@ -359,11 +359,13 @@ type SFDCEvent struct {
         Username string
 }
 
-func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEvent {
+func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug bool) *SFDCEvent {
 
         ind := &SFDCEvent{}
         ind.EventType = eventType
-	log.Printf("Processing %s event", eventType)
+	if (Debug == true) {
+		log.Printf("Salesforce Plugin: Processing %s event", eventType)
+	}
         for k, v := range data {
                 switch k {
                 case "ApiType":
