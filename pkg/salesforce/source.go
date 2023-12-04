@@ -153,7 +153,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	curReplayId := common.ReplayId
 	for {
-		log.Printf("Subscribing to topic...")
+		log.Printf("Subscribing to topic: %s", Topic)
 
 		// use the user-provided ReplayPreset by default, but if the curReplayId variable has a non-nil value then assume that we want to
 		// consume from a custom offset. The curReplayId will have a non-nil value if the user explicitly set the ReplayId or if a previous
