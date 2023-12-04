@@ -670,7 +670,7 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
 		case "SecurityEventData":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
-                                        ind.Score = b.(SecurityEventData)
+                                        ind.SecurityEventData = b.(string)
                                 }
                         }
                 case "SessionKey":
