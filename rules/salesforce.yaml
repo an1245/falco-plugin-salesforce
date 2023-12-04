@@ -24,3 +24,12 @@
   priority: DEBUG
   source: salesforce
   tags: [salesforce]
+
+- rule: Administrator logged on as another user
+  desc: User logged on successfully
+  condition: salesforce.eventtype=LoginAsEvent 
+  output: >
+    User %salesforce.delegatedusername from Organisation ID %salesforce.delegatedorganizationid logged on successfully as %salesforce.username (source IP=%salesforce.sourceip, targetURL=%salesforce.targeturl browser=%salesforce.browser)
+  priority: DEBUG
+  source: salesforce
+  tags: [salesforce]
