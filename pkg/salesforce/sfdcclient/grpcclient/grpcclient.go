@@ -315,6 +315,7 @@ func printTrailer(trailer metadata.MD) {
 // User holds information about a user.
 type SFDCEvent struct {
         EventType string
+	AcceptLanguage string
 	ApiType string
         ApiVersion string
         Application string
@@ -370,7 +371,8 @@ type SFDCEvent struct {
         Subdivision string
 	TargetUrl string
         TlsProtocol string
-        UserId string
+        UserAgent string
+	UserId string
         UserType string
         Username string
 }
@@ -384,7 +386,13 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
 	}
         for k, v := range data {
                 switch k {
-                case "ApiType":
+	     	case "AcceptLanguage":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.AcceptLanguage = b.(string)
+                                }
+                        }
+		case "ApiType":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.ApiType = b.(string)
@@ -721,7 +729,13 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.TlsProtocol = b.(string)
                                 }
                         }
-                case "UserId":
+                case "UserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.UserAgent = b.(string)
+                                }
+                        }
+		case "UserId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.UserId = b.(string)
