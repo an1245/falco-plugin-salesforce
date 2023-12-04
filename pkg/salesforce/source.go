@@ -57,7 +57,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	client := CreateGRPCClientConnection(p, oCtx)
 	
 	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic)
-	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic)
+	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic)
 	
 	return oCtx, nil
 }
