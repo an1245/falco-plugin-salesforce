@@ -18,6 +18,9 @@ var (
 	SessionHijackingEventType = "SessionHijackingEvent"
 	CredentialStuffingTopic = "/event/CredentialStuffingEvent"
 	CredentialStuffingEventType = "CredentialStuffingEvent"
+	PermissionSetEventTopic = "/event/PermissionSetEvent"
+	PermissionSetEventType = "PermissionSetEvent"
+	
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
 	Appetite     int32  = 5
