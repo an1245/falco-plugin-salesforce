@@ -328,11 +328,17 @@ type SFDCEvent struct {
         CountryIso string
         CreatedById string
         CreatedDate string
+	CurrentIp string
+	CurrentPlatform string
+	CurrentScreen string
+	CurrentUserAgent string
+	CurrentWindow string
 	DelegatedOrganizationId string
 	DelegatedUsername string
         EvaluationTime float64
         EventDate float64
         EventIdentifier string
+	EventUuid string
         HttpMethod string
         LoginAsCategory string
 	LoginGeoId string
@@ -347,10 +353,19 @@ type SFDCEvent struct {
         PolicyId string
         PolicyOutcome string
         PostalCode string
+	PreviousIp string
+	PreviousPlatform string
+	PreviousScreen string
+	PreviousUserAgent string
+	PreviousWindow string
         RelatedEventIdentifier string
-        SessionKey string
+	ReplayId string
+        Score string
+	SecurityEventData string
+	SessionKey string
         SessionLevel string
         SourceIp string
+	Summary string
         LoginStatus string
         Subdivision string
 	TargetUrl string
@@ -457,7 +472,36 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                          ind.CreatedDate = b.(string)
                                 }
                         }
-			
+		 case "CurrentIp":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentIp = b.(string)
+                                }
+                        }
+		case "CurrentPlatform":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentPlatform = b.(string)
+                                }
+                        }
+		case "CurrentScreen":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentScreen = b.(string)
+                                }
+                        }
+		case "CurrentUserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentUserAgent = b.(string)
+                                }
+                        }
+		case "CurrentWindow":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentWindow = b.(string)
+                                }
+                        }
 		 case "DelegatedOrganizationId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
@@ -489,6 +533,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                          ind.EventIdentifier = b.(string)
+                                }
+                        }
+		case "EventUuid":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.EventUuid = b.(string)
                                 }
                         }
                 case "HttpMethod":
@@ -575,10 +625,52 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.PostalCode = b.(string)
                                 }
                         }
-                case "RelatedEventIdentifier":
+		case "PreviousIp":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousIp = b.(string)
+                                }
+                        }
+		case "PreviousPlatform":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousPlatform = b.(string)
+                                }
+                        }
+		case "PreviousUserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousUserAgent = b.(string)
+                                }
+                        }
+		case "PreviousWindow":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousWindow = b.(string)
+                                }
+                        }
+                case "ReplayId":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ReplayId = b.(string)
+                                }
+                        }
+		case "RelatedEventIdentifier":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.RelatedEventIdentifier = b.(string)
+                                }
+                        }
+		case "Score":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Score = b.(string)
+                                }
+                        }
+		case "SecurityEventData":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Score = b.(SecurityEventData)
                                 }
                         }
                 case "SessionKey":
@@ -609,6 +701,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                          ind.Subdivision = b.(string)
+                                }
+                        }
+		 case "Summary":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.Summary = b.(string)
                                 }
                         }
 		 case "TargetUrl":
