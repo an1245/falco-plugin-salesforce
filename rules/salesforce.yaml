@@ -1,6 +1,6 @@
 - rule: Successful Login
   desc: User logged on successfully
-  condition: salesforce.loginstatus=Success
+  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus=Success
   output: >
     User %salesforce.username logged on successfully (source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, browser=%salesforce.browser)
   priority: DEBUG
@@ -9,9 +9,18 @@
 
 - rule: Failed Login
   desc: User failed login
-  condition: salesforce.loginstatus!="Success"
+  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus!="Success"
   output: >
     User %salesforce.username failed login  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, browser=%salesforce.browser)
+  priority: DEBUG
+  source: salesforce
+  tags: [salesforce]
+
+- rule: User Logged out
+  desc: User Logged out
+  condition: salesforce.eventtype=LogoutEvent and salesforce.loginstatus=Success
+  output: >
+    User %salesforce.username logged out successfully (source IP=%salesforce.sourceip)
   priority: DEBUG
   source: salesforce
   tags: [salesforce]
