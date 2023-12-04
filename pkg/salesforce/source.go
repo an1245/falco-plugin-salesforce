@@ -55,7 +55,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 		return nil, err
 	}
 
-	log.Printf("Debug logging is: %s", p.config.SFDCClientId)
+	log.Printf("Debug logging is: %s", p.config.Debuglevel)
 	
 	oCtx.loginChannel = make(chan []byte, 128)
 	oCtx.logoutChannel = make(chan []byte, 128)
