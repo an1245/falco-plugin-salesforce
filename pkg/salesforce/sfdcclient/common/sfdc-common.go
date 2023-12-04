@@ -10,7 +10,9 @@ var (
 	// topic and subscription-related variables
 	TopicName           = "/event/LoginEventStream"
 	LoginTopic	    = "/event/LoginEventStream"
+	LoginTopicEventType = "LoginEvent"
 	LogoutTopic	    = "/event/LogoutEventStream"
+	LogoutTopicEventType = "LogoutEvent"
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
 	Appetite     int32  = 5
