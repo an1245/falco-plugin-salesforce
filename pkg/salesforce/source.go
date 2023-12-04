@@ -61,6 +61,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.logoutChannel = make(chan []byte, 128)
 	oCtx.loginAsChannel = make(chan []byte, 128)
 	oCtx.sessionHijackingChannel = make(chan []byte, 128)
+	oCtx.credentialStuffingChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
@@ -69,6 +70,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
 	
 	return oCtx, nil
 }
