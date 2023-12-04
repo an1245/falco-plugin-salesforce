@@ -50,8 +50,9 @@ type Plugin struct {
 // which is returned by Open() and deinitialized during Close().
 type PluginInstance struct {
 	source.BaseInstance
-	grpcChannel      chan []byte
+	loginChannel      chan []byte
 	logoutChannel      chan []byte
+	loginAsChannel      chan []byte
 }
 
 // Return the plugin info to the framework.
