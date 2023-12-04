@@ -290,18 +290,17 @@ func getCerts() *x509.CertPool {
 
 // Helper function to display trailers on the console in a more readable format
 func printTrailer(trailer metadata.MD) {
-       if (p.config.Debug == true){
+       
 		if len(trailer) == 0 {
-	                log.Printf("no trailers returned")
 	                return
 	        }
 	
-	        log.Printf("beginning of trailers")
+	        log.Printf("GRPC returned trailers - beginning..")
 	        for key, val := range trailer {
 	                log.Printf("[trailer] = %s, [value] = %s", key, val)
 	        }
-	        log.Printf("end of trailers")
-       }
+	        log.Printf("GRPC returned trailers - end..")
+       
 }
 
 // User holds information about a user.
