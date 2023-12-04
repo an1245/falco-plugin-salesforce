@@ -308,7 +308,8 @@ func printTrailer(trailer metadata.MD) {
 
 // User holds information about a user.
 type LoginEvent struct {
-        ApiType string
+        EventType string
+	ApiType string
         ApiVersion string
         Application string
         AuthMethodReference string
@@ -352,7 +353,7 @@ type LoginEvent struct {
 func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
 
         ind := &LoginEvent{}
-        ind.City = "Auckland"
+        ind.EventType = "Login"
         for k, v := range data {
                 switch k {
                 case "ApiType":
