@@ -3,7 +3,7 @@
   condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus=Success
   output: >
     User %salesforce.username logged on successfully (source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser)
-  priority: DEBUG
+  priority: INFORMATIONAL
   source: salesforce
   tags: [salesforce]
 
@@ -12,7 +12,7 @@
   condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus!="Success"
   output: >
     User %salesforce.username failed login  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser)
-  priority: DEBUG
+  priority: ALERT
   source: salesforce
   tags: [salesforce]
 
@@ -21,7 +21,7 @@
   condition: salesforce.eventtype=LogoutEvent
   output: >
     User %salesforce.username logged out successfully (source IP=%salesforce.sourceip, platform=%salesforce.platform)
-  priority: DEBUG
+  priority: INFORMATIONAL
   source: salesforce
   tags: [salesforce]
 
@@ -30,6 +30,15 @@
   condition: salesforce.eventtype=LoginAsEvent 
   output: >
     User %salesforce.delegatedusername from Organisation ID %salesforce.delegatedorganizationid logged on successfully as %salesforce.username (source IP=%salesforce.sourceip, targetURL=%salesforce.targeturl, platform=%salesforce.platform, browser=%salesforce.browser)
-  priority: DEBUG
+  priority: WARNING
+  source: salesforce
+  tags: [salesforce]
+
+  - rule: Detected Session being Hijacked
+  desc: Detected Session being Hijacked
+  condition: salesforce.eventtype=SessionHijackingEvent 
+  output: >
+    Detected Session being hijacked (User=%salesforce.delegatedusername with Previous IP=%salesforce.previousip, being hijacked by IP=%salesforce.currentip on platform %salesforce.currentplatform and User Agent=%salesforce.currentuseragent  )
+  priority: EMERGENCY
   source: salesforce
   tags: [salesforce]
