@@ -278,7 +278,7 @@ func NewGRPCClient(isDebug bool) (*PubSubClient, error) {
                 conn:         conn,
                 pubSubClient: proto.NewPubSubClient(conn),
                 schemaCache:  make(map[string]*goavro.Codec),
-		Debug: isDebug
+		Debug: isDebug,
         }, nil
 }
 
