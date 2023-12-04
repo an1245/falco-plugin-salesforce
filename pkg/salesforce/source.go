@@ -144,7 +144,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 		log.Printf("Salesforce Plugin: Creating gRPC client...")
 	}
 	
-	client, err := grpcclient.NewGRPCClient()
+	client, err := grpcclient.NewGRPCClient(p.config.Debug)
 	if err != nil {
 		log.Fatalf("Salesforce Plugin: could not create gRPC client: %v", err)
 	}
