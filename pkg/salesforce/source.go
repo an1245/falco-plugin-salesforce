@@ -145,7 +145,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client grpcclient.PubSu
 		log.Fatalf("could not fetch topic: %v", err)
 	}
 
-	if !topic.GetCanSubscribe(LoginTopic) {
+	if !topic.GetCanSubscribe() {
 		client.Close()
 		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", LoginTopic)
 	}
