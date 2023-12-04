@@ -116,7 +116,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	if err != nil {
 		log.Fatalf("could not create gRPC client: %v", err)
 	}
-	defer client.Close()
+	//defer client.Close()
 
 	log.Printf("connection type: %T", client)
 	log.Printf("Populating auth token...")
