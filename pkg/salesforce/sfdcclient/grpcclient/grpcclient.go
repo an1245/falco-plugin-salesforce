@@ -72,11 +72,11 @@ func (c *PubSubClient) FetchUserInfo(sfdcloginurl string) error {
 }
 
 // Wrapper function around the GetTopic RPC. This will add the OAuth credentials and make a call to fetch data about a specific topic
-func (c *PubSubClient) GetTopic() (*proto.TopicInfo, error) {
+func (c *PubSubClient) GetTopic(topicName string) (*proto.TopicInfo, error) {
         var trailer metadata.MD
 
         req := &proto.TopicRequest{
-                TopicName: common.TopicName,
+                TopicName: topicName,
         }
 
         ctx, cancelFn := context.WithTimeout(c.getAuthContext(), common.GRPCCallTimeout)
@@ -117,7 +117,7 @@ func (c *PubSubClient) GetSchema(schemaId string) (*proto.SchemaInfo, error) {
 // fetch data from the topic. This method will continuously consume messages unless an error occurs; if an error does occur then this method will
 // return the last successfully consumed ReplayId as well as the error message. If no messages were successfully consumed then this method will return
 // the same ReplayId that it originally received as a parameter
-func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, grpcchannel chan []byte) ([]byte, error) {
+func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, grpcchannel chan []byte, topicName string) ([]byte, error) {
         ctx, cancelFn := context.WithCancel(c.getAuthContext())
         defer cancelFn()
 
@@ -128,7 +128,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         defer subscribeClient.CloseSend()
 
         initialFetchRequest := &proto.FetchRequest{
-                TopicName:    common.TopicName,
+                TopicName:    topicName,
                 ReplayPreset: replayPreset,
                 NumRequested: common.Appetite,
         }
@@ -199,7 +199,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         if requestedEvents < common.Appetite {
                                 log.Printf("Sending next FetchRequest...")
                                 fetchRequest := &proto.FetchRequest{
-                                        TopicName:    common.TopicName,
+                                        TopicName:    topicName,
                                         NumRequested: common.Appetite,
                                 }
 
