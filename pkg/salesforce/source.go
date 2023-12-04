@@ -55,12 +55,14 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	
 	oCtx.loginChannel = make(chan []byte, 128)
 	oCtx.logoutChannel = make(chan []byte, 128)
+	oCtx.loginAsChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
 	
 	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
 	
 	return oCtx, nil
 }
@@ -83,10 +85,13 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	// Receive the event from the webserver channel with a 1 sec timeout
 	var logindata []byte
 	var logoutdata []byte
+	var loginasdata []byte
+	
 	afterCh := time.After(1 * time.Second)
 	select {
-	case logindata = <-o.grpcChannel:
+	case logindata = <-o.loginChannel:
 	case logoutdata = <-o.logoutChannel:
+	case loginasdata = <-o.loginAsChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
@@ -107,6 +112,14 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	}
 	if written < len(logoutdata) {
 		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logoutdata), written)
+	}
+
+	written, err = writer.Write(loginasdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(loginasdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(loginasdata), written)
 	}
 
 	// Let the engine timestamp this event. It would probably be better to
