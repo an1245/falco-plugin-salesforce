@@ -140,28 +140,32 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 		log.Fatalf("the replayId variable must not be populated when the replayPreset variable is set to EARLIEST or LATEST")
 	}
 
-	
-	log.Printf("Creating gRPC client...")
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Creating gRPC client...")
+	}
 	
 	client, err := grpcclient.NewGRPCClient()
 	if err != nil {
-		log.Fatalf("could not create gRPC client: %v", err)
+		log.Fatalf("Salesforce Plugin: could not create gRPC client: %v", err)
 	}
 	//defer client.Close()
-
-	log.Printf("connection type: %T", client)
-	log.Printf("Populating auth token...")
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Populating auth token...")
+	}
+	
 	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not authenticate: %v", err)
+		log.Fatalf("Salesforce Plugin: could not authenticate: %v", err)
 	}
 
-	log.Printf("Populating user info...")
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Populating user info...")
+	}
 	err = client.FetchUserInfo(p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not fetch user info: %v", err)
+		log.Fatalf("Salesforce Plugin: could not fetch user info: %v", err)
 	}
 
 	return client
@@ -169,21 +173,25 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 
 func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte){
 
-	log.Printf("Making GetTopic request...")
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Making GetTopic request...")
+	}
 	topic, err := client.GetTopic(Topic)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not fetch topic: %v", err)
+		log.Fatalf("Salesforce Plugin: could not fetch topic: %v", err)
 	}
 
 	if !topic.GetCanSubscribe() {
 		client.Close()
-		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", Topic)
+		log.Fatalf("Salesforce Plugin: this user is not allowed to subscribe to the following topic: %s", Topic)
 	}
 
 	curReplayId := common.ReplayId
 	for {
-		log.Printf("Subscribing to topic: %s", Topic)
+		if (p.config.Debug == true){
+			log.Printf("Salesforce Plugin: Subscribing to topic: %s", Topic)
+		}
 
 		// use the user-provided ReplayPreset by default, but if the curReplayId variable has a non-nil value then assume that we want to
 		// consume from a custom offset. The curReplayId will have a non-nil value if the user explicitly set the ReplayId or if a previous
@@ -199,7 +207,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// of this for loop
 		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			log.Printf("error occurred while subscribing to topic: %v", err)
+			log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
 		}
 	}
 
