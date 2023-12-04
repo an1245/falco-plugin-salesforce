@@ -11,9 +11,9 @@ var (
 	LoginTopic	    = "/event/LoginEventStream"
 	LoginTopicEventType = "LoginEvent"
 	LogoutTopic	    = "/event/LogoutEventStream"
-	LogoutTopicLoginAsTopic = "LogoutEvent"
+	LogoutTopicEventType = "LogoutEvent"
 	LoginAsTopic 	     = "/event/LoginAsEventStream"
-	LoginAsTopicLoginAsTopic = "LoginAsEvent"
+	LoginAsTopicEventType = "LoginAsEvent"
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
 	Appetite     int32  = 5
