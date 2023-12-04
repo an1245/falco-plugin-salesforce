@@ -182,15 +182,15 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         log.Printf("event body: %+v\n", body)
                         log.Printf("event body: %+v\n", body["Application"])
-                        LoginEventIns := StringMapToLoginEvent(parsed.(map[string]interface{}))
-                        log.Printf("City: %s", LoginEventIns.City)
+                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}))
+                        log.Printf("City: %s", SFDCEventIns.City)
                         
-                        LoginEventJSON, err := json.Marshal(LoginEventIns)
+                       SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
                                 log.Fatal(err)
                         }
 
-			grpcchannel <- LoginEventJSON
+			grpcchannel <- SFDCEventJSON
 		}
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
@@ -307,7 +307,7 @@ func printTrailer(trailer metadata.MD) {
 }
 
 // User holds information about a user.
-type LoginEvent struct {
+type SFDCEvent struct {
         EventType string
 	ApiType string
         ApiVersion string
@@ -350,9 +350,9 @@ type LoginEvent struct {
         Username string
 }
 
-func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
+func StringMapToSFDCEvent(data map[string]interface{}) *SFDCEvent {
 
-        ind := &LoginEvent{}
+        ind := &SFDCEvent{}
         ind.EventType = "Login"
         for k, v := range data {
                 switch k {
