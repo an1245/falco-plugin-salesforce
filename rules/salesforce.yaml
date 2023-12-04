@@ -42,3 +42,13 @@
   priority: EMERGENCY
   source: salesforce
   tags: [salesforce]
+
+- rule: Detected Credential Stuffing
+  desc: Detected Credential Stuffing
+  condition: salesforce.eventtype=CredentialStuffingEvent 
+  output: >
+   Detected Credential Stuffing (User=%salesforce.username, IP of unauthorized user=%salesforce.sourceip, User agent of unauthorized=%salesforce.useragent. Summary of threat=%salesforce.summary.)
+  priority: EMERGENCY
+  source: salesforce
+  tags: [salesforce]
+  
