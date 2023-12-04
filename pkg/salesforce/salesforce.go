@@ -51,6 +51,7 @@ type Plugin struct {
 type PluginInstance struct {
 	source.BaseInstance
 	grpcChannel      chan []byte
+	logoutChannel      chan []byte
 }
 
 // Return the plugin info to the framework.
