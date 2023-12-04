@@ -253,7 +253,7 @@ func (c *PubSubClient) getAuthContext() context.Context {
 }
 
 // Creates a new connection to the gRPC server and returns the wrapper struct
-func NewGRPCClient() (*PubSubClient, error) {
+func NewGRPCClient(isDebug bool) (*PubSubClient, error) {
         dialOpts := []grpc.DialOption{
                 grpc.WithBlock(),
         }
@@ -278,6 +278,8 @@ func NewGRPCClient() (*PubSubClient, error) {
                 conn:         conn,
                 pubSubClient: proto.NewPubSubClient(conn),
                 schemaCache:  make(map[string]*goavro.Codec),
+		Debug: isDebug
+		
         }, nil
 }
 
