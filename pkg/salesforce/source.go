@@ -102,7 +102,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	return 1, nil
 }
 
-func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (grpcclient.PubSubClient){
+func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.PubSubClient){
 	if common.ReplayPreset == proto.ReplayPreset_CUSTOM && common.ReplayId == nil {
 		log.Fatalf("the replayId variable must be populated when the replayPreset variable is set to CUSTOM")
 	} else if common.ReplayPreset != proto.ReplayPreset_CUSTOM && common.ReplayId != nil {
