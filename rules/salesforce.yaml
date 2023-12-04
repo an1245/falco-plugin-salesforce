@@ -18,7 +18,7 @@
 
 - rule: User Logged out
   desc: User Logged out
-  condition: salesforce.eventtype=LogoutEvent and salesforce.loginstatus=Success
+  condition: salesforce.eventtype=LogoutEvent
   output: >
     User %salesforce.username logged out successfully (source IP=%salesforce.sourceip)
   priority: DEBUG
