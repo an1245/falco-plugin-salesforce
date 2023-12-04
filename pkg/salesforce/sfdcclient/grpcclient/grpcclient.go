@@ -354,6 +354,7 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEv
 
         ind := &SFDCEvent{}
         ind.EventType = eventType
+	log.Printf("Processing %s event", eventType)
         for k, v := range data {
                 switch k {
                 case "ApiType":
