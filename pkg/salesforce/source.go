@@ -62,7 +62,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	
 	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
 	
 	return oCtx, nil
 }
