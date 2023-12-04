@@ -38,6 +38,9 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 	oCtx.loginChannel = nil
 	oCtx.logoutChannel = nil
 	oCtx.loginAsChannel = nil
+	oCtx.sessionHijackingChannel = nil
+	oCtx.credentialStuffingChannel = nil
+	oCtx.permissionSetChannel = nil
 	
 	return nil
 	
@@ -62,6 +65,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.loginAsChannel = make(chan []byte, 128)
 	oCtx.sessionHijackingChannel = make(chan []byte, 128)
 	oCtx.credentialStuffingChannel = make(chan []byte, 128)
+	oCtx.permissionSetChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
@@ -71,6 +75,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
 	
 	return oCtx, nil
 }
@@ -94,12 +99,18 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	var logindata []byte
 	var logoutdata []byte
 	var loginasdata []byte
+	var sessionhijackdata []byte
+	var credentialstuffdata []byte
+	var permissionsetdata []byte
 	
 	afterCh := time.After(1 * time.Second)
 	select {
 	case logindata = <-o.loginChannel:
 	case logoutdata = <-o.logoutChannel:
 	case loginasdata = <-o.loginAsChannel:
+	case sessionhijackdata = <-o.sessionHijackingChannel:
+	case credentialstuffdata = <-o.credentialStuffingChannel:
+	case permissionsetdata = <-o.permissionSetChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
