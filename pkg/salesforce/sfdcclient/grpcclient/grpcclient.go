@@ -340,7 +340,10 @@ type SFDCEvent struct {
         EventDate float64
         EventIdentifier string
 	EventUuid string
-        HttpMethod string
+	EventSource string
+        HasExternalUsers bool
+	HttpMethod string
+	ImpactedUserIds string
         LoginAsCategory string
 	LoginGeoId string
         LoginHistoryId string
@@ -350,6 +353,12 @@ type SFDCEvent struct {
         LoginSubType string
         LoginType string
         LoginUrl string
+	Operation string
+	ParentIdList string
+	ParentNameList string
+	PermissionExpirationList string
+	PermissionList string
+	PermissionType string
         Platform string
         PolicyId string
         PolicyOutcome string
@@ -372,6 +381,7 @@ type SFDCEvent struct {
 	TargetUrl string
         TlsProtocol string
         UserAgent string
+	UserCount string
 	UserId string
         UserType string
         Username string
@@ -543,16 +553,34 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                          ind.EventIdentifier = b.(string)
                                 }
                         }
+		case "EventSource":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.EventSource = b.(string)
+                                }
+                        }
 		case "EventUuid":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                          ind.EventUuid = b.(string)
                                 }
                         }
-                case "HttpMethod":
+                case "HasExternalUsers":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.HasExternalUsers = b.(bool)
+                                }
+                        }
+		case "HttpMethod":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.HttpMethod = b.(string)
+                                }
+                        }
+		case "ImpactedUserIds":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ImpactedUserIds = b.(string)
                                 }
                         }
                 case "LoginAsCategory":
@@ -607,6 +635,42 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.LoginUrl = b.(string)
+                                }
+                        }
+		case "Operation":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Operation = b.(string)
+                                }
+                        }
+		case "ParentIdList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ParentIdList = b.(string)
+                                }
+                        }
+		case "ParentNameList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ParentNameList = b.(string)
+                                }
+                        }
+		case "PermissionExpirationList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionExpirationList = b.(string)
+                                }
+                        }
+		case "PermissionList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionList = b.(string)
+                                }
+                        }
+		case "PermissionType":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionType = b.(string)
                                 }
                         }
                 case "Platform":
@@ -733,6 +797,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.UserAgent = b.(string)
+                                }
+                        }
+		case "UserCount":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.UserCount = b.(string)
                                 }
                         }
 		case "UserId":
