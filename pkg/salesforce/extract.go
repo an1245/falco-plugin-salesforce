@@ -33,6 +33,9 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.city", Display: "City", Desc: "Which city did the user log in from?"},
 		{Type: "string", Name: "salesforce.country", Display: "Country", Desc: "Which country did the user log in from?"},
 		{Type: "string", Name: "salesforce.countryIso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
+		{Type: "string", Name: "salesforce.delegatedusername", Display: "Delegated Username", Desc: "This user assumed login as another user"},
+		{Type: "string", Name: "salesforce.delegatedorganizationid", Display: "Delegated Organisation", Desc: "Organsiation name of a user that assumed login as another user"},
+		{Type: "string", Name: "salesforce.countryIso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
 		{Type: "uint64",  Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
 		{Type: "string", Name: "salesforce.httpmethod", Display: "HTTP Method", Desc: "What HTTP Method was the user using when event was generated?"},
 		{Type: "string", Name: "salesforce.loginGeoId", Display: "Login Geo ID", Desc: "What Geo ID did the user log in from?"},
@@ -46,6 +49,7 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.sourceip", Display: "Source IP", Desc: "What was the source IP that the user logged in from?"},
 		{Type: "string", Name: "salesforce.loginstatus", Display: "Login Status", Desc: "What was the status of the login? (success etc.)"},
 		{Type: "string", Name: "salesforce.subdivision", Display: "Login Subdivision", Desc: "What subdivision did the user log in from?"},
+		{Type: "string", Name: "salesforce.targeturl", Display: "Target URL", Desc: "The target URL that was accessed"},
 		{Type: "string", Name: "salesforce.tlsprotocol", Display: "TLS Protocol", Desc: "What TLS protocol was the user using?"},
 		{Type: "string", Name: "salesforce.userId", Display: "User ID", Desc: "What was the users ID?"},
 		{Type: "string", Name: "salesforce.userType", Display: "User Type", Desc: "What type of user was this? (i.e. Standard)"},
@@ -69,6 +73,10 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("Country"))
 	case "salesforce.countryIso":
 		res = string(jdata.GetStringBytes("CountryIso"))
+	case "salesforce.delegatedusername":
+		res = string(jdata.GetStringBytes("DelegatedUsername"))
+	case "salesforce.delegatedorganizationid":
+		res = string(jdata.GetStringBytes("DelegatedOrganizationId"))
 	case "salesforce.eventdate":
 		//res = float64(jdata.GetFloat64("EventDate"))
 	case "salesforce.httpmethod":
@@ -95,6 +103,8 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("LoginStatus"))
 	case "salesforce.subdivision":
 		res = string(jdata.GetStringBytes("Subdivision"))
+	case "salesforce.targeturl":
+		res = string(jdata.GetStringBytes("TargetUrl"))
 	case "salesforce.tlsprotocol":
 		res = string(jdata.GetStringBytes("TlsProtocol"))
 	case "salesforce.userId":
