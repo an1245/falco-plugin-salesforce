@@ -38,7 +38,7 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 	oCtx.loginChannel = nil
 	oCtx.logoutChannel = nil
 	oCtx.loginAsChannel = nil
-	log.Printf("Debug logging is: &T", p.config.debug)
+	
 	return nil
 	
 }
@@ -54,6 +54,8 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("Debug logging is: %s", strconv.FormatBool(p.config.debug))
 	
 	oCtx.loginChannel = make(chan []byte, 128)
 	oCtx.logoutChannel = make(chan []byte, 128)
