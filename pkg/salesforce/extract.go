@@ -28,11 +28,12 @@ import (
 func (p *Plugin) Fields() []sdk.FieldEntry {
 	return []sdk.FieldEntry{
 		{Type: "string", Name: "salesforce.eventtype", Display: "Event Type", Desc: "What type of SFDC event was this?"},
+		{Type: "string", Name: "salesforce.acceptlanguage", Display: "Accept Language", Desc: "List of HTTP Headers that specify the natural language, such as English, that the client understands."},
 		{Type: "string", Name: "salesforce.application", Display: "Login Application", Desc: "How the user has logged in (browser, api etc.)"},
 		{Type: "string", Name: "salesforce.browser", Display: "Browser Type", Desc: "What browser did the user log in with?"},
 		{Type: "string", Name: "salesforce.city", Display: "City", Desc: "Which city did the user log in from?"},
 		{Type: "string", Name: "salesforce.country", Display: "Country", Desc: "Which country did the user log in from?"},
-		{Type: "string", Name: "salesforce.countryIso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
+		{Type: "string", Name: "salesforce.countryiso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
 		{Type: "string", Name: "salesforce.currentip", Display: "Current Hijacked IP", Desc: "What is the current IP of the hijacked session"},
 		{Type: "string", Name: "salesforce.currentplatform", Display: "Current Hijacked Platform", Desc: "What is the current platform that the hijacked session"},
 		{Type: "string", Name: "salesforce.currentscreen", Display: "Current Hijacked Screen", Desc: "What is the current screen that the hijacked session"},
@@ -40,19 +41,18 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.currentwindow", Display: "Current Hijacked Window", Desc: "What is the current window that the hijacked session"},
 		{Type: "string", Name: "salesforce.delegatedusername", Display: "Delegated Username", Desc: "This user assumed login as another user"},
 		{Type: "string", Name: "salesforce.delegatedorganizationid", Display: "Delegated Organisation", Desc: "Organsiation name of a user that assumed login as another user"},
-		{Type: "string", Name: "salesforce.countryIso", Display: "Country ISO", Desc: "Which country did the user log in from? in ISO Format"},
-		{Type: "uint64",  Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
-		{Type: "string",  Name: "salesforce.eventidentifier", Display: "Event Identifier", Desc: "What is the event identifier of this event?"},
-		{Type: "string",  Name: "salesforce.eventuuid", Display: "Event UUID", Desc: "What is the event uuid of this event?"},
+		{Type: "uint64", Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
+		{Type: "string", Name: "salesforce.eventidentifier", Display: "Event Identifier", Desc: "What is the event identifier of this event?"},
+		{Type: "string", Name: "salesforce.eventuuid", Display: "Event UUID", Desc: "What is the event uuid of this event?"},
 		{Type: "string", Name: "salesforce.httpmethod", Display: "HTTP Method", Desc: "What HTTP Method was the user using when event was generated?"},
-		{Type: "string", Name: "salesforce.loginGeoId", Display: "Login Geo ID", Desc: "What Geo ID did the user log in from?"},
-		{Type: "uint64", Name: "salesforce.loginLatitude", Display: "Login Latitude", Desc: "What Latitude did the user log in from?"},
-		{Type: "uint64", Name: "salesforce.loginLongitude", Display: "Login Longitude", Desc: "What Longitude did the user log in from?"},
+		{Type: "string", Name: "salesforce.logingeoId", Display: "Login Geo ID", Desc: "What Geo ID did the user log in from?"},
+		{Type: "uint64", Name: "salesforce.loginlatitude", Display: "Login Latitude", Desc: "What Latitude did the user log in from?"},
+		{Type: "uint64", Name: "salesforce.loginlongitude", Display: "Login Longitude", Desc: "What Longitude did the user log in from?"},
 		{Type: "string", Name: "salesforce.loginkey", Display: "Login Key", Desc: "he string that ties together all events in a given user’s login session."},
-		{Type: "string", Name: "salesforce.loginType", Display: "Login Type", Desc: "What type of login was this? (i.e. Application)"},
-		{Type: "string", Name: "salesforce.loginURL", Display: "Login URL", Desc: "What login URL did was the user using?"},
+		{Type: "string", Name: "salesforce.logintype", Display: "Login Type", Desc: "What type of login was this? (i.e. Application)"},
+		{Type: "string", Name: "salesforce.loginurl", Display: "Login URL", Desc: "What login URL did was the user using?"},
 		{Type: "string", Name: "salesforce.platform", Display: "Login Platform", Desc: "What platform was the user using when they logged in? (i.e. Windows 10)"},
-		{Type: "string", Name: "salesforce.postalCode", Display: "Login Postal Code", Desc: "What postal code did the user log in from?"},
+		{Type: "string", Name: "salesforce.postalcode", Display: "Login Postal Code", Desc: "What postal code did the user log in from?"},
 		{Type: "string", Name: "salesforce.previousip", Display: "Previous Hijacked IP", Desc: "What is the IP of the session that was hijacked?"},
 		{Type: "string", Name: "salesforce.previousscreen", Display: "Previous Hijacked Screen", Desc: "What is the screen of the session that was hijacked?"},
 		{Type: "string", Name: "salesforce.previoususeragent", Display: "Previous Hijacked User Agent", Desc: "What is the user agent of the session that was hijacked?"},
@@ -66,8 +66,9 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.subdivision", Display: "Login Subdivision", Desc: "What subdivision did the user log in from?"},
 		{Type: "string", Name: "salesforce.targeturl", Display: "Target URL", Desc: "The target URL that was accessed"},
 		{Type: "string", Name: "salesforce.tlsprotocol", Display: "TLS Protocol", Desc: "What TLS protocol was the user using?"},
-		{Type: "string", Name: "salesforce.userId", Display: "User ID", Desc: "What was the users ID?"},
-		{Type: "string", Name: "salesforce.userType", Display: "User Type", Desc: "What type of user was this? (i.e. Standard)"},
+		{Type: "string", Name: "salesforce.useragent", Display: "User Agent", Desc: "The User-Agent header of the HTTP request of the unauthorized login."},
+		{Type: "string", Name: "salesforce.userid", Display: "User ID", Desc: "What was the users ID?"},
+		{Type: "string", Name: "salesforce.usertype", Display: "User Type", Desc: "What type of user was this? (i.e. Standard)"},
 		{Type: "string", Name: "salesforce.username", Display: "Username", Desc: "What was the users username?"},
 	}
 }
@@ -86,7 +87,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("City"))
 	case "salesforce.country":
 		res = string(jdata.GetStringBytes("Country"))
-	case "salesforce.countryIso":
+	case "salesforce.countryiso":
 		res = string(jdata.GetStringBytes("CountryIso"))
 	case "salesforce.currentip":
 		res = string(jdata.GetStringBytes("CurrentIp"))
@@ -110,21 +111,21 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("EventUuid"))
 	case "salesforce.httpmethod":
 		res = string(jdata.GetStringBytes("HttpMethod"))
-	case "salesforce.loginGeoId":
+	case "salesforce.logingeoId":
 		res = string(jdata.GetStringBytes("LoginGeoId"))
-	case "salesforce.loginLatitude":
+	case "salesforce.loginlatitude":
 		//res = float64(jdata.GetFloat64("LoginLatitude"))
-	case "salesforce.loginLongitude":
+	case "salesforce.loginlongitude":
 		//res = float64(jdata.GetFloat64("LoginLongitude"))
 	case "salesforce.loginkey":
 		res = string(jdata.GetStringBytes("LoginKey"))
-	case "salesforce.loginType":
+	case "salesforce.logintype":
 		res = string(jdata.GetStringBytes("LoginType"))
-	case "salesforce.loginURL":
+	case "salesforce.loginurl":
 		res = string(jdata.GetStringBytes("LoginUrl"))
 	case "salesforce.platform":
 		res = string(jdata.GetStringBytes("Platform"))
-	case "salesforce.postalCode":
+	case "salesforce.postalcode":
 		res = string(jdata.GetStringBytes("PostalCode"))
 	case "salesforce.previousip":
 		res = string(jdata.GetStringBytes("PreviousIp"))
@@ -154,9 +155,9 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("TargetUrl"))
 	case "salesforce.tlsprotocol":
 		res = string(jdata.GetStringBytes("TlsProtocol"))
-	case "salesforce.userId":
+	case "salesforce.userid":
 		res = string(jdata.GetStringBytes("UserId"))
-	case "salesforce.userType":
+	case "salesforce.usertype":
 		res = string(jdata.GetStringBytes("UserType"))
 	case "salesforce.username":
 		res = string(jdata.GetStringBytes("Username"))
