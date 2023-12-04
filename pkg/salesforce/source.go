@@ -99,7 +99,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
 	}
 
-	written, err := writer.Write(data2)
+	written, err = writer.Write(data2)
 	if err != nil {
 		return 0, err
 	}
