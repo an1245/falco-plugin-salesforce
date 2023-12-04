@@ -52,12 +52,13 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	}
 	
 	oCtx.grpcChannel = make(chan []byte, 128)
+	oCtx.logoutChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
 	
-	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType)
-	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType)
+	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.grpcChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
 	
 	return oCtx, nil
 }
@@ -82,6 +83,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	afterCh := time.After(1 * time.Second)
 	select {
 	case data = <-o.grpcChannel:
+	case data = <-o.logoutChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
@@ -137,7 +139,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte){
 
 	log.Printf("Making GetTopic request...")
 	topic, err := client.GetTopic(Topic)
@@ -167,7 +169,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx.grpcChannel, Topic, eventType)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
 			log.Printf("error occurred while subscribing to topic: %v", err)
 		}
