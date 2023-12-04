@@ -107,16 +107,16 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		log.Fatalf("the replayId variable must not be populated when the replayPreset variable is set to EARLIEST or LATEST")
 	}
 
-	log.Printf("debug %t", p.config.debug)
-	if (p.config.debug == true){
-		log.Printf("Creating gRPC client...")
-	}
+	
+	log.Printf("Creating gRPC client...")
+	
 	client, err := grpcclient.NewGRPCClient()
 	if err != nil {
 		log.Fatalf("could not create gRPC client: %v", err)
 	}
 	defer client.Close()
-	
+
+	log.Printf("connection type: %T", client)
 	log.Printf("Populating auth token...")
 	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
