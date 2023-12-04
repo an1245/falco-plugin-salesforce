@@ -103,8 +103,8 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	if err != nil {
 		return 0, err
 	}
-	if written < len(data) {
-		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
+	if written < len(data2) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data2), written)
 	}
 
 	// Let the engine timestamp this event. It would probably be better to
