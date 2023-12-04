@@ -53,6 +53,7 @@ type PluginInstance struct {
 	loginChannel      chan []byte
 	logoutChannel      chan []byte
 	loginAsChannel      chan []byte
+	sessionHijackingChannel      chan []byte
 }
 
 // Return the plugin info to the framework.
