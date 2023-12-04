@@ -80,10 +80,11 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 
 	// Receive the event from the webserver channel with a 1 sec timeout
 	var data []byte
+	var data2 []byte
 	afterCh := time.After(1 * time.Second)
 	select {
 	case data = <-o.grpcChannel:
-	case data = <-o.logoutChannel:
+	case data2 = <-o.logoutChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
@@ -91,6 +92,14 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 
 	// Write data inside the event
 	written, err := writer.Write(data)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(data) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
+	}
+
+	written, err := writer.Write(data2)
 	if err != nil {
 		return 0, err
 	}
