@@ -35,7 +35,9 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 
 	// think of plugin_init as initializing the plugin software
 	
-	oCtx.grpcChannel = nil
+	oCtx.loginChannel = nil
+	oCtx.logoutChannel = nil
+	oCtx.loginAsChannel = nil
 	return nil
 }
 
@@ -51,13 +53,13 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 		return nil, err
 	}
 	
-	oCtx.grpcChannel = make(chan []byte, 128)
+	oCtx.loginChannel = make(chan []byte, 128)
 	oCtx.logoutChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
 	
-	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.grpcChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
 	
 	return oCtx, nil
