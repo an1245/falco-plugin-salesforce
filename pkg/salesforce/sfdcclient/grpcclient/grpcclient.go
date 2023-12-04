@@ -143,7 +143,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // if there's a more specific error that can be returned
         // See the SendMsg description at https://pkg.go.dev/google.golang.org/grpc#ClientStream
         if err == io.EOF {
-                log.Printf("WARNING - EOF error returned from initial Send call, proceeding anyway")
+                log.Printf("Salesforce Plugin: WARNING - EOF error returned from initial Send call, proceeding anyway")
         } else if err != nil {
                 return replayId, err
         }
@@ -180,8 +180,9 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         // Again, this should be stored in a persistent external datastore instead of a variable
                         curReplayId = event.GetReplayId()
-
-                        log.Printf("event body: %+v\n", body)
+			if (c.Debug == true) {
+                        	log.Printf("Salesforce Plugin: event body: %+v\n", body)
+			}
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType)
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
@@ -206,7 +207,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 // if there's a more specific error that can be returned
                                 // See the SendMsg description at https://pkg.go.dev/google.golang.org/grpc#ClientStream
                                 if err == io.EOF {
-                                        log.Printf("WARNING - EOF error returned from subsequent Send call, proceeding anyway")
+                                        log.Printf("Salesforce Plugin: WARNING - EOF error returned from subsequent Send call, proceeding anyway")
                                 } else if err != nil {
                                         return curReplayId, err
                                 }
@@ -222,17 +223,21 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 func (c *PubSubClient) fetchCodec(schemaId string) (*goavro.Codec, error) {
         codec, ok := c.schemaCache[schemaId]
         if ok {
-                log.Printf("Fetched cached codec...")
+                if (c.Debug == true) {
+			log.Printf("Salesforce Plugin: Fetched cached codec...")
+		}
                 return codec, nil
         }
 
-        log.Printf("Making GetSchema request for uncached schema...")
+        if (c.Debug == true) {
+		log.Printf("Making GetSchema request for uncached schema...")
+	}
         schema, err := c.GetSchema(schemaId)
         if err != nil {
                 return nil, err
         }
 
-        log.Printf("Creating codec from uncached schema...")
+        log.Printf("Salesforce Plugin: Creating codec from uncached schema...")
         codec, err = goavro.NewCodec(schema.GetSchemaJson())
         if err != nil {
                 return nil, err
