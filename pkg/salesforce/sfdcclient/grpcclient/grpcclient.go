@@ -320,11 +320,14 @@ type SFDCEvent struct {
         CountryIso string
         CreatedById string
         CreatedDate string
+	DelegatedOrganizationId string
+	DelegatedUsername string
         EvaluationTime float64
         EventDate float64
         EventIdentifier string
         HttpMethod string
-        LoginGeoId string
+        LoginAsCategory string
+	LoginGeoId string
         LoginHistoryId string
         LoginKey string
         LoginLatitude float64
@@ -342,6 +345,7 @@ type SFDCEvent struct {
         SourceIp string
         LoginStatus string
         Subdivision string
+	TargetUrl string
         TlsProtocol string
         UserId string
         UserType string
@@ -443,6 +447,20 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEv
                                          ind.CreatedDate = b.(string)
                                 }
                         }
+			
+		 case "DelegatedOrganizationId":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.DelegatedOrganizationId = b.(string)
+                                }
+                        }
+
+		 case "DelegatedUsername":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.DelegatedUsername = b.(string)
+                                }
+                        }
 
                 case "EvaluationTime":
                         if value, ok := v.(map[int64]interface{}); ok {
@@ -469,7 +487,13 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEv
                                         ind.HttpMethod = b.(string)
                                 }
                         }
-                case "LoginGeoId":
+                case "LoginAsCategory":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.LoginAsCategory = b.(string)
+                                }
+                        }
+		case "LoginGeoId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.LoginGeoId = b.(string)
@@ -575,6 +599,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string) *SFDCEv
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                          ind.Subdivision = b.(string)
+                                }
+                        }
+		 case "TargetUrl":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.TargetUrl = b.(string)
                                 }
                         }
                 case "TlsProtocol":
