@@ -137,10 +137,10 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, LoginTopic string){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string){
 
 	log.Printf("Making GetTopic request...")
-	topic, err := client.GetTopic(LoginTopic)
+	topic, err := client.GetTopic(Topic)
 	if err != nil {
 		client.Close()
 		log.Fatalf("could not fetch topic: %v", err)
@@ -148,7 +148,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	if !topic.GetCanSubscribe() {
 		client.Close()
-		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", LoginTopic)
+		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", Topic)
 	}
 
 	curReplayId := common.ReplayId
@@ -167,7 +167,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx.grpcChannel, LoginTopic)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx.grpcChannel, Topic)
 		if err != nil {
 			log.Printf("error occurred while subscribing to topic: %v", err)
 		}
