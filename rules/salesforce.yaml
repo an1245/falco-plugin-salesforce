@@ -34,7 +34,7 @@
   source: salesforce
   tags: [salesforce]
 
-  - rule: Detected Session being Hijacked
+- rule: Detected Session being Hijacked
   desc: Detected Session being Hijacked
   condition: salesforce.eventtype=SessionHijackingEvent 
   output: >
