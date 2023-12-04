@@ -151,7 +151,6 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // NOTE: the replayId should be stored in a persistent data store rather than being stored in a variable
         curReplayId := replayId
         for {
-                log.Printf("Waiting for events...")
                 resp, err := subscribeClient.Recv()
                 if err == io.EOF {
                         printTrailer(subscribeClient.Trailer())
@@ -195,7 +194,6 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         // batch size then proactively request more events to stay ahead of the processor
                         requestedEvents--
                         if requestedEvents < common.Appetite {
-                                log.Printf("Sending next FetchRequest...")
                                 fetchRequest := &proto.FetchRequest{
                                         TopicName:    topicName,
                                         NumRequested: common.Appetite,
@@ -292,16 +290,18 @@ func getCerts() *x509.CertPool {
 
 // Helper function to display trailers on the console in a more readable format
 func printTrailer(trailer metadata.MD) {
-        if len(trailer) == 0 {
-                log.Printf("no trailers returned")
-                return
-        }
-
-        log.Printf("beginning of trailers")
-        for key, val := range trailer {
-                log.Printf("[trailer] = %s, [value] = %s", key, val)
-        }
-        log.Printf("end of trailers")
+       if (p.config.Debug == true){
+		if len(trailer) == 0 {
+	                log.Printf("no trailers returned")
+	                return
+	        }
+	
+	        log.Printf("beginning of trailers")
+	        for key, val := range trailer {
+	                log.Printf("[trailer] = %s, [value] = %s", key, val)
+	        }
+	        log.Printf("end of trailers")
+       }
 }
 
 // User holds information about a user.
