@@ -23,7 +23,7 @@ type PluginConfig struct {
 	SFDCClientId           string `json:"sfdcclientid" jsonschema:"title=Salesforce Connect App Client Id"`
 	SFDCClientSecret       string `json:"sfdcclientsecret" jsonschema:"title=Salesforce Connect App Client Secret"`
 	SFDCLoginURL 	       string `json:"sfdcloginurl" jsonschema:"title=Salesforce Login URL (i.e. MyDomainName.my.salesforce.com) - refer: https://help.salesforce.com/s/articleView?id=sf.domain_name_hostnames.htm&type=5"`
-	debug          	bool   `json:"debug" jsonschema:"title=Enable debug output (true = yes, false=no)"`
+	debug          	       string `json:"debug" jsonschema:"title=Enable debug output (true = yes, false=no)"`
 }
 
 // Reset sets the configuration to its default values
