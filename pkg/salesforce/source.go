@@ -39,6 +39,8 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 	oCtx.logoutChannel = nil
 	oCtx.loginAsChannel = nil
 	return nil
+
+	log.Printf("Debug logging is: &T", p.config.debug)
 }
 
 // Open an event stream and return an open plugin instance.
