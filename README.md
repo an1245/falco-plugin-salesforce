@@ -72,5 +72,5 @@ There are a number of fields exported by the plugin.
 
 | Field Name | Type | Description |
 | ----------- | ----------- |  ----------- |
-| salesforce.eventtype | String | What type of SFDC event was this? (example. LoginEvent)
-| Paragraph | Text | 
+| salesforce.eventtype | string | What type of SFDC event was this? (example. LoginEvent)
+
