@@ -70,7 +70,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.apiAnomalyChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
-	oCtx.grpcClient := CreateGRPCClientConnection(p, oCtx)
+	oCtx.grpcClient = CreateGRPCClientConnection(p, oCtx)
 	
 	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
 	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
