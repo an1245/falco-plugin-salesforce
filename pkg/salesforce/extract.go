@@ -115,6 +115,8 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 		res = string(jdata.GetStringBytes("AcceptLanguage"))
 	case "salesforce.apitype":
 		res = string(jdata.GetStringBytes("ApiType"))
+	case "salesforce.apiversion":
+		res = string(jdata.GetStringBytes("ApiVersion"))
 	case "salesforce.application":
 		res = string(jdata.GetStringBytes("Application"))
 	case "salesforce.authmethodreference":
