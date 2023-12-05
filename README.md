@@ -29,4 +29,5 @@ And don't forget to enable the plugin by setting the following setting
 load_plugins: [salesforce]
 ```
 
+### Finding more info
 You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
