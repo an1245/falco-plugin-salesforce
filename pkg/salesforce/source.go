@@ -72,13 +72,13 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	// Launch the GRPC client
 	oCtx.pubSubClient = CreateGRPCClientConnection(p, oCtx)
 	
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel,oCtx.closeChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel,oCtx.closeChannel)
 	
 	return oCtx, nil
 }
