@@ -39,7 +39,7 @@ func Login(clientid string, clientsecret string, sfdcloginurl string) (*LoginRes
 
 	ctx, cancelFn := context.WithTimeout(context.Background(), common.OAuthDialTimeout)
 	defer cancelFn()
-	print(sfdcloginurl + loginEndpoint + "?" + body.Encode())
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, sfdcloginurl + loginEndpoint, strings.NewReader(body.Encode()))
 	if err != nil {
 		return nil, err

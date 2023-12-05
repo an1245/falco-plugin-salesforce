@@ -36,6 +36,8 @@ type PubSubClient struct {
         pubSubClient proto.PubSubClient
 
         schemaCache map[string]*goavro.Codec
+
+	Debug bool
 }
 
 // Closes the underlying connection to the gRPC server
@@ -72,11 +74,11 @@ func (c *PubSubClient) FetchUserInfo(sfdcloginurl string) error {
 }
 
 // Wrapper function around the GetTopic RPC. This will add the OAuth credentials and make a call to fetch data about a specific topic
-func (c *PubSubClient) GetTopic() (*proto.TopicInfo, error) {
+func (c *PubSubClient) GetTopic(topicName string) (*proto.TopicInfo, error) {
         var trailer metadata.MD
 
         req := &proto.TopicRequest{
-                TopicName: common.TopicName,
+                TopicName: topicName,
         }
 
         ctx, cancelFn := context.WithTimeout(c.getAuthContext(), common.GRPCCallTimeout)
@@ -117,7 +119,7 @@ func (c *PubSubClient) GetSchema(schemaId string) (*proto.SchemaInfo, error) {
 // fetch data from the topic. This method will continuously consume messages unless an error occurs; if an error does occur then this method will
 // return the last successfully consumed ReplayId as well as the error message. If no messages were successfully consumed then this method will return
 // the same ReplayId that it originally received as a parameter
-func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, grpcchannel chan []byte) ([]byte, error) {
+func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, channel chan []byte, topicName string, eventType string) ([]byte, error) {
         ctx, cancelFn := context.WithCancel(c.getAuthContext())
         defer cancelFn()
 
@@ -128,7 +130,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         defer subscribeClient.CloseSend()
 
         initialFetchRequest := &proto.FetchRequest{
-                TopicName:    common.TopicName,
+                TopicName:    topicName,
                 ReplayPreset: replayPreset,
                 NumRequested: common.Appetite,
         }
@@ -141,7 +143,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // if there's a more specific error that can be returned
         // See the SendMsg description at https://pkg.go.dev/google.golang.org/grpc#ClientStream
         if err == io.EOF {
-                log.Printf("WARNING - EOF error returned from initial Send call, proceeding anyway")
+                log.Printf("Salesforce Plugin: WARNING - EOF error returned from initial Send call, proceeding anyway")
         } else if err != nil {
                 return replayId, err
         }
@@ -151,7 +153,6 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // NOTE: the replayId should be stored in a persistent data store rather than being stored in a variable
         curReplayId := replayId
         for {
-                log.Printf("Waiting for events...")
                 resp, err := subscribeClient.Recv()
                 if err == io.EOF {
                         printTrailer(subscribeClient.Trailer())
@@ -179,27 +180,22 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         // Again, this should be stored in a persistent external datastore instead of a variable
                         curReplayId = event.GetReplayId()
-
-                        log.Printf("event body: %+v\n", body)
-                        log.Printf("event body: %+v\n", body["Application"])
-                        LoginEventIns := StringMapToLoginEvent(parsed.(map[string]interface{}))
-                        log.Printf("City: %s", LoginEventIns.City)
+                        SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
                         
-                        LoginEventJSON, err := json.Marshal(LoginEventIns)
+                       SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
                                 log.Fatal(err)
                         }
 
-			grpcchannel <- LoginEventJSON
+			channel <- SFDCEventJSON
 		}
 
                         // decrement our counter to keep track of how many events have been requested but not yet processed. If we're below our configured
                         // batch size then proactively request more events to stay ahead of the processor
                         requestedEvents--
                         if requestedEvents < common.Appetite {
-                                log.Printf("Sending next FetchRequest...")
                                 fetchRequest := &proto.FetchRequest{
-                                        TopicName:    common.TopicName,
+                                        TopicName:    topicName,
                                         NumRequested: common.Appetite,
                                 }
 
@@ -208,7 +204,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 // if there's a more specific error that can be returned
                                 // See the SendMsg description at https://pkg.go.dev/google.golang.org/grpc#ClientStream
                                 if err == io.EOF {
-                                        log.Printf("WARNING - EOF error returned from subsequent Send call, proceeding anyway")
+                                        log.Printf("Salesforce Plugin: WARNING - EOF error returned from subsequent Send call, proceeding anyway")
                                 } else if err != nil {
                                         return curReplayId, err
                                 }
@@ -224,17 +220,22 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 func (c *PubSubClient) fetchCodec(schemaId string) (*goavro.Codec, error) {
         codec, ok := c.schemaCache[schemaId]
         if ok {
-                log.Printf("Fetched cached codec...")
+                if (c.Debug == true) {
+			log.Printf("Salesforce Plugin: Fetched cached codec...")
+		}
                 return codec, nil
         }
 
-        log.Printf("Making GetSchema request for uncached schema...")
+        if (c.Debug == true) {
+		log.Printf("Salesforce Plugin: Making GetSchema request for uncached schema...")
+	}
         schema, err := c.GetSchema(schemaId)
         if err != nil {
                 return nil, err
         }
-
-        log.Printf("Creating codec from uncached schema...")
+	if (c.Debug == true) {
+       	 	log.Printf("Salesforce Plugin: Creating codec from uncached schema...")
+	}
         codec, err = goavro.NewCodec(schema.GetSchemaJson())
         if err != nil {
                 return nil, err
@@ -255,7 +256,7 @@ func (c *PubSubClient) getAuthContext() context.Context {
 }
 
 // Creates a new connection to the gRPC server and returns the wrapper struct
-func NewGRPCClient() (*PubSubClient, error) {
+func NewGRPCClient(isDebug bool) (*PubSubClient, error) {
         dialOpts := []grpc.DialOption{
                 grpc.WithBlock(),
         }
@@ -280,6 +281,7 @@ func NewGRPCClient() (*PubSubClient, error) {
                 conn:         conn,
                 pubSubClient: proto.NewPubSubClient(conn),
                 schemaCache:  make(map[string]*goavro.Codec),
+		Debug: isDebug,
         }, nil
 }
 
@@ -294,21 +296,24 @@ func getCerts() *x509.CertPool {
 
 // Helper function to display trailers on the console in a more readable format
 func printTrailer(trailer metadata.MD) {
-        if len(trailer) == 0 {
-                log.Printf("no trailers returned")
-                return
-        }
-
-        log.Printf("beginning of trailers")
-        for key, val := range trailer {
-                log.Printf("[trailer] = %s, [value] = %s", key, val)
-        }
-        log.Printf("end of trailers")
+       
+		if len(trailer) == 0 {
+	                return
+	        }
+	
+	        log.Printf("Salesforce Plugin: GRPC returned trailers - beginning..")
+	        for key, val := range trailer {
+	                log.Printf("[trailer] = %s, [value] = %s", key, val)
+	        }
+	        log.Printf("Salesforce Plugin: GRPC returned trailers - end..")
+       
 }
 
 // User holds information about a user.
-type LoginEvent struct {
-        ApiType string
+type SFDCEvent struct {
+        EventType string
+	AcceptLanguage string
+	ApiType string
         ApiVersion string
         Application string
         AuthMethodReference string
@@ -321,11 +326,23 @@ type LoginEvent struct {
         CountryIso string
         CreatedById string
         CreatedDate string
+	CurrentIp string
+	CurrentPlatform string
+	CurrentScreen string
+	CurrentUserAgent string
+	CurrentWindow string
+	DelegatedOrganizationId string
+	DelegatedUsername string
         EvaluationTime float64
         EventDate float64
         EventIdentifier string
-        HttpMethod string
-        LoginGeoId string
+	EventUuid string
+	EventSource string
+        HasExternalUsers bool
+	HttpMethod string
+	ImpactedUserIds string
+        LoginAsCategory string
+	LoginGeoId string
         LoginHistoryId string
         LoginKey string
         LoginLatitude float64
@@ -333,29 +350,60 @@ type LoginEvent struct {
         LoginSubType string
         LoginType string
         LoginUrl string
+	Operation string
+	ParentIdList string
+	ParentNameList string
+	PermissionExpirationList string
+	PermissionList string
+	PermissionType string
         Platform string
         PolicyId string
         PolicyOutcome string
         PostalCode string
+	PreviousIp string
+	PreviousPlatform string
+	PreviousScreen string
+	PreviousUserAgent string
+	PreviousWindow string
+	QueriedEntities string
         RelatedEventIdentifier string
-        SessionKey string
+	RequestIdentifier string
+	ReplayId string
+	RowsProcessed int64
+        Score int64
+	SecurityEventData string
+	SessionKey string
         SessionLevel string
         SourceIp string
+	Summary string
         LoginStatus string
         Subdivision string
+	TargetUrl string
         TlsProtocol string
-        UserId string
+        UserAgent string
+	UserCount string
+	UserId string
         UserType string
         Username string
+	Uri string
 }
 
-func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
+func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug bool) *SFDCEvent {
 
-        ind := &LoginEvent{}
-        ind.City = "Auckland"
+        ind := &SFDCEvent{}
+        ind.EventType = eventType
+	if (Debug == true) {
+		log.Printf("Salesforce Plugin: Processing %s event", eventType)
+	}
         for k, v := range data {
                 switch k {
-                case "ApiType":
+	     	case "AcceptLanguage":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.AcceptLanguage = b.(string)
+                                }
+                        }
+		case "ApiType":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.ApiType = b.(string)
@@ -443,6 +491,49 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                          ind.CreatedDate = b.(string)
                                 }
                         }
+		 case "CurrentIp":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentIp = b.(string)
+                                }
+                        }
+		case "CurrentPlatform":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentPlatform = b.(string)
+                                }
+                        }
+		case "CurrentScreen":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentScreen = b.(string)
+                                }
+                        }
+		case "CurrentUserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentUserAgent = b.(string)
+                                }
+                        }
+		case "CurrentWindow":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.CurrentWindow = b.(string)
+                                }
+                        }
+		 case "DelegatedOrganizationId":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.DelegatedOrganizationId = b.(string)
+                                }
+                        }
+
+		 case "DelegatedUsername":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.DelegatedUsername = b.(string)
+                                }
+                        }
 
                 case "EvaluationTime":
                         if value, ok := v.(map[int64]interface{}); ok {
@@ -463,13 +554,43 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                          ind.EventIdentifier = b.(string)
                                 }
                         }
-                case "HttpMethod":
+		case "EventSource":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.EventSource = b.(string)
+                                }
+                        }
+		case "EventUuid":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.EventUuid = b.(string)
+                                }
+                        }
+                case "HasExternalUsers":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.HasExternalUsers = b.(bool)
+                                }
+                        }
+		case "HttpMethod":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.HttpMethod = b.(string)
                                 }
                         }
-                case "LoginGeoId":
+		case "ImpactedUserIds":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ImpactedUserIds = b.(string)
+                                }
+                        }
+                case "LoginAsCategory":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.LoginAsCategory = b.(string)
+                                }
+                        }
+		case "LoginGeoId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.LoginGeoId = b.(string)
@@ -517,6 +638,42 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                         ind.LoginUrl = b.(string)
                                 }
                         }
+		case "Operation":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Operation = b.(string)
+                                }
+                        }
+		case "ParentIdList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ParentIdList = b.(string)
+                                }
+                        }
+		case "ParentNameList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ParentNameList = b.(string)
+                                }
+                        }
+		case "PermissionExpirationList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionExpirationList = b.(string)
+                                }
+                        }
+		case "PermissionList":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionList = b.(string)
+                                }
+                        }
+		case "PermissionType":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PermissionType = b.(string)
+                                }
+                        }
                 case "Platform":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
@@ -541,10 +698,76 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                         ind.PostalCode = b.(string)
                                 }
                         }
-                case "RelatedEventIdentifier":
+		case "PreviousIp":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousIp = b.(string)
+                                }
+                        }
+		case "PreviousPlatform":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousPlatform = b.(string)
+                                }
+                        }
+		case "PreviousScreen":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousScreen = b.(string)
+                                }
+                        }
+		case "PreviousUserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousUserAgent = b.(string)
+                                }
+                        }
+		case "PreviousWindow":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousWindow = b.(string)
+                                }
+                        }
+		case "QueriedEntities":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.QueriedEntities = b.(string)
+                                }
+                        }
+                case "ReplayId":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.ReplayId = b.(string)
+                                }
+                        }
+		 case "RequestIdentifier":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.RequestIdentifier = b.(string)
+                                }
+                        }
+		case "RelatedEventIdentifier":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.RelatedEventIdentifier = b.(string)
+                                }
+                        }
+		case "RowsProcessed":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.RowsProcessed = b.(int64)
+                                }
+                        }
+		case "Score":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Score = b.(int64)
+                                }
+                        }
+		case "SecurityEventData":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.SecurityEventData = b.(string)
                                 }
                         }
                 case "SessionKey":
@@ -577,13 +800,37 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                                          ind.Subdivision = b.(string)
                                 }
                         }
+		 case "Summary":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                         ind.Summary = b.(string)
+                                }
+                        }
+		 case "TargetUrl":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.TargetUrl = b.(string)
+                                }
+                        }
                 case "TlsProtocol":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.TlsProtocol = b.(string)
                                 }
                         }
-                case "UserId":
+                case "UserAgent":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.UserAgent = b.(string)
+                                }
+                        }
+		case "UserCount":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.UserCount = b.(string)
+                                }
+                        }
+		case "UserId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.UserId = b.(string)
@@ -599,6 +846,12 @@ func StringMapToLoginEvent(data map[string]interface{}) *LoginEvent {
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.Username = b.(string)
+                                }
+                        }
+		 case "Uri":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Uri = b.(string)
                                 }
                         }
                 }

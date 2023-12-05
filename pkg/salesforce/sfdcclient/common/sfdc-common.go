@@ -8,11 +8,24 @@ import (
 
 var (
 	// topic and subscription-related variables
-	TopicName           = "/event/LoginEventStream"
 	LoginTopic	    = "/event/LoginEventStream"
+	LoginTopicEventType = "LoginEvent"
+	LogoutTopic	    = "/event/LogoutEventStream"
+	LogoutTopicEventType = "LogoutEvent"
+	LoginAsTopic 	     = "/event/LoginAsEventStream"
+	LoginAsTopicEventType = "LoginAsEvent"
+	SessionHijackingTopic = "/event/SessionHijackingEvent"
+	SessionHijackingEventType = "SessionHijackingEvent"
+	CredentialStuffingTopic = "/event/CredentialStuffingEvent"
+	CredentialStuffingEventType = "CredentialStuffingEvent"
+	PermissionSetEventTopic = "/event/PermissionSetEvent"
+	PermissionSetEventType = "PermissionSetEvent"
+	ApiAnomalyEventTopic = "/event/ApiAnomalyEvent"
+	ApiAnomalyEventType = "ApiAnomalyEvent"
+	
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
-	Appetite     int32  = 5
+	Appetite     int32  = 100
 
 	// gRPC server variables
 	GRPCEndpoint    = "api.pubsub.salesforce.com:7443"

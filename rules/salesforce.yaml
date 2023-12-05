@@ -1,17 +1,85 @@
 - rule: Successful Login
   desc: User logged on successfully
-  condition: salesforce.loginstatus=Success
+  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus=Success and salesforce.country in (known_countries)
   output: >
-    User %salesforce.username logged on successfully (source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, browser=%salesforce.browser)
-  priority: DEBUG
+    User %salesforce.username logged on successfully (source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
+  priority: INFORMATIONAL
   source: salesforce
   tags: [salesforce]
 
 - rule: Failed Login
   desc: User failed login
-  condition: salesforce.loginstatus!="Success"
+  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus!="Success"
   output: >
-    User %salesforce.username failed login  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, city=%salesforce.city, country=%salesforce.country, browser=%salesforce.browser)
-  priority: DEBUG
+    User %salesforce.username failed login  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
+  priority: ALERT
   source: salesforce
   tags: [salesforce]
+
+- list: known_countries
+  items: [Australia,New Zealand]
+  
+- rule: Login from unknown geo
+  desc: Login from unknown geo
+  condition: salesforce.eventtype=LoginEvent and not salesforce.country in (known_countries)
+  output: >
+    User %salesforce.username logged from unknown geo  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
+  priority: ALERT
+  source: salesforce
+  tags: [salesforce]
+
+- rule: User Logged out
+  desc: User Logged out
+  condition: salesforce.eventtype=LogoutEvent
+  output: >
+    User %salesforce.username logged out successfully (source IP=%salesforce.sourceip, platform=%salesforce.platform. SFDC Event UUID=%salesforce.eventuuid)
+  priority: INFORMATIONAL
+  source: salesforce
+  tags: [salesforce]
+
+- rule: Administrator logged on as another user
+  desc: User logged on successfully
+  condition: salesforce.eventtype=LoginAsEvent 
+  output: >
+    User %salesforce.delegatedusername from Organisation ID %salesforce.delegatedorganizationid logged on successfully as %salesforce.username (source IP=%salesforce.sourceip, targetURL=%salesforce.targeturl, platform=%salesforce.platform, browser=%salesforce.browser. targeturl=%salesforce.targeturl. SFDC Event UUID=%salesforce.eventuuid)
+  priority: WARNING
+  source: salesforce
+  tags: [salesforce]
+
+- rule: Detected Session being Hijacked
+  desc: Detected Session being Hijacked
+  condition: salesforce.eventtype=SessionHijackingEvent 
+  output: >
+    Detected Session being hijacked (User=%salesforce.delegatedusername with Previous IP=%salesforce.previousip, being hijacked by IP=%salesforce.currentip on platform %salesforce.currentplatform and User Agent=%salesforce.currentuseragent. Threat Summary=%salesforce.summary SFDC Event UUID=%salesforce.eventuuid  )
+  priority: EMERGENCY
+  source: salesforce
+  tags: [salesforce]
+
+- rule: Detected Credential Stuffing
+  desc: Detected Credential Stuffing
+  condition: salesforce.eventtype=CredentialStuffingEvent 
+  output: >
+   Detected Credential Stuffing (User=%salesforce.username, IP of unauthorized user=%salesforce.sourceip, User agent of unauthorized=%salesforce.useragent. Summary of threat=%salesforce.summary. SFDC Event UUID=%salesforce.eventuuid)
+  priority: EMERGENCY
+  source: salesforce
+  tags: [salesforce]
+
+- rule: Detected a permission change in permission set/group
+  desc: Detected a permission change in permission set/group
+  condition: salesforce.eventtype=PermissionSetEvent
+  output: >
+     Detected a permission change in permission set/group (User=%salesforce.username, IP of user=%salesforce.sourceip, Event Source=%salesforce.eventsource, Impacts External Users: %salesforce.hasexternalusers, Operation: @salesforce.operation, Affected Permission Set Groups=%salesforce.parentnamelist, Permissions Changed=%salesforce.permissionlist, Number of Users impacted=%salesforce.usercount, Event UUID=%salesforce.eventuuid. )
+  priority: WARNING
+  source: salesforce
+  tags: [salesforce]
+
+- rule: Detected Anomaly in API usage
+  desc: Detected Anomaly in API usage
+  condition: salesforce.eventtype=ApiAnomalyEvent 
+  output: >
+     Detected Anomaly in API usage (User=%salesforce.username, IP of user=%salesforce.sourceip, API Operation=%salesforce.operation, URI: @salesforce.uri, Summary of threat=%salesforce.summary, Event UUID=%salesforce.eventuuid. )
+  priority: WARNING
+  source: salesforce
+  tags: [salesforce]
+
+  

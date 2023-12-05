@@ -50,7 +50,13 @@ type Plugin struct {
 // which is returned by Open() and deinitialized during Close().
 type PluginInstance struct {
 	source.BaseInstance
-	grpcChannel      chan []byte
+	loginChannel      chan []byte
+	logoutChannel      chan []byte
+	loginAsChannel      chan []byte
+	sessionHijackingChannel      chan []byte
+	credentialStuffingChannel    chan []byte
+	permissionSetChannel	chan []byte
+	apiAnomalyChannel	chan []byte
 }
 
 // Return the plugin info to the framework.
@@ -68,7 +74,7 @@ func (p *Plugin) Info() *plugins.Info {
 
 func (p *Plugin) InitSchema() *sdk.SchemaInfo {
 	reflector := jsonschema.Reflector{
-		RequiredFromJSONSchemaTags: true, // all properties are optional by default
+		RequiredFromJSONSchemaTags: false, // all properties are optional by default
 		AllowAdditionalProperties:  true, // unrecognized properties don't cause a parsing failures
 	}
 
