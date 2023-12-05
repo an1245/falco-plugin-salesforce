@@ -15,6 +15,7 @@ The plugin is configured to ingest events from the following event streams.
 - LogoutEventStream
 - PermissionSetEvent
 - SessionHijackingEvent
+  
 These streams must be enabled by clicking **Enable Streaming** next to them in the Event Manager. You can find information on enabling these in the *Enabling real-time events* section of this document
 [here](https://developer.salesforce.com/blogs/2020/05/introduction-to-real-time-event-monitoring)
 
