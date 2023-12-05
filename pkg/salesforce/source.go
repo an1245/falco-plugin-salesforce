@@ -70,15 +70,15 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.apiAnomalyChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
-	client := CreateGRPCClientConnection(p, oCtx)
+	oCtx.grpcClient := CreateGRPCClientConnection(p, oCtx)
 	
-	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
-	go subscribeGRPCTopic(p, oCtx, client, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.grpcClient, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
 	
 	return oCtx, nil
 }
@@ -86,7 +86,15 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 // Closing the event stream and deinitialize the open plugin instance.
 func (o *PluginInstance) Close() {
 	// Shut down the GRPC Client
-	
+	oCtx.grpcClient.Close()
+
+	oCtx.loginChannel = nil
+	oCtx.logoutChannel = nil
+	oCtx.loginAsChannel = nil
+	oCtx.sessionHijackingChannel = nil
+	oCtx.credentialStuffingChannel = nil
+	oCtx.permissionSetChannel = nil
+	oCtx.apiAnomalyChannel = nil
 }
 
 // Produce and return a new batch of events.
