@@ -29,7 +29,7 @@ The first step to getting the plugin integrated is to create a Salesforce Connec
 
 1. Follow the steps in this document to create a Salesforce Connected app with oAuth Client Credentials Flow:
 [Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5)
-2. If you followed the steps correctly, you should now have your *Consumer Key* and *Consumer Secret*. But if you some how missed the location, you can find it's location and how to rotate it here:
+2. If you followed the steps correctly, you should now have your ***Consumer Key*** and ***Consumer Secret***. But if you some how missed the location, you can find it's location and how to rotate it here:
 [Rotating Client Secret](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&language=en_US&type=5)
 
 ### Locating your Salesforce Login URL
