@@ -1,6 +1,6 @@
 - rule: Successful Login
   desc: User logged on successfully
-  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus=Success and salesforce.country in known_countries
+  condition: salesforce.eventtype=LoginEvent and salesforce.loginstatus=Success and salesforce.country in (known_countries)
   output: >
     User %salesforce.username logged on successfully (source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
   priority: INFORMATIONAL
@@ -21,7 +21,7 @@
   
 - rule: Login from unknown geo
   desc: Login from unknown geo
-  condition: salesforce.eventtype=LoginEvent and not salesforce.country in known_countries
+  condition: salesforce.eventtype=LoginEvent and not salesforce.country in (known_countries)
   output: >
     User %salesforce.username logged from unknown geo  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
   priority: ALERT
