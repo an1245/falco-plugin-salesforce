@@ -379,6 +379,7 @@ type SFDCEvent struct {
         SessionLevel string
         SourceIp string
 	Summary string
+	Subdivision string
         LoginStatus string
         Subdivision string
 	TargetUrl string
@@ -723,6 +724,24 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.PreviousWindow = b.(string)
+                                }
+                        }
+		case "PolicyId":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PolicyId = b.(string)
+                                }
+                        }
+		case "PolicyOutcome":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PolicyOutcome = b.(string)
+                                }
+                        }
+		case "PostalCode":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PostalCode = b.(string)
                                 }
                         }
 		case "QueriedEntities":
