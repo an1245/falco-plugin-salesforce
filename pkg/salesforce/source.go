@@ -252,6 +252,12 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	curReplayId := common.ReplayId
 	for {
+		select {
+		case <-stopchannel:
+			
+			return nil,  nil
+		}
+		
 		if (p.config.Debug == true){
 			log.Printf("Salesforce Plugin: Subscribing to topic: %s", Topic)
 		}
