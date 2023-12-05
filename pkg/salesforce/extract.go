@@ -19,6 +19,7 @@ package salesforce
 
 import (
 	"io/ioutil"
+	"fmt"
 
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/valyala/fastjson"
@@ -41,18 +42,18 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.currentwindow", Display: "Current Hijacked Window", Desc: "What is the current window that the hijacked session"},
 		{Type: "string", Name: "salesforce.delegatedusername", Display: "Delegated Username", Desc: "This user assumed login as another user"},
 		{Type: "string", Name: "salesforce.delegatedorganizationid", Display: "Delegated Organisation", Desc: "Organsiation name of a user that assumed login as another user"},
-		{Type: "uint64", Name: "salesforce.evaluationtime", Display: "Evaluation Time", Desc: "The amount of time it took to evaluate the policy in milliseconds"},
-		{Type: "uint64", Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
+		{Type: "string", Name: "salesforce.evaluationtime", Display: "Evaluation Time", Desc: "The amount of time it took to evaluate the policy in milliseconds"},
+		{Type: "string", Name: "salesforce.eventdate", Display: "Event Date", Desc: "What date/time was this event generated?"},
 		{Type: "string", Name: "salesforce.eventidentifier", Display: "Event Identifier", Desc: "What is the event identifier of this event?"},
 		{Type: "string", Name: "salesforce.eventuuid", Display: "Event UUID", Desc: "What is the event uuid of this event?"},
 		{Type: "string", Name: "salesforce.eventsource", Display: "Event Source", Desc: "What is the source of the event"},
-		{Type: "bool", Name: "salesforce.hasexternalusers", Display: "Has External Users", Desc: "Does the permission change impact external users"},
+		{Type: "string", Name: "salesforce.hasexternalusers", Display: "Has External Users", Desc: "Does the permission change impact external users"},
 		{Type: "string", Name: "salesforce.httpmethod", Display: "HTTP Method", Desc: "What HTTP Method was the user using when event was generated?"},
 		{Type: "string", Name: "salesforce.impacteduserids", Display: "External Users Impacted", Desc: "What external users were affected by the permission change"},
 		{Type: "string", Name: "salesforce.logingeoid", Display: "Login Geo ID", Desc: "What Geo ID did the user log in from?"},
 		{Type: "string", Name: "salesforce.loginhistoryid", Display: "Login History ID", Desc: "What is the login history ID"},
-		{Type: "uint64", Name: "salesforce.loginlatitude", Display: "Login Latitude", Desc: "What Latitude did the user log in from?"},
-		{Type: "uint64", Name: "salesforce.loginlongitude", Display: "Login Longitude", Desc: "What Longitude did the user log in from?"},
+		{Type: "string", Name: "salesforce.loginlatitude", Display: "Login Latitude", Desc: "What Latitude did the user log in from?"},
+		{Type: "string", Name: "salesforce.loginlongitude", Display: "Login Longitude", Desc: "What Longitude did the user log in from?"},
 		{Type: "string", Name: "salesforce.loginkey", Display: "Login Key", Desc: "he string that ties together all events in a given user’s login session."},
 		{Type: "string", Name: "salesforce.logintype", Display: "Login Type", Desc: "What type of login was this? (i.e. Application)"},
 		{Type: "string", Name: "salesforce.loginurl", Display: "Login URL", Desc: "What login URL did was the user using?"},
@@ -69,7 +70,7 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.queriedentities", Display: "Queried Entities", Desc: "The type of entities associated with the event."},
 		{Type: "string", Name: "salesforce.requestidentifier", Display: "API transaction ID", Desc: "The unique ID of a single transaction."},
 		{Type: "string", Name: "salesforce.rowsprocessed", Display: "Rows Proessed in transaction", Desc: "Total row count for the current operation"},
-		{Type: "uint64", Name: "salesforce.score", Display: "Security Event Score", Desc: "score for the API execution or export tracked by this event - 0 low and 100 high"},
+		{Type: "string", Name: "salesforce.score", Display: "Security Event Score", Desc: "score for the API execution or export tracked by this event - 0 low and 100 high"},
 		{Type: "string", Name: "salesforce.securityeventdata", Display: "Hijacking Security Event Data", Desc: "What is the security event data of the hijacked session"},
 		{Type: "string", Name: "salesforce.sessionlevel", Display: "Session Level", Desc: "What level was this session? (Standard etc.)"},
 		{Type: "string", Name: "salesforce.sessionkey", Display: "Session Key", Desc: "What was the session key of the session?"},
@@ -120,9 +121,9 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.delegatedorganizationid":
 		res = string(jdata.GetStringBytes("DelegatedOrganizationId"))
 	case "salesforce.evaluationtime":
-		//res = string(jdata.GetStringBytes("EvaluationTime"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("EvaluationTime"))
 	case "salesforce.eventdate":
-		//res = float64(jdata.GetFloat64("EventDate"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("EventDate"))
 	case "salesforce.eventidentifier":
 		res = string(jdata.GetStringBytes("EventIdentifier"))
 	case "salesforce.eventuuid":
