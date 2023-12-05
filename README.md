@@ -3,7 +3,7 @@
 ## Introduction
 The Salesforce Plugin for Falco ingests *Real-Time Event Monitoring Objects* from Salesforce and makes them available as fields in Falco.  You can find more about these real-time objects [here](https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_objects_monitoring.htm)
 
-With the fields available in Falco, you can create rules to detect and alert on potential threats in your environment.  You will find some sample Falco rules in the rules directory.
+With the Salesforce fields available in Falco, you can create Falco rules to detect Salesforce threats in real-time, and alert on them through your configured notification channels.  You will find some sample Falco rules in the rules directory.
 - Success and Failed User Logins
 - User logouts
 - Logins from foreign countries or geographies
@@ -12,6 +12,8 @@ With the fields available in Falco, you can create rules to detect and alert on 
 - Credential Stuffing detection
 - Detecting permission changes on permission sets or groups
 - API interaction anomaly detection
+
+What's the value in ingesting Salesforce events into Falco?    Well, because Falco can perform threat detection across a number of cloud platforms, it allows you to correlate security events across multiple sources in real-time, to detect active lateral movement.
 
 ## Prerequisites
 Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription. There may additional costs associated with streaming these objects, please contact your Salesforce representative to confirm.
