@@ -41,6 +41,7 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 	oCtx.sessionHijackingChannel = nil
 	oCtx.credentialStuffingChannel = nil
 	oCtx.permissionSetChannel = nil
+	oCtx.apiAnomalyChannel = nil
 	
 	return nil
 	
