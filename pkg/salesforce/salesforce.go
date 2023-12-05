@@ -74,7 +74,7 @@ func (p *Plugin) Info() *plugins.Info {
 
 func (p *Plugin) InitSchema() *sdk.SchemaInfo {
 	reflector := jsonschema.Reflector{
-		RequiredFromJSONSchemaTags: true, // all properties are optional by default
+		RequiredFromJSONSchemaTags: false, // all properties are optional by default
 		AllowAdditionalProperties:  true, // unrecognized properties don't cause a parsing failures
 	}
 
