@@ -236,7 +236,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte, stopchannel chan []byte){
 
 	if (p.config.Debug == true){
 		log.Printf("Salesforce Plugin: Making GetTopic request...")
@@ -270,7 +270,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType, stopchannel)
 		if err != nil {
 			log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
 		}
