@@ -120,7 +120,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case logoutdata = <-o.logoutChannel:
 		// Process LogoutData
-		written, err = writer.Write(logoutdata)
+		written, err := writer.Write(logoutdata)
 		if err != nil {
 			return 0, err
 		}
@@ -129,7 +129,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case loginasdata = <-o.loginAsChannel:
 		// Process LoginAsData
-		written, err = writer.Write(loginasdata)
+		written, err := writer.Write(loginasdata)
 		if err != nil {
 			return 0, err
 		}
@@ -138,7 +138,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case sessionhijackdata = <-o.sessionHijackingChannel:
 		// Process sessionhijackdata
-		written, err = writer.Write(sessionhijackdata)
+		written, err := writer.Write(sessionhijackdata)
 		if err != nil {
 			return 0, err
 		}
@@ -147,7 +147,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case credentialstuffdata = <-o.credentialStuffingChannel:
 		// Process credentialstuffdata
-		written, err = writer.Write(credentialstuffdata)
+		written, err := writer.Write(credentialstuffdata)
 		if err != nil {
 			return 0, err
 		}
@@ -156,7 +156,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case permissionsetdata = <-o.permissionSetChannel:
 		// Process permissionsetdata
-		written, err = writer.Write(permissionsetdata)
+		written, err := writer.Write(permissionsetdata)
 		if err != nil {
 			return 0, err
 		}
@@ -165,7 +165,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		}
 	case apiAnomalydata = <-o.apiAnomalyChannel:
 		// Process apiAnomalydata
-		written, err = writer.Write(apiAnomalydata)
+		written, err := writer.Write(apiAnomalydata)
 		if err != nil {
 			return 0, err
 		}
