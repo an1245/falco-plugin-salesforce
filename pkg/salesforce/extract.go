@@ -131,7 +131,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.eventsource":
 		res = string(jdata.GetStringBytes("EventSource"))
 	case "salesforce.hasexternalusers":
-		//res = string(jdata.GetStringBytes("HttpMethod"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("HasExternalUsers"))
 	case "salesforce.httpmethod":
 		res = string(jdata.GetStringBytes("HttpMethod"))
 	case "salesforce.impacteduserids":
@@ -141,9 +141,9 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.loginhistoryid":
 		res = string(jdata.GetStringBytes("LoginHistoryId"))
 	case "salesforce.loginlatitude":
-		//res = float64(jdata.GetFloat64("LoginLatitude"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("LoginLatitude"))
 	case "salesforce.loginlongitude":
-		//res = float64(jdata.GetFloat64("LoginLongitude"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("LoginLongitude"))
 	case "salesforce.loginkey":
 		res = string(jdata.GetStringBytes("LoginKey"))
 	case "salesforce.logintype":
@@ -177,7 +177,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.rowsprocessed":
 		res = string(jdata.GetStringBytes("RowsProcessed"))
 	case "salesforce.score":
-		//res = string(jdata.GetStringBytes("score"))
+		res = fmt.Sprintf("%f",jdata.GetStringBytes("Score"))
 	case "salesforce.securityeventdata":
 		res = string(jdata.GetStringBytes("SecurityEventData"))
 	case "salesforce.sessionlevel":
