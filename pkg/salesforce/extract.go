@@ -28,7 +28,7 @@ import (
 // Return the fields supported for extraction.
 func (p *Plugin) Fields() []sdk.FieldEntry {
 	return []sdk.FieldEntry{
-		{Type: "string", Name: "salesforce.eventtype", Display: "Event Type", Desc: "What type of SFDC event was this?"},
+		{Type: "string", Name: "salesforce.eventtype", Display: "Event Type", Desc: "What type of SFDC event was this? (example. LoginEvent)"},
 		{Type: "string", Name: "salesforce.acceptlanguage", Display: "Accept Language", Desc: "List of HTTP Headers that specify the natural language, such as English, that the client understands."},
 		{Type: "string", Name: "salesforce.apitype", Display: "API Type", Desc: "What type of API is this?"},
 		{Type: "string", Name: "salesforce.apiversion", Display: "API Version", Desc: "What API version is this?"},
