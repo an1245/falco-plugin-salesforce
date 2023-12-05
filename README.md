@@ -12,9 +12,7 @@ The first step to getting the plugin integrated is to create a Salesforce Connec
 1. This document talks about creating a Salesforce Connected app with oAuth Client Credentials Flow:
 [Using the Client Credentials Flow for Easier API Authentication](https://developer.salesforce.com/blogs/2023/03/using-the-client-credentials-flow-for-easier-api-authentication)
 
-Some other URLs that might be useful can be found here.
-[Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5)
-[Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5)
+Some other URLs that might be useful can be found here. [here](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5) and [here](https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5)
 
 ### Locating your Consumer Key and Secret
 Once you have configured the connected app, you need to locate your consumer key and secret.  You can find more on finding these values here: [Rotate the Consumer Key and Consumer Secret of a Connected App](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&type=) 
