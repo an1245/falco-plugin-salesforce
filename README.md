@@ -24,6 +24,7 @@ The plugin is integrated into Salesforce as a Connected App using the Client Cre
 
 ### Creating a Connected App
 The first step to getting the plugin integrated is to create a Salesforce Connected App. 
+
 **NOTE**: the user account that you configure the Connect App to *Run As* must have the **View Real-Time Event Monitoring Data** permission
 
 1. Follow the steps in this document to create a Salesforce Connected app with oAuth Client Credentials Flow:
