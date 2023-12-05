@@ -22,7 +22,7 @@ import (
 	"math"
 	"time"
 	"log"
-
+	
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/common"
@@ -35,8 +35,16 @@ func (p *Plugin) initInstance(oCtx *PluginInstance) error {
 
 	// think of plugin_init as initializing the plugin software
 	
-	oCtx.grpcChannel = nil
+	oCtx.loginChannel = nil
+	oCtx.logoutChannel = nil
+	oCtx.loginAsChannel = nil
+	oCtx.sessionHijackingChannel = nil
+	oCtx.credentialStuffingChannel = nil
+	oCtx.permissionSetChannel = nil
+	oCtx.apiAnomalyChannel = nil
+	
 	return nil
+	
 }
 
 // Open an event stream and return an open plugin instance.
@@ -50,12 +58,28 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("Salesforce Plugin: Debug logging is enabled?: %v", p.config.Debug)
 	
-	oCtx.grpcChannel = make(chan []byte, 128)
+	oCtx.loginChannel = make(chan []byte, 128)
+	oCtx.logoutChannel = make(chan []byte, 128)
+	oCtx.loginAsChannel = make(chan []byte, 128)
+	oCtx.sessionHijackingChannel = make(chan []byte, 128)
+	oCtx.credentialStuffingChannel = make(chan []byte, 128)
+	oCtx.permissionSetChannel = make(chan []byte, 128)
+	oCtx.apiAnomalyChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
-	go CreateGRPCClient(p, oCtx)
-
+	client := CreateGRPCClientConnection(p, oCtx)
+	
+	go subscribeGRPCTopic(p, oCtx, client, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
+	
 	return oCtx, nil
 }
 
@@ -75,23 +99,91 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	writer := evt.Writer()
 
 	// Receive the event from the webserver channel with a 1 sec timeout
-	var data []byte
+	var logindata []byte
+	var logoutdata []byte
+	var loginasdata []byte
+	var sessionhijackdata []byte
+	var credentialstuffdata []byte
+	var permissionsetdata []byte
+	var apiAnomalydata []byte
+	
 	afterCh := time.After(1 * time.Second)
 	select {
-	case data = <-o.grpcChannel:
+	case logindata = <-o.loginChannel:
+	case logoutdata = <-o.logoutChannel:
+	case loginasdata = <-o.loginAsChannel:
+	case sessionhijackdata = <-o.sessionHijackingChannel:
+	case credentialstuffdata = <-o.credentialStuffingChannel:
+	case permissionsetdata = <-o.permissionSetChannel:
+	case apiAnomalydata = <-o.apiAnomalyChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
 	}
 
-	// Write data inside the event
-	written, err := writer.Write(data)
+	// Process LoginData
+	written, err := writer.Write(logindata)
 	if err != nil {
 		return 0, err
 	}
-	if written < len(data) {
-		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(data), written)
+	if written < len(logindata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logindata), written)
 	}
+
+	// Process LogoutData
+	written, err = writer.Write(logoutdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(logoutdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logoutdata), written)
+	}
+
+	// Process LoginAsData
+	written, err = writer.Write(loginasdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(loginasdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(loginasdata), written)
+	}
+
+	// Process sessionhijackdata
+	written, err = writer.Write(sessionhijackdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(sessionhijackdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(sessionhijackdata), written)
+	}
+
+	// Process credentialstuffdata
+	written, err = writer.Write(credentialstuffdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(credentialstuffdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(credentialstuffdata), written)
+	}
+
+	// Process permissionsetdata
+	written, err = writer.Write(permissionsetdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(permissionsetdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(permissionsetdata), written)
+	}
+
+	// Process apiAnomalydata
+	written, err = writer.Write(apiAnomalydata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(apiAnomalydata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(permissionsetdata), written)
+	}
+
 
 	// Let the engine timestamp this event. It would probably be better to
 	// use the updated_at field in the json.
@@ -100,51 +192,65 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	return 1, nil
 }
 
-func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
+func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.PubSubClient){
 	if common.ReplayPreset == proto.ReplayPreset_CUSTOM && common.ReplayId == nil {
 		log.Fatalf("the replayId variable must be populated when the replayPreset variable is set to CUSTOM")
 	} else if common.ReplayPreset != proto.ReplayPreset_CUSTOM && common.ReplayId != nil {
 		log.Fatalf("the replayId variable must not be populated when the replayPreset variable is set to EARLIEST or LATEST")
 	}
 
-	
-	log.Printf("Creating gRPC client...")
-	
-	client, err := grpcclient.NewGRPCClient()
-	if err != nil {
-		log.Fatalf("could not create gRPC client: %v", err)
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Creating gRPC client...")
 	}
-	defer client.Close()
 	
-	log.Printf("Populating auth token...")
+	client, err := grpcclient.NewGRPCClient(p.config.Debug)
+	if err != nil {
+		log.Fatalf("Salesforce Plugin: could not create gRPC client: %v", err)
+	}
+	//defer client.Close()
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Populating auth token...")
+	}
+	
 	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not authenticate: %v", err)
+		log.Fatalf("Salesforce Plugin: could not authenticate: %v", err)
 	}
 
-	log.Printf("Populating user info...")
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Populating user info...")
+	}
 	err = client.FetchUserInfo(p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not fetch user info: %v", err)
+		log.Fatalf("Salesforce Plugin: could not fetch user info: %v", err)
 	}
 
-	log.Printf("Making GetTopic request...")
-	topic, err := client.GetTopic()
+	return client
+}
+
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte){
+
+	if (p.config.Debug == true){
+		log.Printf("Salesforce Plugin: Making GetTopic request...")
+	}
+	topic, err := client.GetTopic(Topic)
 	if err != nil {
 		client.Close()
-		log.Fatalf("could not fetch topic: %v", err)
+		log.Fatalf("Salesforce Plugin: could not fetch topic: %v", err)
 	}
 
 	if !topic.GetCanSubscribe() {
 		client.Close()
-		log.Fatalf("this user is not allowed to subscribe to the following topic: %s", common.TopicName)
+		log.Fatalf("Salesforce Plugin: this user is not allowed to subscribe to the following topic: %s", Topic)
 	}
 
 	curReplayId := common.ReplayId
 	for {
-		log.Printf("Subscribing to topic...")
+		if (p.config.Debug == true){
+			log.Printf("Salesforce Plugin: Subscribing to topic: %s", Topic)
+		}
 
 		// use the user-provided ReplayPreset by default, but if the curReplayId variable has a non-nil value then assume that we want to
 		// consume from a custom offset. The curReplayId will have a non-nil value if the user explicitly set the ReplayId or if a previous
@@ -158,11 +264,12 @@ func CreateGRPCClient(p *Plugin, oCtx *PluginInstance) {
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, oCtx.grpcChannel)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			log.Printf("error occurred while subscribing to topic: %v", err)
+			log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
 		}
 	}
+
 }
 
 
