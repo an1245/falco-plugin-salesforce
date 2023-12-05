@@ -45,8 +45,11 @@ The first step to getting the plugin integrated is to create a Salesforce Connec
 You will also need to locate your SFDC login URL (My Domain) which typically uses the following format ```https://mydomain.my.salesforce.com```
 You can find out more about your My Domain here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
 
-### Configuring the plugin in Falco.yaml
-Now that you have this information, you can provide them as values in the falco.yaml file.  
+### Finding more info
+You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
+
+## Configuring the plugin in Falco.yaml
+Now that you have collected your ***Consumer Key***, ***Consumer Secret*** and ***SFDC Login URL***, you can provide them as values in the falco.yaml file.  
 ```
 plugins:
   - name: salesforce
@@ -63,8 +66,5 @@ Now that you've got the plugin configuration done, you can enable it by adding t
 ```
 load_plugins: [salesforce]
 ```
-
-### Finding more info
-You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
 
 ## Exported Fields
