@@ -13,7 +13,8 @@ With the Salesforce fields available in Falco, you can create Falco rules to det
 - Detecting permission changes on permission sets or groups
 - API interaction anomaly detection
 
-What's the value in ingesting Salesforce events into Falco?    Well, because Falco can perform threat detection across a number of cloud platforms in parallel, it allows you to correlate security events across multiple sources in real-time, to detect active lateral movement as it is occurring.
+**What's the value in ingesting Salesforce events into Falco?**
+Well, because Falco can perform threat detection across a number of cloud platforms in parallel, it allows you to correlate security events across multiple sources in real-time, to detect active lateral movement as it is occurring.
 
 ## Prerequisites
 Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription. There may additional costs associated with streaming these objects, please contact your Salesforce representative to confirm.
