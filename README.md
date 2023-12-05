@@ -48,7 +48,7 @@ plugins:
          sfdcloginurl: (your sfdc login url)
          Debug: False
 ```
-We recommend leaving Debug set to False unless your trying to troubleshoot the plugin.
+We recommend leaving Debug set to False unless you are trying to troubleshoot the plugin.
 
 Now that you've got the plugin configuration done, you can enable it by adding the plugin name to the *load_plugins* configuration setting.
 ```
