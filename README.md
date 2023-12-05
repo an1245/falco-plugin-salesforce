@@ -4,15 +4,14 @@
 
 
 ## Configuring the Falco Salesforce plugin as a Salesforce Connected App
-The plugin is integrated into Salesforce as a Connected App using the Client Credentials Flow. The Client Credentials Flow method requires you to provide a *Consumer Key*, *Consumer Secret* and *SFDC Login URL* to the plugin which it uses to authenticate. 
+The plugin is integrated into Salesforce as a Connected App using the Client Credentials Flow. The Client Credentials Flow method requires you to provide a *Consumer Key*, *Consumer Secret* and *SFDC Login URL* to the plugin which it uses to authenticate.  You can find out more about using Client Credentials Flow for API authentication here: [Using the Client Credentials Flow for Easier API Authentication](https://developer.salesforce.com/blogs/2023/03/using-the-client-credentials-flow-for-easier-api-authentication)
 
 ### Creating a Connected App
 The first step to getting the plugin integrated is to create a Salesforce Connected App.
-
 1. This document talks about creating a Salesforce Connected app with oAuth Client Credentials Flow:
-[Using the Client Credentials Flow for Easier API Authentication](https://developer.salesforce.com/blogs/2023/03/using-the-client-credentials-flow-for-easier-api-authentication)
-
-Some other URLs that might be useful can be found here. [here](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5) and [here](https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5)
+[Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5)
+2. You also need to make sure you have enabled Client Credentials Flow in your connected app - you can find more information here:
+[Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5)
 
 ### Locating your Consumer Key and Secret
 Once you have configured the connected app, you need to locate your consumer key and secret.  You can find more on finding these values here: [Rotate the Consumer Key and Consumer Secret of a Connected App](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&type=) 
