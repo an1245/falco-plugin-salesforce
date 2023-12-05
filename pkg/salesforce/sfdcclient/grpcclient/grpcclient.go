@@ -154,7 +154,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // NOTE: the replayId should be stored in a persistent data store rather than being stored in a variable
         curReplayId := replayId
         for {
-                afterCh := time.After(1 * time.millisecond)
+                afterCh := time.After(1 * time.Millisecond)
 		select {
 		case <-stopchannel:
 			return nil,  nil
