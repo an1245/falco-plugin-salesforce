@@ -72,25 +72,21 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	// Launch the GRPC client
 	oCtx.pubSubClient = CreateGRPCClientConnection(p, oCtx)
 	
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel,oCtx.stopChannel)
-	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel,oCtx.stopChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginTopic, common.LoginTopicEventType, oCtx.loginChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LogoutTopic, common.LogoutTopicEventType, oCtx.logoutChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.LoginAsTopic, common.LoginAsTopicEventType, oCtx.loginAsChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
+	go subscribeGRPCTopic(p, oCtx, oCtx.pubSubClient, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
 	
 	return oCtx, nil
 }
 
 // Closing the event stream and deinitialize the open plugin instance.
 func (oCtx *PluginInstance) Close() {
-	log.Printf("Salesforce Plugin: Shutting down plugin")
-
-	oCtx.stopChannel <- true
-	time.Sleep(10 * time.Second)
 	// Shut down the GRPC Client
-	oCtx.pubSubClient.Close()
+
 
 }
 
@@ -227,7 +223,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte, stopchannel chan bool){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte){
 
 	if (p.config.Debug == true){
 		log.Printf("Salesforce Plugin: Making GetTopic request...")
@@ -245,15 +241,6 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	curReplayId := common.ReplayId
 	for {
-		afterCh := time.After(1 * time.Millisecond)
-		select {
-		case <-stopchannel:
-			if (p.config.Debug == true){
-				log.Printf("Salesforce Plugin: Closing Topic: %s", Topic)
-			}
-			return 
-		case <-afterCh:
-		}
 		
 		if (p.config.Debug == true){
 			log.Printf("Salesforce Plugin: Subscribing to topic: %s", Topic)
@@ -271,7 +258,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// (i.e., an error occurred) the Subscribe method will return both the most recently processed ReplayId as well as the error message.
 		// The error message will be logged for the user to see and then we will attempt to re-subscribe with the ReplayId on the next iteration
 		// of this for loop
-		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType, stopchannel)
+		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
 			log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
 		}
