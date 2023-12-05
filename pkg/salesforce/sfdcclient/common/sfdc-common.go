@@ -23,7 +23,7 @@ var (
 	ApiAnomalyEventTopic = "/event/ApiAnomalyEvent"
 	ApiAnomalyEventType = "ApiAnomalyEvent"
 	
-	ReplayPreset        = proto.ReplayPreset_LATEST
+	ReplayPreset        = proto.ReplayPreset_CUSTOM
 	ReplayId     []byte = nil
 	Appetite     int32  = 5
 
