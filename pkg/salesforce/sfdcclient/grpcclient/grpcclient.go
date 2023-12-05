@@ -119,7 +119,7 @@ func (c *PubSubClient) GetSchema(schemaId string) (*proto.SchemaInfo, error) {
 // fetch data from the topic. This method will continuously consume messages unless an error occurs; if an error does occur then this method will
 // return the last successfully consumed ReplayId as well as the error message. If no messages were successfully consumed then this method will return
 // the same ReplayId that it originally received as a parameter
-func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, channel chan []byte, topicName string, eventType string) ([]byte, error) {
+func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byte, channel chan []byte, topicName string, eventType string, stopchannel chan []byte) ([]byte, error) {
         ctx, cancelFn := context.WithCancel(c.getAuthContext())
         defer cancelFn()
 
@@ -153,7 +153,12 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // NOTE: the replayId should be stored in a persistent data store rather than being stored in a variable
         curReplayId := replayId
         for {
-                resp, err := subscribeClient.Recv()
+                select {
+		case stop := <-stopchannel:
+			return nil,1
+		}
+		
+		resp, err := subscribeClient.Recv()
                 if err == io.EOF {
                         printTrailer(subscribeClient.Trailer())
                         return curReplayId, fmt.Errorf("stream closed")
