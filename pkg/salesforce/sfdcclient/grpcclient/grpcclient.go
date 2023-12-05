@@ -180,9 +180,6 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
                         // Again, this should be stored in a persistent external datastore instead of a variable
                         curReplayId = event.GetReplayId()
-			if (c.Debug == true) {
-                        	log.Printf("Salesforce Plugin: event body: %+v\n", body)
-			}
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
