@@ -20,6 +20,8 @@ var (
 	CredentialStuffingEventType = "CredentialStuffingEvent"
 	PermissionSetEventTopic = "/event/PermissionSetEvent"
 	PermissionSetEventType = "PermissionSetEvent"
+	ApiAnomalyEventTopic = "/event/ApiAnomalyEvent"
+	ApiAnomalyEventType = "ApiAnomalyEvent"
 	
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
