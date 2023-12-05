@@ -245,9 +245,11 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	curReplayId := common.ReplayId
 	for {
+		afterCh := time.After(1 * time.Second)
 		select {
 		case <-stopchannel:
 			return 
+		case <-afterCh:
 		}
 		
 		if (p.config.Debug == true){
