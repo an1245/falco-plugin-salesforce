@@ -55,6 +55,8 @@ type PluginInstance struct {
 	loginAsChannel      chan []byte
 	sessionHijackingChannel      chan []byte
 	credentialStuffingChannel    chan []byte
+	permissionSetChannel	chan []byte
+	apiAnomalyChannel	chan []byte
 }
 
 // Return the plugin info to the framework.
