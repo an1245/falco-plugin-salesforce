@@ -25,7 +25,7 @@ var (
 	
 	ReplayPreset        = proto.ReplayPreset_LATEST
 	ReplayId     []byte = nil
-	Appetite     int32  = 5
+	Appetite     int32  = 100
 
 	// gRPC server variables
 	GRPCEndpoint    = "api.pubsub.salesforce.com:7443"
