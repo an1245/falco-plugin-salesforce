@@ -5,7 +5,7 @@ The Salesforce Plugin for Falco ingests *Real-Time Event Monitoring Objects* fro
 
 
 ## Prerequisites
-Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription
+Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription. There may additional costs associated with streaming these objects, please contact your Salesforce representative to confirm.
 
 The plugin is configured to ingest events from the following event streams.
 - ApiAnomalyEvent
