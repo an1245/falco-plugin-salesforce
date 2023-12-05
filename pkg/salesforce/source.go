@@ -102,6 +102,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	var sessionhijackdata []byte
 	var credentialstuffdata []byte
 	var permissionsetdata []byte
+	var apiAnomalydata []byte
 	
 	afterCh := time.After(1 * time.Second)
 	select {
@@ -111,12 +112,13 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	case sessionhijackdata = <-o.sessionHijackingChannel:
 	case credentialstuffdata = <-o.credentialStuffingChannel:
 	case permissionsetdata = <-o.permissionSetChannel:
+	case apiAnomalydata = <-o.apiAnomalyChannel:
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
 		return 0, sdk.ErrTimeout
 	}
 
-	// Write data inside the event
+	// Process LoginData
 	written, err := writer.Write(logindata)
 	if err != nil {
 		return 0, err
@@ -125,6 +127,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logindata), written)
 	}
 
+	// Process LogoutData
 	written, err = writer.Write(logoutdata)
 	if err != nil {
 		return 0, err
@@ -133,6 +136,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(logoutdata), written)
 	}
 
+	// Process LoginAsData
 	written, err = writer.Write(loginasdata)
 	if err != nil {
 		return 0, err
@@ -140,6 +144,43 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 	if written < len(loginasdata) {
 		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(loginasdata), written)
 	}
+
+	// Process sessionhijackdata
+	written, err = writer.Write(sessionhijackdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(sessionhijackdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(sessionhijackdata), written)
+	}
+
+	// Process credentialstuffdata
+	written, err = writer.Write(credentialstuffdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(credentialstuffdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(credentialstuffdata), written)
+	}
+
+	// Process permissionsetdata
+	written, err = writer.Write(permissionsetdata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(permissionsetdata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(permissionsetdata), written)
+	}
+
+	// Process apiAnomalydata
+	written, err = writer.Write(apiAnomalydata)
+	if err != nil {
+		return 0, err
+	}
+	if written < len(apiAnomalydata) {
+		return 0, fmt.Errorf("salesforce message too long: %d, max %d supported", len(permissionsetdata), written)
+	}
+
 
 	// Let the engine timestamp this event. It would probably be better to
 	// use the updated_at field in the json.
