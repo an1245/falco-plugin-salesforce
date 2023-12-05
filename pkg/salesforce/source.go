@@ -85,6 +85,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 
 // Closing the event stream and deinitialize the open plugin instance.
 func (oCtx *PluginInstance) Close() {
+	log.Printf("Salesforce Plugin: Shutting down plugin")
 	// Shut down the GRPC Client
 	oCtx.pubSubClient.Close()
 
