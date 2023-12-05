@@ -3,8 +3,20 @@
 ## Introduction
 The Salesforce Plugin for Falco ingests *Real-Time Event Monitoring Objects* from Salesforce and makes them available as fields in Falco - you can find more about these real-time objects [here](https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_objects_monitoring.htm)
 
+
 ## Prerequisites
 Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription
+
+The plugin is configured to ingest events from the following event streams.
+- ApiAnomalyEvent
+- CredentialStuffingEvent
+- LoginAsEventStream
+- LoginEventStream
+- LogoutEventStream
+- PermissionSetEvent
+- SessionHijackingEvent
+These streams must be enabled by clicking **Enable Streaming** next to them in the Event Manager. You can find information on enabling these in the *Enabling real-time events* section of this document
+[here](https://developer.salesforce.com/blogs/2020/05/introduction-to-real-time-event-monitoring)
 
 ## Configuring the Falco Salesforce plugin as a Salesforce Connected App
 The plugin is integrated into Salesforce as a Connected App using the Client Credentials Flow. The Client Credentials Flow method requires you to provide a *Consumer Key*, *Consumer Secret* and *SFDC Login URL* to the plugin which it uses to authenticate.  You can find out more about using Client Credentials Flow for API authentication here: [Using the Client Credentials Flow for Easier API Authentication](https://developer.salesforce.com/blogs/2023/03/using-the-client-credentials-flow-for-easier-api-authentication)
