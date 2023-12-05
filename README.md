@@ -68,3 +68,9 @@ load_plugins: [salesforce]
 ```
 
 ## Exported Fields
+There are a number of fields exported by the plugin.
+
+| Field Name | Type | Description |
+| ----------- | ----------- |  ----------- |
+| Header | Title |
+| Paragraph | Text | 
