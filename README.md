@@ -14,6 +14,7 @@ With the Salesforce fields available in Falco, you can create Falco rules to det
 - API interaction anomaly detection
 
 **What's the value in ingesting Salesforce events into Falco?**
+
 Well, because Falco can perform threat detection across a number of cloud platforms in parallel, it allows you to correlate security events across multiple sources in real-time, to detect active lateral movement as it is occurring.
 
 ## Prerequisites
