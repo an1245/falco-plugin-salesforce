@@ -2,6 +2,7 @@
 1. Log in to Salesforce as an Administrator
 2. Navigate to the Setup menu
 3. Navigate to Administration -> Users and set up a new user for Falco
+4. Make sure the user License is *Salesforce* and the profile is *Minimum Access - Salesforce*
 
 5. Navigate to Administration -> Permission Sets, click *New* and give the profile a label and API name
    
