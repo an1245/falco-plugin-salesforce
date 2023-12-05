@@ -18,7 +18,7 @@ You will also need to locate your SFDC login URL (My Domain) which typically use
 You can find out more about your My Domain here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
 
 ### Configuring the plugin in Falco.yaml
-Now that you have this information, you can provide them as values in the falco.yaml file.  We recommend leaving Debug set to False unless your trying to troubleshoot the plugin.
+Now that you have this information, you can provide them as values in the falco.yaml file.  
 ```
 plugins:
   - name: salesforce
@@ -29,10 +29,13 @@ plugins:
          sfdcloginurl: (your sfdc login url)
          Debug: False
 ```
-And don't forget to enable the plugin by setting the following setting
+We recommend leaving Debug set to False unless your trying to troubleshoot the plugin.
+
+Now that you've got the plugin configuration done, you can enable it by adding the plugin name to the *load_plugins* configuration setting.
 ```
 load_plugins: [salesforce]
 ```
+
 
 ### Finding more info
 You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
