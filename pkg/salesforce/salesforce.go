@@ -58,8 +58,6 @@ type PluginInstance struct {
 	credentialStuffingChannel    chan []byte
 	permissionSetChannel	chan []byte
 	apiAnomalyChannel	chan []byte
-	stopChannel	chan bool
-	pubSubClient	*grpcclient.PubSubClient
 }
 
 // Return the plugin info to the framework.
