@@ -68,7 +68,7 @@ load_plugins: [salesforce]
 ```
 
 ## Exported Fields
-There are a number of fields exported by the plugin.
+There are a number of fields exported by the plugin.  Not all fields will be available for all events - please refer to the Salesforce Real-Time Event Monitoring Object documentation [here](https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_objects_monitoring.htm)
 
 | Field Name | Type | Description |
 | ----------- | ----------- |  ----------- |
