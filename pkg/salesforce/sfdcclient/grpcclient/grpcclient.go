@@ -153,7 +153,8 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         // NOTE: the replayId should be stored in a persistent data store rather than being stored in a variable
         curReplayId := replayId
         for {
-                resp, err := subscribeClient.Recv()
+		
+		resp, err := subscribeClient.Recv()
                 if err == io.EOF {
                         printTrailer(subscribeClient.Trailer())
                         return curReplayId, fmt.Errorf("stream closed")
