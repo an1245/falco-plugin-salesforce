@@ -14,7 +14,8 @@ The first step to getting the plugin integrated is to create a Salesforce Connec
 [Rotating Client Secret](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&language=en_US&type=5)
 
 ### Locating your Salesforce Login URL
-You will also need to locate your SFDC login URL (My Domain) which typically uses the following format ```https://mydomain.my.salesforce.com``` - you can find out more about finding this info here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
+You will also need to locate your SFDC login URL (My Domain) which typically uses the following format ```https://mydomain.my.salesforce.com```
+You can find out more about finding this info here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
 
 ### Configuring the plugin in Falco.yaml
 Now that you have this information, you can provide them as values in the falco.yaml file.
