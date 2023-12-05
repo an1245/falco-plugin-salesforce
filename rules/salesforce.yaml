@@ -16,6 +16,18 @@
   source: salesforce
   tags: [salesforce]
 
+- list: known_countries
+  items: [Australia]
+  
+- rule: Login from unknown geo
+  desc: Login from unknown geo
+  condition: salesforce.eventtype=LoginEvent and not salesforce.country in known_countries
+  output: >
+    User %salesforce.username logged from unknown geo  (status=%salesforce.loginstatus, source IP=%salesforce.sourceip, apitype=%salesforce.apitype, application=%salesforce.application, loginurl=%salesforce.loginurl city=%salesforce.city, country=%salesforce.country, platform=%salesforce.platform, browser=%salesforce.browser. SFDC Event UUID=%salesforce.eventuuid)
+  priority: ALERT
+  source: salesforce
+  tags: [salesforce]
+
 - rule: User Logged out
   desc: User Logged out
   condition: salesforce.eventtype=LogoutEvent
