@@ -254,8 +254,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 	for {
 		select {
 		case <-stopchannel:
-			
-			return nil,  nil
+			return 
 		}
 		
 		if (p.config.Debug == true){
