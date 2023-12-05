@@ -157,6 +157,9 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                 afterCh := time.After(1 * time.Millisecond)
 		select {
 		case <-stopchannel:
+			if (c.Debug == true){
+				log.Printf("Salesforce Plugin: Closing Subscription: %s", topicName)
+			}
 			return nil,  nil
 		case <-afterCh:
 		}
