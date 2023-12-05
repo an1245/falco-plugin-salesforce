@@ -236,7 +236,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	return client
 }
 
-func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte, stopchannel chan []byte){
+func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte, stopchannel chan bool){
 
 	if (p.config.Debug == true){
 		log.Printf("Salesforce Plugin: Making GetTopic request...")
