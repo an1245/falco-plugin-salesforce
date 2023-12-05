@@ -86,16 +86,18 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 // Closing the event stream and deinitialize the open plugin instance.
 func (oCtx *PluginInstance) Close() {
 	log.Printf("Salesforce Plugin: Shutting down plugin")
+	
+	close(oCtx.loginChannel)
+	close(oCtx.logoutChannel)
+	close(oCtx.loginAsChannel)
+	close(oCtx.sessionHijackingChannel)
+	close(oCtx.credentialStuffingChannel)
+	close(oCtx.permissionSetChannel)
+	close(oCtx.apiAnomalyChannel)
+
 	// Shut down the GRPC Client
 	oCtx.pubSubClient.Close()
 
-	oCtx.loginChannel = nil
-	oCtx.logoutChannel = nil
-	oCtx.loginAsChannel = nil
-	oCtx.sessionHijackingChannel = nil
-	oCtx.credentialStuffingChannel = nil
-	oCtx.permissionSetChannel = nil
-	oCtx.apiAnomalyChannel = nil
 }
 
 // Produce and return a new batch of events.
