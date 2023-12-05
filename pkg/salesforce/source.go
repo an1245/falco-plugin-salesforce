@@ -88,7 +88,7 @@ func (oCtx *PluginInstance) Close() {
 	log.Printf("Salesforce Plugin: Shutting down plugin")
 
 	oCtx.stopChannel <- true
-
+	time.Sleep(10 * time.Second)
 	// Shut down the GRPC Client
 	oCtx.pubSubClient.Close()
 
