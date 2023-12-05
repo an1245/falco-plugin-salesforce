@@ -66,6 +66,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	oCtx.sessionHijackingChannel = make(chan []byte, 128)
 	oCtx.credentialStuffingChannel = make(chan []byte, 128)
 	oCtx.permissionSetChannel = make(chan []byte, 128)
+	oCtx.apiAnomalyChannel = make(chan []byte, 128)
 
 	// Launch the GRPC client
 	client := CreateGRPCClientConnection(p, oCtx)
@@ -76,6 +77,7 @@ func (p *Plugin) Open(params string) (source.Instance, error) {
 	go subscribeGRPCTopic(p, oCtx, client, common.SessionHijackingTopic, common.SessionHijackingEventType, oCtx.sessionHijackingChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.CredentialStuffingTopic, common.CredentialStuffingEventType, oCtx.credentialStuffingChannel)
 	go subscribeGRPCTopic(p, oCtx, client, common.PermissionSetEventTopic, common.PermissionSetEventType, oCtx.permissionSetChannel)
+	go subscribeGRPCTopic(p, oCtx, client, common.ApiAnomalyEventTopic, common.ApiAnomalyEventType, oCtx.apiAnomalyChannel)
 	
 	return oCtx, nil
 }
