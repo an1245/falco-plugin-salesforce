@@ -38,7 +38,7 @@ func (p *Plugin) Fields() []sdk.FieldEntry {
 		{Type: "string", Name: "salesforce.browser", Display: "Browser Type", Desc: "The browser name and version if known"},
 		{Type: "string", Name: "salesforce.ciphersuite", Display: "Cipher Suite", Desc: "The TLS cipher suite used for the login"},
 		{Type: "string", Name: "salesforce.city", Display: "City", Desc: "The city where the user’s IP address is physically located"},
-		{Type: "string", Name: "salesforce.clientverion", Display: "Client Version", Desc: "The version number of the login client"},
+		{Type: "string", Name: "salesforce.clientversion", Display: "Client Version", Desc: "The version number of the login client"},
 		{Type: "string", Name: "salesforce.country", Display: "Country", Desc: "The country where the user’s IP address is physically located"},
 		{Type: "string", Name: "salesforce.countryiso", Display: "Country ISO", Desc: "The ISO 3166 code for the country where the user’s IP address is physically located"},
 		{Type: "string", Name: "salesforce.createdbyid", Display: "Created By", Desc: "Who was this created by?"},
