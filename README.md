@@ -55,6 +55,7 @@ Now that you've got the plugin configuration done, you can enable it by adding t
 load_plugins: [salesforce]
 ```
 
-
 ### Finding more info
 You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
+
+## Exported Fields
