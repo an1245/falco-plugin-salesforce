@@ -1,4 +1,4 @@
-## Setting up Falco account in Salesforce
+## Configuring the Falco Salesforce plugin as a Salesforce Connected App
 The plugin is integrated into Salesforce as a Connected App using the Client Credentials Flow. The Client Credentials Flow method requires you to provide a *Consumer Key*, *Consumer Secret* and *SFDC Login URL* to the plugin which it uses to authenticate.  
 
 ### Creating a Connected App
