@@ -24,6 +24,7 @@ import (
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins"
 	"github.com/falcosecurity/plugin-sdk-go/pkg/sdk/plugins/source"
+	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/grpcclient"
 )
 
 const (
@@ -57,6 +58,7 @@ type PluginInstance struct {
 	credentialStuffingChannel    chan []byte
 	permissionSetChannel	chan []byte
 	apiAnomalyChannel	chan []byte
+	grpcClient	PubSubClient
 }
 
 // Return the plugin info to the framework.
