@@ -155,7 +155,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         for {
                 select {
 		case stop := <-stopchannel:
-			return nil,1
+			return nil,  nil
 		}
 		
 		resp, err := subscribeClient.Recv()
