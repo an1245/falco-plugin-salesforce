@@ -248,6 +248,9 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		afterCh := time.After(1 * time.Millisecond)
 		select {
 		case <-stopchannel:
+			if (p.config.Debug == true){
+				log.Printf("Salesforce Plugin: Closing Topic: %s", Topic)
+			}
 			return 
 		case <-afterCh:
 		}
