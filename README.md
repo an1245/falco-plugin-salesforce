@@ -1,39 +1,27 @@
-## Create a developer account and interface with API 
-- reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart_dev_org.htm
-- create developer account: https://developer.salesforce.com/signup
-- create connected app with oAuth - https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5
-- oAuth Endpoints - https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_endpoints.htm&type=5
-- Enable username/password flow - https://help.salesforce.com/s/articleView?id=release-notes.rn_security_username-password_flow_blocked_by_default.htm&release=244&type=5
-- Client Credential Flow - https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5
-- Client Credential Flow - 
+## Setting up Falco account in Salesforce
+1. Log in to Salesforce as an Administrator
+2. Navigate to the Setup menu
+3. Navigate to Administration -> Users and set up a new user for Falco
 
-## Salesforce pub/sub API 
-- Python code sample - https://developer.salesforce.com/docs/platform/pub-sub-api/guide/qs-python-quick-start.html
-- Python demo video - https://www.youtube.com/watch?v=8HmrDN9OUCg
-- Go code sample - https://github.com/developerforce/pub-sub-api/tree/main/go
-- Creating Pub/Sub topics - https://www.googlecloudcommunity.com/gc/Integration-Services/salesforce-to-gcp-real-time-Events/m-p/597003#M288
-- AVRO decoding to struct - https://github.com/linkedin/goavro/blob/master/examples/nested/main.go
+5. Navigate to Administration -> Permission Sets, click *New* and give the profile a label and API name
+   
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/af42a6af-be99-4d46-a3bf-750754b600b3)
 
-## Platform Events 
-- reference - query objects: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_loginhistory.htm
-- Platform events - login - https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/sforce_api_objects_loginevent.htm
-- SFDC Event Manager: https://sysdig6-dev-ed.develop.lightning.force.com/lightning/setup/EventManager/home
-- Monitoring Event Monitor - https://help.salesforce.com/s/articleView?id=sf.event_monitoring_monitor_events_with_event_manager.htm&type=5
-- Need to set the event manager (Login Event) and set it to streaming https://sysdig6-dev-ed.develop.lightning.force.com/lightning/setup/EventManager/home
+5. In the Permission Set settings, type *View Real-Time Event Monitoring Data* in the Find Settings box
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/31346b69-5617-46ee-9ccc-84b54d1b19cf)
 
-## API - Execute SOQL Query 
-- SOQL query for Login History:
-- example: curl https://MyDomainName.my.salesforce.com/services/data/v59.0/query/?q=SELECT+name+from+Account -H "Authorization: Bearer token"
-1. SELECT UserId, LoginTime from LoginHistory;
-2. SELECT UserId, LoginTime from LoginHistory WHERE LoginTime > 2010-09-20T22:16:30.000Z;
-3. SELECT Application, Browser, EventDate, EventIdentifier, LoginUrl, UserId FROM LoginEvent WHERE EventDate<Yesterday AND Status=’Success’
-- reference - query via API : https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
+6. Edit the System Permissions and click the checkbox next to *View Real-Time Event Monitoring Data*
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/dca16f2f-43a7-474b-bcd5-5add892ee75d)
+7. Click Save
 
-## Go Routines
-- multithreading - https://medium.com/@brenomachadodomonte/multithreading-with-go-routines-in-golang-7e8fcd33be81
-- concurrency chnnels https://medium.com/goturkiye/concurrency-in-go-channels-and-waitgroups-25dd43064d1
+8. Click on *Permission Set Groups*
+9. Click on *New Permission Set Group*
+10. Enter a label and API name for Falco
+11. Click on Permissions Sets in Group
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/36836ad1-f001-4c72-b8a2-ab259b8beaf9)
+11. Add FalcoPermissionSet into the Group
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/0f951c66-2266-4fed-bef0-81bfc41f3801)
+12. Browse back to the Permission Set Group and click *Manage Assignments*
+![image](https://github.com/an1245/falco-plugin-salesforce/assets/127995147/2922cbbb-971d-4708-b241-e340c8d782e8)
+13. Add user Falco into the PermissionSetGroup
 
-## TODO
-- Login Failures
-- Login IPs
-- Login GEO
