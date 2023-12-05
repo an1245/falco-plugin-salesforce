@@ -1,13 +1,17 @@
 # Salesforce Plugin for Falco
 
 ## Introduction
+The Salesforce Plugin for Falco ingests *Real-Time Event Monitoring Objects* from Salesforce and makes them available as fields in Falco - you can find more about these real-time objects [here](https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_objects_monitoring.htm)
 
+## Prerequisites
+Accessing *Real-Time Event Monitoring Objects* requires either the **Salesforce Shield** or **Salesforce Event Monitoring** add-on subscription
 
 ## Configuring the Falco Salesforce plugin as a Salesforce Connected App
 The plugin is integrated into Salesforce as a Connected App using the Client Credentials Flow. The Client Credentials Flow method requires you to provide a *Consumer Key*, *Consumer Secret* and *SFDC Login URL* to the plugin which it uses to authenticate.  You can find out more about using Client Credentials Flow for API authentication here: [Using the Client Credentials Flow for Easier API Authentication](https://developer.salesforce.com/blogs/2023/03/using-the-client-credentials-flow-for-easier-api-authentication)
 
 ### Creating a Connected App
-The first step to getting the plugin integrated is to create a Salesforce Connected App.
+The first step to getting the plugin integrated is to create a Salesforce Connected App. NOTE: the user account that you configure the Connect App to *Run As* must have the **View Real-Time Event Monitoring Data** permission
+
 1. Follow the steps in this document to create a Salesforce Connected app with oAuth Client Credentials Flow:
 [Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.ev_relay_create_connected_app.htm&type=5)
 2. If you followed the steps correctly, you should now have your *Consumer Key* and *Consumer Secret*. But if you some how missed the location, you can find it's location and how to rotate it here:
