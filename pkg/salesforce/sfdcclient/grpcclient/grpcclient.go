@@ -714,6 +714,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.PreviousPlatform = b.(string)
                                 }
                         }
+		case "PreviousScreen":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.PreviousScreen = b.(string)
+                                }
+                        }
 		case "PreviousUserAgent":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
