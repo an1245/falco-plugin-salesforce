@@ -51,4 +51,15 @@
   priority: EMERGENCY
   source: salesforce
   tags: [salesforce]
+
+- rule: Detected Anomaly in API usage
+  desc: Detected Anomaly in API usage
+  condition: salesforce.eventtype= ApiAnomalyEvent 
+  output: >
+     Detected Anomaly in API usage (User=%salesforce.username, IP of unauthorized user=%salesforce.sourceip, API Operation=%salesforce.operation, Event UUID=%salesforce.eventuuid. )
+  priority: EMERGENCY
+  source: salesforce
+  tags: [salesforce]
+
+
   
