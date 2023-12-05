@@ -13,8 +13,8 @@ The first step to getting the plugin integrated is to create a Salesforce Connec
 2. You also need to make sure you have enabled Client Credentials Flow in your connected app - you can find more information here:
 [Configure a Connected App for the OAuth 2.0 Client Credentials Flow](https://help.salesforce.com/s/articleView?id=sf.connected_app_client_credentials_setup.htm&type=5)
 
-### Locating your Consumer Key and Secret
-Once you have configured the connected app, you need to locate your consumer key and secret.  You can find more on finding these values here: [Rotate the Consumer Key and Consumer Secret of a Connected App](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&type=) 
+## Locating your Consumer Key and Secret
+If you haven't located your 
 
 ### Locating your Salesforce Login URL
 You will also need to locate your SFDC login URL (My Domain) which typically uses the following format *https://mydomain.my.salesforce.com* - you can find out more about finding this info here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
