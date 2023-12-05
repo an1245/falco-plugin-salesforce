@@ -18,7 +18,7 @@ You will also need to locate your SFDC login URL (My Domain) which typically use
 You can find out more about your My Domain here: [What Is My Domain?](https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&type=5)
 
 ### Configuring the plugin in Falco.yaml
-Now that you have this information, you can provide them as values in the falco.yaml file.
+Now that you have this information, you can provide them as values in the falco.yaml file.  We recommend leaving Debug set to False unless your trying to troubleshoot the plugin.
 ```
 plugins:
   - name: salesforce
