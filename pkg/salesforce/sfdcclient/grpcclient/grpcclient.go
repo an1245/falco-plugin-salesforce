@@ -368,9 +368,12 @@ type SFDCEvent struct {
 	PreviousScreen string
 	PreviousUserAgent string
 	PreviousWindow string
+	QueriedEntities string
         RelatedEventIdentifier string
+	RequestIdentifier string
 	ReplayId string
-        Score string
+	RowsProcessed int64
+        Score int64
 	SecurityEventData string
 	SessionKey string
         SessionLevel string
@@ -385,6 +388,7 @@ type SFDCEvent struct {
 	UserId string
         UserType string
         Username string
+	Uri string
 }
 
 func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug bool) *SFDCEvent {
@@ -721,10 +725,22 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.PreviousWindow = b.(string)
                                 }
                         }
+		case "QueriedEntities":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.QueriedEntities = b.(string)
+                                }
+                        }
                 case "ReplayId":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.ReplayId = b.(string)
+                                }
+                        }
+		 case "RequestIdentifier":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.RequestIdentifier = b.(string)
                                 }
                         }
 		case "RelatedEventIdentifier":
@@ -733,10 +749,16 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.RelatedEventIdentifier = b.(string)
                                 }
                         }
+		case "RowsProcessed":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.RowsProcessed = b.(int64)
+                                }
+                        }
 		case "Score":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
-                                        ind.Score = b.(string)
+                                        ind.Score = b.(int64)
                                 }
                         }
 		case "SecurityEventData":
@@ -821,6 +843,12 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                         ind.Username = b.(string)
+                                }
+                        }
+		 case "Uri":
+                        if value, ok := v.(map[string]interface{}); ok {
+                                for _, b := range value {
+                                        ind.Uri = b.(string)
                                 }
                         }
                 }
