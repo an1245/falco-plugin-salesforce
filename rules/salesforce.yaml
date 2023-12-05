@@ -17,7 +17,7 @@
   tags: [salesforce]
 
 - list: known_countries
-  items: [Australia]
+  items: [Australia,New Zealand]
   
 - rule: Login from unknown geo
   desc: Login from unknown geo
