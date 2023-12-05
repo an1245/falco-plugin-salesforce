@@ -69,7 +69,7 @@
   condition: salesforce.eventtype=PermissionSetEvent
   output: >
      Detected a permission change in permission set/group (User=%salesforce.username, IP of user=%salesforce.sourceip, Event Source=%salesforce.eventsource, Impacts External Users: %salesforce.hasexternalusers, Operation: @salesforce.operation, Affected Permission Set Groups=%salesforce.parentnamelist, Permissions Changed=%salesforce.permissionlist, Number of Users impacted=%salesforce.usercount, Event UUID=%salesforce.eventuuid. )
-  priority: EMERGENCY
+  priority: WARNING
   source: salesforce
   tags: [salesforce]
 
@@ -78,7 +78,7 @@
   condition: salesforce.eventtype=ApiAnomalyEvent 
   output: >
      Detected Anomaly in API usage (User=%salesforce.username, IP of user=%salesforce.sourceip, API Operation=%salesforce.operation, URI: @salesforce.uri, Summary of threat=%salesforce.summary, Event UUID=%salesforce.eventuuid. )
-  priority: EMERGENCY
+  priority: WARNING
   source: salesforce
   tags: [salesforce]
 
