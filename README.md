@@ -88,7 +88,7 @@ There are a number of fields exported by the plugin.   **NOTE**: Not all fields 
 | salesforce.browser | string | The browser name and version if known |
 | salesforce.ciphersuite | string | The TLS cipher suite used for the login |
 | salesforce.city | string | The city where the user’s IP address is physically located |
-| salesforce.clientverion | string | The version number of the login client |
+| salesforce.clientversion | string | The version number of the login client |
 | salesforce.country | string | The country where the user’s IP address is physically located |
 | salesforce.countryiso | string | The ISO 3166 code for the country where the user’s IP address is physically located |
 | salesforce.createdbyid | string | Who was this created by? |
