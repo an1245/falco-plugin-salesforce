@@ -78,5 +78,79 @@ There are a number of fields exported by the plugin.   **NOTE**: Not all fields 
 
 | Field Name | Type | Description |
 | ----------- | ----------- |  ----------- |
-| salesforce.eventtype | string | What type of SFDC event was this? (example. LoginEvent)
+| salesforce.eventtype | string | The type of SFDC event (example. LoginEvent) |
+| salesforce.acceptlanguage | string | List of HTTP Headers that specify the natural language, such as English, that the client understands. |
+| salesforce.apitype | string | The API that was used (SOAP Enterprise, SOAP Partner, None) |
+| salesforce.apiversion | string | The version number of the API. |
+| salesforce.application | string | The application used to access the org |
+| salesforce.authmethodreference | string | What authentication method was used |
+| salesforce.authserviceid | string | The authentication method used by a third-party identification provider for an OpenID Connect single sign-on protocol |
+| salesforce.browser | string | The browser name and version if known |
+| salesforce.ciphersuite | string | The TLS cipher suite used for the login |
+| salesforce.city | string | The city where the user’s IP address is physically located |
+| salesforce.clientverion | string | The version number of the login client |
+| salesforce.country | string | The country where the user’s IP address is physically located |
+| salesforce.countryiso | string | The ISO 3166 code for the country where the user’s IP address is physically located |
+| salesforce.createdbyid | string | Who was this created by? |
+| salesforce.createddate | string | What date was this created? |
+| salesforce.currentip | string | The IP address of the newly observed fingerprint that deviates from the previous fingerprint. The difference between the current and previous values is one indicator that a session hijacking attack has occurred |
+| salesforce.currentplatform | string | The platform of the newly observed fingerprint that deviates from the previous fingerprint. The difference between the current and previous values is one indicator that a session hijacking attack has occurred |
+| salesforce.currentscreen | string | The screen of the newly observed fingerprint that deviates from the previous fingerprint. The difference between the current and previous values is one indicator that a session hijacking attack has occurred |
+| salesforce.currentuseragent | string | The user agent of the newly observed fingerprint that deviates from the previous fingerprint. The difference between the current and previous values is one indicator that a session hijacking attack has occurred |
+| salesforce.currentwindow | string | The browser window of the newly observed fingerprint that deviates from the previous fingerprint. The difference between the current and previous values is one indicator that a session hijacking attack has occurred |
+| salesforce.delegatedusername | string | Username of the admin who is logging in as another user. |
+| salesforce.delegatedorganizationid | string | Organization Id of the user who is logging in as another user |
+| salesforce.evaluationtime | string | The amount of time it took to evaluate the policy in milliseconds |
+| salesforce.eventdate | string | The time when the specified event occurred |
+| salesforce.eventidentifier | string | The unique ID of the event |
+| salesforce.eventuuid | string | A universally unique identifier (UUID) that identifies a platform event message |
+| salesforce.eventsource | string | The source of the event (API, Classic etc) |
+| salesforce.hasexternalusers | string | When true, external users are impacted by the operation that triggered a permission change. |
+| salesforce.httpmethod | string | The HTTP method of the request |
+| salesforce.impacteduserids | string | A comma-separated list of IDs of the users affected by the event |
+| salesforce.loginascategory | string | Represents how the user logs in as another user |
+| salesforce.logingeoid | string | The Salesforce ID of the LoginGeo object associated with the login user’s IP address |
+| salesforce.loginhistoryid | string | Tracks a user session so you can correlate user activity with a particular series of API events. |
+| salesforce.loginlatitude | string | The latitude where the user’s IP address is physically located |
+| salesforce.loginlongitude | string | The longitude where the user’s IP address is physically located |
+| salesforce.loginkey | string | The string that ties together all events in a given user’s login session |
+| salesforce.logintype | string | The type of login used to access the session |
+| salesforce.loginsubtype | string | The type of login flow used. See the LoginSubType field of LoginHistory in the Object Reference guide |
+| salesforce.loginurl | string | The URL of the login page. |
+| salesforce.operation | string | The type of operation that generated the event. For example, Query. |
+| salesforce.parentidlist | string | IDs affected by the permisson change |
+| salesforce.parentnamelist | string | The names of the affected permission sets or permission set groups. |
+| salesforce.permissionexpirationlist | string | A comma separated list of timestamps from the PermissionSetAssignment. |
+| salesforce.permissionlist | string | List of permissions |
+| salesforce.permissiontype | string | The type of permission that is updated in the event |
+| salesforce.platform | string | The operating system on the login machine. |
+| salesforce.postalcode | string | The postal code where the user’s IP address is physically located |
+| salesforce.policyid  | string | The ID of the transaction policy associated with this event |
+| salesforce.policyoutcome  | string | The result of the transaction policy. |
+| salesforce.previousip | string | The IP of the session that was hijacked? |
+| salesforce.previousscreen | string | The screen of the session that was hijacked? |
+| salesforce.previousplatform | string | The platform of the session that was hijacked? |
+| salesforce.previoususeragent | string | The user agent of the session that was hijacked? |
+| salesforce.previouswindow | string | The window of the session that was hijacked? |
+| salesforce.queriedentities | string | The entities in the SOQL query. |
+| salesforce.relatedeventidentifier | string | Represents the EventIdentifier of the related event. |
+| salesforce.requestidentifier | string | The unique ID of a single transaction. |
+| salesforce.rowsprocessed | string | Total row count for the current operation |
+| salesforce.score | string | The score of the event.  Review developer docs for score explanation |
+| salesforce.securityeventdata | string | What is the security event data of the hijacked session |
+| salesforce.sessionlevel | string | Session-level security controls user access to features that support it |
+| salesforce.sessionkey | string | The user’s unique session ID. |
+| salesforce.sourceip | string | The source IP address of the client that is logged in |
+| salesforce.summary | string | A text summary of the threat that caused this event to be created.  |
+| salesforce.loginstatus | string | What was the status of the login? (success etc.) |
+| salesforce.subdivision | string | The name of the subdivision where the user’s IP address is physically located |
+| salesforce.targeturl | string | The URL redirected to after logging in as another user succeeds. |
+| salesforce.tlsprotocol | string | The TLS protocol version used for the login |
+| salesforce.useragent | string | The User-Agent header of the request |
+| salesforce.usercount | string | The number of users affected by the event |
+| salesforce.userid | string | The origin user’s unique ID |
+| salesforce.usertype | string | The category of user license of the user |
+| salesforce.username | string | The origin username in the format of user@company.com |
+| salesforce.uri | string | The URI of the page that’s receiving the request. |
+
 
