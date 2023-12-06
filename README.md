@@ -54,6 +54,20 @@ You can find out more about your My Domain here: [What Is My Domain?](https://he
 ### Finding more info
 You can find out more about Connected App and oAuth Terminology here: [Connected App and OAuth Terminology](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_terminology.htm&type=5)
 
+## Building the Salesforce plugin
+1. Download the plugin from GitHub using git
+2. Change directory to falco-plugin-salesforce
+3. Compile the plugin using *make*
+4. Copy *libsalesforce.so* to */usr/share/falco/plugins*
+5. Copy the rules to /etc/falco/rules.d/
+```
+git clone https://github.com/an1245/falco-plugin-salesforce
+cd falco-plugin-salesforce
+make
+cp libsalesforce.so /usr/share/falco/plugins/
+cp rules/* /etc/falco/rules.d/
+```
+
 ## Configuring the plugin in Falco.yaml
 Now that you have collected your ***Consumer Key***, ***Consumer Secret*** and ***SFDC Login URL***, you can provide them as values in the falco.yaml file.  
 ```
