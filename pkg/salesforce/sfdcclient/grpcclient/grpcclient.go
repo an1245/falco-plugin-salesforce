@@ -51,7 +51,7 @@ func (c *PubSubClient) Close() {
 func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdcloginurl string) error {
         resp, err := oauth.Login(clientid, clientsecret,sfdcloginurl )
         if err != nil {
-                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't authenticate using supplied Client ID, Secret and Login URL - %v", err)
+                return err
         }
 
         c.accessToken = resp.AccessToken
@@ -65,7 +65,7 @@ func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdclo
 func (c *PubSubClient) FetchUserInfo(sfdcloginurl string) error {
         resp, err := oauth.UserInfo(c.accessToken, sfdcloginurl )
         if err != nil {
-                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't fetch oAuth user info - %v", err)
+                return err
         }
 
         c.userID = resp.UserID
@@ -89,7 +89,7 @@ func (c *PubSubClient) GetTopic(topicName string) (*proto.TopicInfo, error) {
         printTrailer(trailer)
 
         if err != nil {
-                return nil, fmt.Errorf("Salesforce Plugin ERROR: Couldn't Get Topic - %v", err)
+                return nil, err
         }
 
         return resp, nil
