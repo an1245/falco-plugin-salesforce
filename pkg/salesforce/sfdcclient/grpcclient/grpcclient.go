@@ -573,10 +573,10 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                          ind.EventIdentifier = b.(string)
                                 }
                         } else {
-				if (Debug == true) {
-					log.Printf("Salesforce Plugin: Event Identifier wasn't map")
-					fmt.Printf("Salesforce Plugin: Event Identifier is a %v \n", reflect.TypeOf(value))
-				}
+				for _, b := range v {
+                                         ind.EventIdentifier = b.(string)
+                                }
+				
 			}
 			
 		case "EventSource":
