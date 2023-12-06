@@ -554,9 +554,10 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                 
 		case "EventIdentifier":
                         if value, ok := v.(map[string]interface{}); ok {
-                              
-                        	ind.EventIdentifier = value.(string)
-                                
+                               for _, b := range value {
+                        	ind.EventIdentifier = b.(string)
+				log.Printf("Event Identifier: %s", ind.EventIdentifier )
+				}
                         }	
 		case "EventSource":
                         if value, ok := v.(map[string]interface{}); ok {
