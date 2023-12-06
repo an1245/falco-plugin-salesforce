@@ -51,7 +51,7 @@ func (c *PubSubClient) Close() {
 func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdcloginurl string) error {
         resp, err := oauth.Login(clientid, clientsecret,sfdcloginurl )
         if err != nil {
-                return err
+                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't authenticate using supplied Client ID, Secret and Login URL - %v", err)
         }
 
         c.accessToken = resp.AccessToken
@@ -65,7 +65,7 @@ func (c *PubSubClient) Authenticate(clientid string, clientsecret string, sfdclo
 func (c *PubSubClient) FetchUserInfo(sfdcloginurl string) error {
         resp, err := oauth.UserInfo(c.accessToken, sfdcloginurl )
         if err != nil {
-                return err
+                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't fetch oAuth user info - %v", err)
         }
 
         c.userID = resp.UserID
@@ -89,7 +89,7 @@ func (c *PubSubClient) GetTopic(topicName string) (*proto.TopicInfo, error) {
         printTrailer(trailer)
 
         if err != nil {
-                return nil, err
+                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't Get Topic - %v", err)
         }
 
         return resp, nil
@@ -110,7 +110,8 @@ func (c *PubSubClient) GetSchema(schemaId string) (*proto.SchemaInfo, error) {
         printTrailer(trailer)
 
         if err != nil {
-                return nil, err
+                return nil, fmt.Errorf("Salesforce Plugin ERROR: Couldn't Get Schema - %v", err)
+		 
         }
 
         return resp, nil
@@ -126,7 +127,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 
         subscribeClient, err := c.pubSubClient.Subscribe(ctx)
         if err != nil {
-                return replayId, err
+                return replayId, fmt.Errorf("Salesforce Plugin ERROR: Couldn't create subscription client - %v", err)
         }
         defer subscribeClient.CloseSend()
 
@@ -146,7 +147,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
         if err == io.EOF {
                 log.Printf("Salesforce Plugin: WARNING - EOF error returned from initial Send call, proceeding anyway")
         } else if err != nil {
-                return replayId, err
+                return replayId, fmt.Errorf("Salesforce Plugin ERROR: Couldn't send subscription fetch request - %v", err)
         }
 
         requestedEvents := initialFetchRequest.NumRequested
@@ -161,23 +162,23 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         return curReplayId, fmt.Errorf("stream closed")
                 } else if err != nil {
                         printTrailer(subscribeClient.Trailer())
-                        return curReplayId, err
+                        return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Didn't receive any information from subscription client - %v", err)
                 }
 
                 for _, event := range resp.Events {
                         codec, err := c.fetchCodec(event.GetEvent().GetSchemaId())
                         if err != nil {
-                                return curReplayId, err
+                                return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Couldn't fetch codec - %v", err)
                         }
 
                         parsed, _, err := codec.NativeFromBinary(event.GetEvent().GetPayload())
                         if err != nil {
-                                return curReplayId, err
+                                return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Couldn't parse AVRO format - %v", err)
                         }
 
                         body, ok := parsed.(map[string]interface{})
                         if !ok {
-                                return curReplayId, fmt.Errorf("error casting parsed event: %v", body)
+                                return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Error casting parsed event: %v", body)
                         }
 
 			if (c.Debug == true) {
@@ -190,7 +191,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
-                                log.Fatal(err)
+                               return fmt.Errorf("Salesforce Plugin ERROR: Couldn't convert SFDC Event back to JSON- %v", err)
                         }
 
 			if (c.Debug == true) {
@@ -217,7 +218,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 if err == io.EOF {
                                         log.Printf("Salesforce Plugin: WARNING - EOF error returned from subsequent Send call, proceeding anyway")
                                 } else if err != nil {
-                                        return curReplayId, err
+                                        return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Couldn't send next FetchRequest- %v", err)
                                 }
 
                                 requestedEvents += fetchRequest.NumRequested
@@ -285,7 +286,7 @@ func NewGRPCClient(isDebug bool) (*PubSubClient, error) {
 
         conn, err := grpc.DialContext(ctx, common.GRPCEndpoint, dialOpts...)
         if err != nil {
-                return nil, err
+                return nil, fmt.Errorf("Salesforce Plugin ERROR: Couldn't send GRPC Dial Context- %v", err)
         }
 
         return &PubSubClient{
