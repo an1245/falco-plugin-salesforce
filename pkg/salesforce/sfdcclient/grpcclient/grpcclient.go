@@ -181,7 +181,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         }
 
 			if (c.Debug == true) {
-				log.Printf("Salesforce Plugin: Response Body: %+v\n", body)
+				log.Printf("Salesforce Plugin: AVRO Response Body: %+v\n", body)
 			}
 			
                         // Again, this should be stored in a persistent external datastore instead of a variable
@@ -194,7 +194,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         }
 
 			if (c.Debug == true) {
-				log.Printf("Salesforce Plugin: Response JSON Output")
+				log.Printf("Salesforce Plugin: Passing this JSON back to NextBatch (source.go)")
 				fmt.Println(string(SFDCEventJSON))
 			}
 
