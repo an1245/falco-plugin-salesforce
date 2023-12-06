@@ -89,7 +89,7 @@ func (c *PubSubClient) GetTopic(topicName string) (*proto.TopicInfo, error) {
         printTrailer(trailer)
 
         if err != nil {
-                return fmt.Errorf("Salesforce Plugin ERROR: Couldn't Get Topic - %v", err)
+                return nil, fmt.Errorf("Salesforce Plugin ERROR: Couldn't Get Topic - %v", err)
         }
 
         return resp, nil
@@ -191,7 +191,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
-                               return fmt.Errorf("Salesforce Plugin ERROR: Couldn't convert SFDC Event back to JSON- %v", err)
+                               return nil, fmt.Errorf("Salesforce Plugin ERROR: Couldn't convert SFDC Event back to JSON- %v", err)
                         }
 
 			if (c.Debug == true) {
