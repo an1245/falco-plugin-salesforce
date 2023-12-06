@@ -7,6 +7,7 @@ import (
         "io"
         "log"
         "encoding/json"
+	"reflect"
 
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/oauth"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
@@ -574,7 +575,7 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         } else {
 				if (Debug == true) {
 					log.Printf("Salesforce Plugin: Event Identifier wasn't map")
-					fmt.Printf("Salesforce Plugin: Event Identifier is a %v \n", reflect.TypeOf(days))
+					fmt.Printf("Salesforce Plugin: Event Identifier is a %v \n", reflect.TypeOf(value))
 				}
 			}
 			
