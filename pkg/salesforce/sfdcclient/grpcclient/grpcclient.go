@@ -7,6 +7,7 @@ import (
         "io"
         "log"
         "encoding/json"
+	"reflect"
 
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/oauth"
 	"github.com/an1245/falco-plugin-salesforce/pkg/salesforce/sfdcclient/proto"
@@ -179,6 +180,10 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 return curReplayId, fmt.Errorf("error casting parsed event: %v", body)
                         }
 
+			if (c.Debug == true) {
+				log.Printf("Salesforce Plugin: AVRO Response Body: %+v\n", body)
+			}
+			
                         // Again, this should be stored in a persistent external datastore instead of a variable
                         curReplayId = event.GetReplayId()
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
@@ -187,6 +192,11 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         if err != nil {
                                 log.Fatal(err)
                         }
+
+			if (c.Debug == true) {
+				log.Printf("Salesforce Plugin: Passing this JSON back to NextBatch (source.go)")
+				fmt.Println(string(SFDCEventJSON))
+			}
 
 			channel <- SFDCEventJSON
 		}
@@ -397,6 +407,9 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
 		log.Printf("Salesforce Plugin: Processing %s event", eventType)
 	}
         for k, v := range data {
+		if (Debug == true) {
+			log.Printf("Salesforce Plugin: Processing field %s", k)
+		}
                 switch k {
 	     	case "AcceptLanguage":
                         if value, ok := v.(map[string]interface{}); ok {
@@ -549,12 +562,21 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.EventDate = b.(float64)
                                 }
                         }
-                case "EventIdentifier":
-                        if value, ok := v.(map[string]interface{}); ok {
+                
+		case "EventIdentifier":
+			if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
                                          ind.EventIdentifier = b.(string)
                                 }
-                        }
+                        } else {
+			
+				vtype := reflect.TypeOf(v).Kind()
+				if vtype == reflect.String {
+					ind.EventIdentifier = v.(string)
+					
+				}
+			}
+			
 		case "EventSource":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
