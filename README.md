@@ -94,7 +94,7 @@ There are a number of fields exported by the plugin.
 
 | Field Name | Type | Description |
 | ----------- | ----------- |  ----------- |
-| salesforce.eventtype | string | The type of SFDC event - possible options include: <ul><li>LoginEvent, LogoutEvent and LoginAsEvent</li><li>SessionHijackingEvent and CredentialStuffingEvent</li><li>PermissionSetEvent</li><li>ApiAnomalyEvent</li></ul>|
+| salesforce.eventtype | string | The type of SFDC event - possible options include: <ul><li>LoginEvent, LogoutEvent and LoginAsEvent</li><li>SessionHijackingEvent, CredentialStuffingEvent</li><li>PermissionSetEvent</li><li>ApiAnomalyEvent</li></ul>|
 | salesforce.acceptlanguage | string | List of HTTP Headers that specify the natural language, such as English, that the client understands. |
 | salesforce.apitype | string | The API that was used (SOAP Enterprise, SOAP Partner, None) |
 | salesforce.apiversion | string | The version number of the API. |
