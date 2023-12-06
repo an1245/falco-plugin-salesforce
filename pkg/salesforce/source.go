@@ -114,64 +114,64 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process LoginData
 		written, err := writer.Write(logindata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Login Event data events", err)
 		}
 		if written < len(logindata) {
-		return 0, fmt.Errorf("salesforce logindata message too long: %d, max %d supported", len(logindata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: logindata message too long: %d, max %d supported", len(logindata), written)
 		}
 	case logoutdata = <-o.logoutChannel:
 		// Process LogoutData
 		written, err := writer.Write(logoutdata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Logout Event data events", err)
 		}
 		if written < len(logoutdata) {
-			return 0, fmt.Errorf("salesforce logoutdata message too long: %d, max %d supported", len(logoutdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: logoutdata message too long: %d, max %d supported", len(logoutdata), written)
 		}
 	case loginasdata = <-o.loginAsChannel:
 		// Process LoginAsData
 		written, err := writer.Write(loginasdata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Login As Event data events", err)
 		}
 		if written < len(loginasdata) {
-			return 0, fmt.Errorf("salesforce loginasdata message too long: %d, max %d supported", len(loginasdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: loginasdata message too long: %d, max %d supported", len(loginasdata), written)
 		}
 	case sessionhijackdata = <-o.sessionHijackingChannel:
 		// Process sessionhijackdata
 		written, err := writer.Write(sessionhijackdata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Session Hijack Event data events", err)
 		}
 		if written < len(sessionhijackdata) {
-			return 0, fmt.Errorf("salesforce sessionhijackdata message too long: %d, max %d supported", len(sessionhijackdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: sessionhijackdata message too long: %d, max %d supported", len(sessionhijackdata), written)
 		}
 	case credentialstuffdata = <-o.credentialStuffingChannel:
 		// Process credentialstuffdata
 		written, err := writer.Write(credentialstuffdata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Credential Stuffing Event data events", err)
 		}
 		if written < len(credentialstuffdata) {
-			return 0, fmt.Errorf("salesforce credentialstuffdata message too long: %d, max %d supported", len(credentialstuffdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: credentialstuffdata message too long: %d, max %d supported", len(credentialstuffdata), written)
 		}
 	case permissionsetdata = <-o.permissionSetChannel:
 		// Process permissionsetdata
 		written, err := writer.Write(permissionsetdata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Permission Set Event data events", err)
 		}
 		if written < len(permissionsetdata) {
-			return 0, fmt.Errorf("salesforce permissionsetdata message too long: %d, max %d supported", len(permissionsetdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: permissionsetdata message too long: %d, max %d supported", len(permissionsetdata), written)
 		}
 	case apiAnomalydata = <-o.apiAnomalyChannel:
 		// Process apiAnomalydata
 		written, err := writer.Write(apiAnomalydata)
 		if err != nil {
-			return 0, err
+			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write API Anomaly Event data events", err)
 		}
 		if written < len(apiAnomalydata) {
-			return 0, fmt.Errorf("salesforce apiAnomalydata message too long: %d, max %d supported", len(permissionsetdata), written)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: apiAnomalydata message too long: %d, max %d supported", len(permissionsetdata), written)
 		}
 	case <-afterCh:
 		pCtx.jdataEvtnum = math.MaxUint64
@@ -198,7 +198,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	
 	client, err := grpcclient.NewGRPCClient(p.config.Debug)
 	if err != nil {
-		log.Fatalf("Salesforce Plugin: could not create gRPC client: %v", err)
+		log.Fatalf("Salesforce Plugin ERROR: could not create gRPC client: %v", err)
 	}
 	//defer client.Close()
 	if (p.config.Debug == true){
@@ -208,7 +208,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	err = client.Authenticate(p.config.SFDCClientId, p.config.SFDCClientSecret, p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("Salesforce Plugin: could not authenticate: %v", err)
+		log.Fatalf("Salesforce Plugin ERROR: could not authenticate: %v", err)
 	}
 
 	if (p.config.Debug == true){
@@ -217,7 +217,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 	err = client.FetchUserInfo(p.config.SFDCLoginURL)
 	if err != nil {
 		client.Close()
-		log.Fatalf("Salesforce Plugin: could not fetch user info: %v", err)
+		log.Fatalf("Salesforce Plugin ERROR: could not fetch user info: %v", err)
 	}
 
 	return client
@@ -231,12 +231,12 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 	topic, err := client.GetTopic(Topic)
 	if err != nil {
 		client.Close()
-		log.Fatalf("Salesforce Plugin: could not fetch topic: %v", err)
+		log.Fatalf("Salesforce Plugin ERROR: could not fetch topic: %v", err)
 	}
 
 	if !topic.GetCanSubscribe() {
 		client.Close()
-		log.Fatalf("Salesforce Plugin: this user is not allowed to subscribe to the following topic: %s", Topic)
+		log.Fatalf("Salesforce Plugin ERROR: this user is not allowed to subscribe to the following topic: %s", Topic)
 	}
 
 	curReplayId := common.ReplayId
@@ -260,9 +260,8 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// of this for loop
 		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			if (p.config.Debug == true){
-				log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
-			}
+			log.Printf("Salesforce Plugin ERROR: error occurred while subscribing to topic: %v", err)
+			
 		}
 	}
 
