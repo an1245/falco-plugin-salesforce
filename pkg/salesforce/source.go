@@ -260,7 +260,9 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// of this for loop
 		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
+			if (p.config.Debug == true){
+				log.Printf("Salesforce Plugin: error occurred while subscribing to topic: %v", err)
+			}
 		}
 	}
 
