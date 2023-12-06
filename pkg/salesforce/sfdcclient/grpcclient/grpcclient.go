@@ -183,7 +183,9 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         curReplayId = event.GetReplayId()
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
 
-			log.Printf("event body: %+v\n", body)
+			if (c.Debug == true) {
+				log.Printf("Salesforce Plugin: Response Body: %+v\n", body)
+			}
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
@@ -556,6 +558,9 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         }
                 
 		case "EventIdentifier":
+			if (c.Debug == true) {
+				log.Printf("Salesforce Plugin: Processing Event Identifier")
+			}
                         if value, ok := v.(map[string]interface{}); ok {
                                for _, b := range value {
                         	ind.EventIdentifier = b.(string)
