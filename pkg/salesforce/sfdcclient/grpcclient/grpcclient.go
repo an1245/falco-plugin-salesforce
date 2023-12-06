@@ -399,6 +399,9 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
 		log.Printf("Salesforce Plugin: Processing %s event", eventType)
 	}
         for k, v := range data {
+		if (Debug == true) {
+			log.Printf("Salesforce Plugin: Processing field %s", k)
+		}
                 switch k {
 	     	case "AcceptLanguage":
                         if value, ok := v.(map[string]interface{}); ok {
