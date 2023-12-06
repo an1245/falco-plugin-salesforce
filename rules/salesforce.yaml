@@ -68,7 +68,7 @@
   desc: Detected a permission change in permission set/group
   condition: salesforce.eventtype=PermissionSetEvent
   output: >
-     Detected a permission change in permission set/group (User=%salesforce.username, IP of user=%salesforce.sourceip, Event Source=%salesforce.eventsource, Impacts External Users: %salesforce.hasexternalusers, Operation: @salesforce.operation, Affected Permission Set Groups=%salesforce.parentnamelist, Permissions Changed=%salesforce.permissionlist, Number of Users impacted=%salesforce.usercount. SFDC Event Identifier=%salesforce.eventidentifier )
+     Detected a permission change in permission set/group (User=%salesforce.username, IP of user=%salesforce.sourceip, Event Source=%salesforce.eventsource, Impacts External Users: %salesforce.hasexternalusers, Operation: %salesforce.operation, Affected Permission Set Groups=%salesforce.parentnamelist, Permissions Changed=%salesforce.permissionlist, Number of Users impacted=%salesforce.usercount. SFDC Event Identifier=%salesforce.eventidentifier )
   priority: WARNING
   source: salesforce
   tags: [salesforce]
