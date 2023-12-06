@@ -558,7 +558,7 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                         }
                 
 		case "EventIdentifier":
-			if (c.Debug == true) {
+			if (Debug == true) {
 				log.Printf("Salesforce Plugin: Processing Event Identifier")
 			}
                         if value, ok := v.(map[string]interface{}); ok {
