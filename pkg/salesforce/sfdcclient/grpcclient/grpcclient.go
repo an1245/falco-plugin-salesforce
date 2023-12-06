@@ -551,10 +551,13 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                         ind.EventDate = b.(float64)
                                 }
                         }
-                case "EventIdentifier":
-                        ind.EventSource = v.(string)
-			log.Printf("Salesforce Plugin: Creating codec from uncached schema... %s", v)
-			
+                
+		case "EventIdentifier":
+                        if value, ok := v.(map[string]interface{}); ok {
+                              
+                        	ind.EventIdentifier = value
+                                
+                        }	
 		case "EventSource":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {
