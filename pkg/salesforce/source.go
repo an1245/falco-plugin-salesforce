@@ -114,7 +114,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process LoginData
 		written, err := writer.Write(logindata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Login Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Login Event data events - %v", err)
 		}
 		if written < len(logindata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: logindata message too long: %d, max %d supported", len(logindata), written)
@@ -123,7 +123,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process LogoutData
 		written, err := writer.Write(logoutdata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Logout Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Logout Event data events - %v", err)
 		}
 		if written < len(logoutdata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: logoutdata message too long: %d, max %d supported", len(logoutdata), written)
@@ -132,7 +132,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process LoginAsData
 		written, err := writer.Write(loginasdata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Login As Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Login As Event data events - %v", err)
 		}
 		if written < len(loginasdata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: loginasdata message too long: %d, max %d supported", len(loginasdata), written)
@@ -141,7 +141,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process sessionhijackdata
 		written, err := writer.Write(sessionhijackdata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Session Hijack Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Session Hijack Event data events - %v", err)
 		}
 		if written < len(sessionhijackdata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: sessionhijackdata message too long: %d, max %d supported", len(sessionhijackdata), written)
@@ -150,7 +150,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process credentialstuffdata
 		written, err := writer.Write(credentialstuffdata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Credential Stuffing Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Credential Stuffing Event data events - %v", err)
 		}
 		if written < len(credentialstuffdata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: credentialstuffdata message too long: %d, max %d supported", len(credentialstuffdata), written)
@@ -159,7 +159,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process permissionsetdata
 		written, err := writer.Write(permissionsetdata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write Permission Set Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write Permission Set Event data events - %v", err)
 		}
 		if written < len(permissionsetdata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: permissionsetdata message too long: %d, max %d supported", len(permissionsetdata), written)
@@ -168,7 +168,7 @@ func (o *PluginInstance) NextBatch(pState sdk.PluginState, evts sdk.EventWriters
 		// Process apiAnomalydata
 		written, err := writer.Write(apiAnomalydata)
 		if err != nil {
-			return 0, log.Printf("Salesforce Plugin ERROR: Couldn't write API Anomaly Event data events - %v", err)
+			return 0, fmt.Errorf("Salesforce Plugin ERROR: Couldn't write API Anomaly Event data events - %v", err)
 		}
 		if written < len(apiAnomalydata) {
 			return 0, fmt.Errorf("Salesforce Plugin ERROR: apiAnomalydata message too long: %d, max %d supported", len(permissionsetdata), written)
