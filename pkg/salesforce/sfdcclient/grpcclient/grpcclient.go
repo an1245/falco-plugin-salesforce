@@ -187,11 +187,17 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                         curReplayId = event.GetReplayId()
                         SFDCEventIns := StringMapToSFDCEvent(parsed.(map[string]interface{}), eventType, c.Debug)
 
+			
                         
                        SFDCEventJSON, err := json.Marshal(SFDCEventIns)
                         if err != nil {
                                 log.Fatal(err)
                         }
+
+			if (c.Debug == true) {
+				log.Printf("Salesforce Plugin: Response JSON Output")
+				fmt.Println(string(SFDCEventJSON))
+			}
 
 			channel <- SFDCEventJSON
 		}
