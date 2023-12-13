@@ -87,7 +87,7 @@ load_plugins: [salesforce]
 ```
 
 ## Debugging
-Whilst I have done quite a lot of testing, there might be some bugs (I am only human). We recommend leaving Debug set to False unless you are trying to troubleshoot the plugin.  But if Falco keeps crashing for some reason, then you can set ```Debug: True``` in *falco.yaml* and run ```falco``` on the command line.  You will see verbose logging on STDOUT.
+Whilst I have done quite a lot of testing, there might be some bugs (I am only human). We recommend leaving Debug set to False unless you are trying to troubleshoot the plugin.  But if Falco keeps crashing for some reason, you can set ```Debug: True``` in *falco.yaml* and run ```falco``` on the command line.  You will see verbose logging on STDOUT.
 
 ## Exported Fields
 There are a number of fields exported by the plugin.   
