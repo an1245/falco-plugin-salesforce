@@ -263,7 +263,7 @@ func (p *Plugin) Extract(req sdk.ExtractRequest, evt sdk.EventReader) error {
 		// Read the event data
 		data, err := ioutil.ReadAll(evt.Reader())
 		if err != nil {
-			return err
+			return fmt.Errorf("Salesforce Plugin ERROR: Couldn't read event from Event Reader in Extract - %v", err)
 		}
 
 		// For this plugin, events are always strings
@@ -272,7 +272,7 @@ func (p *Plugin) Extract(req sdk.ExtractRequest, evt sdk.EventReader) error {
 		p.jdata, err = p.jparser.Parse(evtStr)
 		if err != nil {
 			// Not a json file, so not present.
-			return err
+			return fmt.Errorf("Salesforce Plugin ERROR: Couldn't parse JSON in Extract - %v", err)
 		}
 		p.jdataEvtnum = evt.EventNum()
 	}

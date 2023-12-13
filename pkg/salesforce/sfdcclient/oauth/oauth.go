@@ -55,7 +55,7 @@ func Login(clientid string, clientsecret string, sfdcloginurl string) (*LoginRes
 	defer httpResp.Body.Close()
 
 	if httpResp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("non-200 status code returned on OAuth authentication call: %v", httpResp.StatusCode)
+		return nil, err
 	}
 
 	var loginResponse LoginResponse
