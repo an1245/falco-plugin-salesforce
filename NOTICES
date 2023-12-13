@@ -1,0 +1,8 @@
+=======================================================================
+Software under grpcclient directory
+=======================================================================
+This plugin includes code from Developerforce Pub/Sub sample code
+located here: https://github.com/developerforce/pub-sub-api which is licensed
+under Creative Commons 1.0 Universal.
+
+This code is located in the grpcclient directory.
