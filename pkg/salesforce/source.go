@@ -278,7 +278,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// of this for loop
 		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			if (processErrorCodeBackoff(err) == false && backoffcount <= 6) {
+			if (processErrorCodeBackoff(err) == false && backoffcount <= 40) {
 				log.Printf("Salesforce Plugin WARNING: error occurred while subscribing to topic - sleeping for %d min", backoffcount*5)
 				time.Sleep(time.Duration(backoffcount * 5) * time.Minute)
 				backoffcount += 1
