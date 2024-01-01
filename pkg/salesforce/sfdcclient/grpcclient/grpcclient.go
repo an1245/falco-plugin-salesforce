@@ -182,7 +182,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                 return curReplayId, fmt.Errorf("Salesforce Plugin ERROR: Error casting parsed event: %v", body)
                         }
 
-			if (c.Debug == true) {
+			if (c.Debug) {
 				log.Printf("Salesforce Plugin: AVRO Response Body: %+v\n", body)
 			}
 			
@@ -198,7 +198,7 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
                                return nil, err
                         }
 
-			if (c.Debug == true) {
+			if (c.Debug) {
 				log.Printf("Salesforce Plugin: Passing this JSON back to NextBatch (source.go)")
 				fmt.Println(string(SFDCEventJSON))
 			}
@@ -236,20 +236,20 @@ func (c *PubSubClient) Subscribe(replayPreset proto.ReplayPreset, replayId []byt
 func (c *PubSubClient) fetchCodec(schemaId string) (*goavro.Codec, error) {
         codec, ok := c.schemaCache[schemaId]
         if ok {
-                if (c.Debug == true) {
+                if (c.Debug) {
 			log.Printf("Salesforce Plugin: Fetched cached codec...")
 		}
                 return codec, nil
         }
 
-        if (c.Debug == true) {
+        if (c.Debug) {
 		log.Printf("Salesforce Plugin: Making GetSchema request for uncached schema...")
 	}
         schema, err := c.GetSchema(schemaId)
         if err != nil {
                 return nil, err
         }
-	if (c.Debug == true) {
+	if (c.Debug) {
        	 	log.Printf("Salesforce Plugin: Creating codec from uncached schema...")
 	}
         codec, err = goavro.NewCodec(schema.GetSchemaJson())
@@ -408,14 +408,14 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
 
         ind := &SFDCEvent{}
         ind.EventType = eventType
-	if (Debug == true) {
+	if (Debug) {
 		log.Printf("Salesforce Plugin: Processing %s event", eventType)
 	}
 
         errorSlice := []string{}
 
         for k, v := range data {
-		if (Debug == true) {
+		if (Debug) {
 			log.Printf("Salesforce Plugin: Processing field %s", k)
 		}
                 switch k {
@@ -828,7 +828,7 @@ func StringMapToSFDCEvent(data map[string]interface{}, eventType string, Debug b
                                 for _, b := range value {
                                          ind.Subdivision = b.(string)
                                 }
-                        } else if v == nil { } else if v == nil { } else { errorSlice = append(errorSlice,"Subdivision") }
+                        } else if v == nil { } else { errorSlice = append(errorSlice,"Subdivision") }
 		 case "Summary":
                         if value, ok := v.(map[string]interface{}); ok {
                                 for _, b := range value {

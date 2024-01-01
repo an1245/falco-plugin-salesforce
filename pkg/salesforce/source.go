@@ -205,7 +205,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 		exitWithError(oCtx, err)
 	}
 
-	if (p.config.Debug == true){
+	if (p.config.Debug){
 		log.Printf("Salesforce Plugin: Creating gRPC client...")
 	}
 	
@@ -215,7 +215,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 		exitWithError(oCtx, err)
 	}
 
-	if (p.config.Debug == true){
+	if (p.config.Debug){
 		log.Printf("Salesforce Plugin: Populating auth token...")
 		
 	}
@@ -227,7 +227,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 		exitWithError(oCtx, err)
 	}
 
-	if (p.config.Debug == true){
+	if (p.config.Debug){
 		log.Printf("Salesforce Plugin: Populating user info...")
 	}
 	err = client.FetchUserInfo(p.config.SFDCLoginURL)
@@ -241,7 +241,7 @@ func CreateGRPCClientConnection(p *Plugin, oCtx *PluginInstance) (*grpcclient.Pu
 
 func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubSubClient, Topic string, eventType string, channel chan []byte) (error){
 
-	if (p.config.Debug == true){
+	if (p.config.Debug){
 		log.Printf("Salesforce Plugin: Making GetTopic request...")
 	}
 	topic, err := client.GetTopic(Topic)
@@ -260,7 +260,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 
 	for {
 		
-		if (p.config.Debug == true){
+		if (p.config.Debug){
 			log.Printf("Salesforce Plugin: Subscribing to topic: %s", Topic)
 		}
 
@@ -278,7 +278,7 @@ func subscribeGRPCTopic(p *Plugin, oCtx *PluginInstance, client *grpcclient.PubS
 		// of this for loop
 		curReplayId, err = client.Subscribe(replayPreset, curReplayId, channel, Topic, eventType)
 		if err != nil {
-			if (processErrorCodeBackoff(err) == false && backoffcount <= 40) {
+			if (!processErrorCodeBackoff(err) && backoffcount <= 40) {
 				log.Printf("Salesforce Plugin WARNING: error occurred while subscribing to topic - sleeping for %d min", backoffcount*5)
 				time.Sleep(time.Duration(backoffcount * 5) * time.Minute)
 				backoffcount += 1
