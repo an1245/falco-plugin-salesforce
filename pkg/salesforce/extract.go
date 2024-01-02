@@ -154,9 +154,9 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.delegatedorganizationid":
 		res = string(jdata.GetStringBytes("DelegatedOrganizationId"))
 	case "salesforce.evaluationtime":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("EvaluationTime"))
+		res = fmt.Sprintf("%f",jdata.GetFloat64("EvaluationTime"))
 	case "salesforce.eventdate":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("EventDate"))
+		res = fmt.Sprintf("%d",jdata.GetInt("EventDate"))
 	case "salesforce.eventidentifier":
 		res = string(jdata.GetStringBytes("EventIdentifier"))
 	case "salesforce.eventuuid":
@@ -164,7 +164,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.eventsource":
 		res = string(jdata.GetStringBytes("EventSource"))
 	case "salesforce.hasexternalusers":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("HasExternalUsers"))
+		res = fmt.Sprintf("%v",jdata.GetBool("HasExternalUsers"))
 	case "salesforce.httpmethod":
 		res = string(jdata.GetStringBytes("HttpMethod"))
 	case "salesforce.impacteduserids":
@@ -176,9 +176,9 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.loginhistoryid":
 		res = string(jdata.GetStringBytes("LoginHistoryId"))
 	case "salesforce.loginlatitude":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("LoginLatitude"))
+		res = fmt.Sprintf("%f",jdata.GetFloat64("LoginLatitude"))
 	case "salesforce.loginlongitude":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("LoginLongitude"))
+		res = fmt.Sprintf("%f",jdata.GetFloat64("LoginLongitude"))
 	case "salesforce.loginkey":
 		res = string(jdata.GetStringBytes("LoginKey"))
 	case "salesforce.logintype":
@@ -220,7 +220,7 @@ func getfieldStr(jdata *fastjson.Value, field string) (bool, string) {
 	case "salesforce.rowsprocessed":
 		res = string(jdata.GetStringBytes("RowsProcessed"))
 	case "salesforce.score":
-		res = fmt.Sprintf("%f",jdata.GetStringBytes("Score"))
+		res = fmt.Sprintf("%d",jdata.GetInt("Score"))
 	case "salesforce.securityeventdata":
 		res = string(jdata.GetStringBytes("SecurityEventData"))
 	case "salesforce.sessionlevel":
