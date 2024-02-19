@@ -7,7 +7,7 @@ require (
 	github.com/falcosecurity/plugin-sdk-go v0.7.3
 	github.com/linkedin/goavro/v2 v2.12.0
 	github.com/valyala/fastjson v1.6.4
-	google.golang.org/grpc v1.61.0
+	google.golang.org/grpc v1.61.1
 	google.golang.org/protobuf v1.32.0
 )
 
