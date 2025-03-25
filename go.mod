@@ -1,6 +1,7 @@
 module github.com/an1245/falco-plugin-salesforce
 
 go 1.20
+toolchain go1.24.1
 
 require (
 	github.com/alecthomas/jsonschema v0.0.0-20220216202328-9eeeec9d044b
@@ -8,7 +9,7 @@ require (
 	github.com/linkedin/goavro/v2 v2.13.0
 	github.com/valyala/fastjson v1.6.4
 	google.golang.org/grpc v1.64.0
-	google.golang.org/protobuf v1.34.2
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
